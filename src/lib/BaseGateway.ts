@@ -1,14 +1,14 @@
 import { AccountOwnedId } from './AccountOwnedId';
 import { domainRelativeIri } from './util';
 import { MeldConfig, Reference } from '@m-ld/m-ld';
-import { UserKeyConfig } from '../data/UserKey';
 import isFQDN from 'validator/lib/isFQDN';
 import * as dns from 'dns/promises';
+import { AuthKeyConfig } from './AuthKey';
 
 /**
  * The basic config used by both CLI and gateway
  */
-export interface BaseGatewayConfig extends MeldConfig, UserKeyConfig {
+export interface BaseGatewayConfig extends MeldConfig, AuthKeyConfig {
   /**
    * Gateway identifier, may be a domain name or a URL
    * @see resolveGateway

@@ -1,5 +1,9 @@
 import type { AccountOwnedId } from './AccountOwnedId';
 
+export interface AuthKeyConfig {
+  auth: { key: string };
+}
+
 /**
  * An authorisation key with app, keyid and secret components
  */
@@ -43,6 +47,8 @@ export interface AuthKeyDetail {
   revoked: boolean;
 }
 
+export type GetAuthorisedTsIds = () => Promise<AccountOwnedId[]>;
+
 /**
  * A persistent store of keys
  */
@@ -59,5 +65,5 @@ export interface AuthKeyStore {
    * @param getAuthorisedTsIds callback to get authorised Timesheet IDs for the
    * requested key, if this key store supports fine-grained privileges
    */
-  pingKey(keyid: string, getAuthorisedTsIds?: () => Promise<AccountOwnedId[]>): Promise<boolean>;
+  pingKey(keyid: string, getAuthorisedTsIds?: GetAuthorisedTsIds): Promise<boolean>;
 }

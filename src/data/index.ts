@@ -8,7 +8,7 @@ export const gatewayContext = {
 };
 
 /**
- * Obtains absolute IRIs in the Timeld vocabulary
+ * Obtains absolute IRIs in the Gateway vocabulary
  * @returns {string}
  */
 export const gatewayVocab = (iri: Iri) => `${gatewayContext['@vocab']}${iri}`;

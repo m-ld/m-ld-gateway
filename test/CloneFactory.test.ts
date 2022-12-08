@@ -1,7 +1,7 @@
 import { UserKey } from '../src/data';
 import { AuthKey, GatewayApp, GatewayPrincipal } from '../src/index';
 
-describe('Timeld App', () => {
+describe('Gateway App', () => {
   test('construct', () => {
     const userKey = UserKey.generate('app.keyid:secret');
     const accessConfig = userKey.toConfig(AuthKey.fromString('app.keyid:secret'));

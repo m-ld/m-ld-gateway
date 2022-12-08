@@ -1,7 +1,6 @@
 import { BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal, resolveGateway } from '..';
 import { IoRemotes } from '@m-ld/m-ld/ext/socket.io';
 import LOG from 'loglevel';
-import { MeldConfig } from '@m-ld/m-ld';
 
 export class IoCloneFactory extends CloneFactory {
   /**
@@ -38,7 +37,7 @@ export class IoCloneFactory extends CloneFactory {
     this.address = address;
   }
 
-  remotes(config: MeldConfig) {
+  remotes(config: BaseGatewayConfig) {
     return IoRemotes;
   }
 }

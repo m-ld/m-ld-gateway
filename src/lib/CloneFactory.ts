@@ -8,13 +8,14 @@ import { gatewayVocab } from '../data';
 import { UserKey, UserKeyConfig } from '../data/UserKey';
 import { SignOptions } from 'jsonwebtoken';
 import { KeyObject } from 'crypto';
+import { BaseGatewayConfig } from './BaseGateway';
 
 /**
  * @abstract
  */
 export abstract class CloneFactory {
   async clone(
-    config: MeldConfig,
+    config: BaseGatewayConfig,
     dataDir: string,
     principal?: GatewayPrincipal
   ): Promise<MeldClone> {
@@ -36,13 +37,13 @@ export abstract class CloneFactory {
    * @param {MeldConfig} config
    * @returns {ConstructRemotes | Promise<ConstructRemotes>}
    */
-  abstract remotes(config: MeldConfig): ConstructRemotes | Promise<ConstructRemotes>;
+  abstract remotes(config: BaseGatewayConfig): ConstructRemotes | Promise<ConstructRemotes>;
 
   /**
    * @returns the subset of configuration that can be re-used by other engines
    * cloning the same domains
    */
-  reusableConfig(config: MeldConfig): Partial<MeldConfig> {
+  reusableConfig(config: BaseGatewayConfig): Partial<BaseGatewayConfig> {
     const { networkTimeout, maxOperationSize, logLevel } = config;
     return { networkTimeout, maxOperationSize, logLevel };
   }
