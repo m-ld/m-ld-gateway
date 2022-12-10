@@ -3,11 +3,15 @@ import {
   createPrivateKey, createPublicKey, generateKeyPairSync, KeyObject, PrivateKeyInput,
   PublicKeyInput, RSAKeyPairOptions, sign, verify
 } from 'crypto';
-import { AuthKey, AuthKeyConfig, domainRelativeIri, signJwt, verifyJwt } from '../lib';
+import { AuthKey, AuthKeyConfig, domainRelativeIri, Key, signJwt, verifyJwt } from '../lib';
 import { JwtHeader, Secret, SignOptions } from 'jsonwebtoken';
 
 export interface UserKeyConfig extends AuthKeyConfig {
-  key: { public: string, private?: string };
+  key: {
+    type: 'rsa',
+    public: string,
+    private?: string
+  };
 }
 
 /**
@@ -16,7 +20,7 @@ export interface UserKeyConfig extends AuthKeyConfig {
  * 2. Timesheet domains, without private key (for sig verify)
  * 3. Client configuration, without revocation (assumed true)
  */
-export class UserKey {
+export class UserKey implements Key {
   /**
    * From m-ld subject representation
    */
@@ -97,7 +101,7 @@ export class UserKey {
   public readonly name?: string;
   public readonly publicKey: Buffer;
   private readonly privateKey?: Buffer;
-  private readonly revoked: boolean;
+  public readonly revoked: boolean;
 
   constructor({ keyid, name, publicKey, privateKey, revoked = false }: {
     keyid: string,
@@ -207,8 +211,9 @@ export class UserKey {
   toConfig(): Partial<UserKeyConfig>;
   toConfig(authKey: AuthKey): UserKeyConfig;
   toConfig(authKey?: AuthKey): Partial<UserKeyConfig> {
-    return Object.assign(authKey ? { auth: { key: authKey.toString() } } : {}, {
+    return Object.assign(authKey ? authKey.toConfig() : {}, {
       key: {
+        type: 'rsa' as 'rsa', // Typescript weirdness
         public: this.publicKey.toString('base64'),
         private: this.privateKey?.toString('base64')
         // revoked assumed false

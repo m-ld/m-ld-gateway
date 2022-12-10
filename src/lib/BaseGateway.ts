@@ -14,6 +14,7 @@ export interface BaseGatewayConfig extends MeldConfig, AuthKeyConfig {
    * @see resolveGateway
    */
   gateway: string | URL | false;
+  /** The user; undefined if this is a service */
   user?: string;
 }
 

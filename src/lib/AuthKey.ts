@@ -5,9 +5,19 @@ export interface AuthKeyConfig {
 }
 
 /**
+ * TODO: Better factoring of Key, AuthKey, AuthKeyDetail and UserKey
+ */
+export interface Key {
+  /**
+   * @returns {boolean} `false` if the auth key does not correspond to this key
+   */
+  matches(authKey: AuthKey): boolean;
+}
+
+/**
  * An authorisation key with app, keyid and secret components
  */
-export class AuthKey {
+export class AuthKey implements Key {
   static fromString(keyStr: string) {
     const [keyName, secret] = keyStr.split(':');
     const [appId, keyid] = keyName.split('.');
@@ -33,6 +43,16 @@ export class AuthKey {
   toString() {
     return `${this.appId}.${this.keyid}:${this.secret}`;
   }
+
+  toConfig(): AuthKeyConfig {
+    return { auth: { key: this.toString() } };
+  }
+
+  matches(that: AuthKey) {
+    return this.appId === that.appId &&
+      this.keyid === that.keyid &&
+      this.secret === that.secret;
+  }
 }
 
 /**
@@ -41,7 +61,7 @@ export class AuthKey {
 export interface AuthKeyDetail {
   /** The complete key including secret */
   key: AuthKey;
-  /** Friendly name */
+  /** Account name */
   name: string;
   /** The revocation status */
   revoked: boolean;
@@ -56,6 +76,7 @@ export interface AuthKeyStore {
   /**
    * Mint a new authorisation key with the given friendly name.
    * @param name Friendly name for reference
+   * @returns the key details
    */
   mintKey(name: string): Promise<AuthKeyDetail>;
   /**
@@ -64,6 +85,10 @@ export interface AuthKeyStore {
    * @param keyid
    * @param getAuthorisedTsIds callback to get authorised Timesheet IDs for the
    * requested key, if this key store supports fine-grained privileges
+   * @returns the key details, or `undefined` if this keystore does not store them
    */
-  pingKey(keyid: string, getAuthorisedTsIds?: GetAuthorisedTsIds): Promise<boolean>;
+  pingKey(
+    keyid: string,
+    getAuthorisedTsIds?: GetAuthorisedTsIds
+  ): Promise<AuthKeyDetail | undefined>;
 }

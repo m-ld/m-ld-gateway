@@ -106,7 +106,7 @@ export class Env {
     const argv = this.baseYargs(args);
     return (this.envPaths.env ? argv.env(this.envPaths.env) : argv.env(false))
       .config(await this.readConfig())
-      .option('logLevel', { default: process.env.LOG_LEVEL });
+      .option('logLevel', { default: process.env.LOG_LEVEL, type: 'string' });
   }
 
   /**

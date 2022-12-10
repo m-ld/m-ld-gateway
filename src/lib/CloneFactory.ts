@@ -3,16 +3,13 @@ import {
   AppPrincipal, Attribution, clone as meldClone, ConstructRemotes, InitialApp, MeldClone,
   MeldConfig, MeldReadState, MeldTransportSecurity, propertyValue
 } from '@m-ld/m-ld';
-import { AuthKey } from './AuthKey';
+import { AuthKey, AuthKeyConfig } from './AuthKey';
 import { gatewayVocab } from '../data';
 import { UserKey, UserKeyConfig } from '../data/UserKey';
 import { SignOptions } from 'jsonwebtoken';
 import { KeyObject } from 'crypto';
 import { BaseGatewayConfig } from './BaseGateway';
 
-/**
- * @abstract
- */
 export abstract class CloneFactory {
   async clone(
     config: BaseGatewayConfig,
@@ -50,43 +47,40 @@ export abstract class CloneFactory {
 }
 
 export class GatewayPrincipal implements AppPrincipal {
-  public readonly '@id': string;
-  private readonly authKey: AuthKey;
-  private readonly userKey: UserKey;
+  readonly '@id': string;
+  readonly authKey: AuthKey;
+  readonly userKey?: UserKey;
+  readonly signer?: {
+    signData(data: Buffer): Buffer,
+    signJwt(payload: string | Buffer | object, options?: SignOptions): Promise<string>,
+    getSignHttpArgs(): [string, KeyObject]
+  };
 
   /**
-   * @param {string} id absolute principal IRI
-   * @param {UserKeyConfig} config
+   * @param id absolute principal IRI
+   * @param config
    */
-  constructor(id: string, config: UserKeyConfig) {
+  constructor(id: string, config: AuthKeyConfig | UserKeyConfig) {
     this['@id'] = id;
     this.authKey = AuthKey.fromString(config.auth.key);
-    this.userKey = UserKey.fromConfig(config);
+    if ('key' in config) {
+      this.userKey = UserKey.fromConfig(config);
+      this.signer = {
+        signData: data => this.userKey!.sign(data, this.authKey),
+        signJwt: (payload, options) =>
+          this.userKey!.signJwt(payload, this.authKey, options),
+        /** @returns Arguments for HTTP signing */
+        getSignHttpArgs: () => this.userKey!.getSignHttpArgs(this.authKey)
+      };
+    }
   }
 
   toConfig() {
-    return this.userKey.toConfig(this.authKey);
+    return this.userKey?.toConfig(this.authKey) ?? this.authKey.toConfig();
   }
 
-  /**
-   * We do not implement sign, it's delegated to the userKey
-   * @type {*}
-   */
+  /** We do not implement sign, it's delegated to the userKey */
   sign = undefined;
-
-  signData(data: Buffer) {
-    return this.userKey.sign(data, this.authKey);
-  }
-
-  signJwt(payload: string | Buffer | object, options?: SignOptions) {
-    // noinspection JSCheckFunctionSignatures
-    return this.userKey.signJwt(payload, this.authKey, options);
-  }
-
-  /** @returns Arguments for HTTP signing */
-  getSignHttpArgs(): [string, KeyObject] {
-    return this.userKey.getSignHttpArgs(this.authKey);
-  }
 }
 
 export class GatewayApp implements InitialApp {
@@ -99,14 +93,14 @@ export class GatewayApp implements InitialApp {
     // noinspection JSUnusedGlobalSymbols
     this.transportSecurity = {
       wire: data => data, // We don't apply wire encryption, yet
-      sign: principal != null ? this.sign : undefined,
+      sign: principal?.signer != null ? this.sign : undefined,
       verify: GatewayApp.verify(domain)
     };
     // TODO: Security constraint: only gateway can add/remove users
   }
 
   sign = (data: Buffer): Attribution => ({
-    sig: this.principal!.signData(data),
+    sig: this.principal!.signer!.signData(data),
     pid: this.principal!['@id']
   });
 

@@ -26,6 +26,6 @@ export default class DomainKeyStore implements AuthKeyStore {
   }
 
   async pingKey(keyid: string) {
-    return false; // No revocation status stored, assume not revoked
+    return undefined; // No key stored
   }
 }

@@ -46,7 +46,7 @@ export class AblyKeyStore implements AuthKeyStore {
       method: 'PATCH', body: JSON.stringify({
         capability: this.keyCapability(...await getAuthorisedTsIds())
       })
-    })).revoked;
+    }));
   }
 
   ablyToAuthDetail({ key, name, status }: {

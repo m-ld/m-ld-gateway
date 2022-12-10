@@ -24,6 +24,6 @@ describe('m-ld domain key store', () => {
   test('pings key', async () => {
     const { key: { keyid } } = await ks.mintKey('name');
     const revoked = await ks.pingKey(keyid);
-    expect(revoked).toBe(false);
+    expect(revoked).toBeUndefined();
   });
 });
