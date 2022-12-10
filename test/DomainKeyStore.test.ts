@@ -1,4 +1,4 @@
-import DomainKeyStore from '../src/lib/DomainKeyStore';
+import { DomainKeyStore } from '../src';
 import { shortId, uuid } from '@m-ld/m-ld';
 
 describe('m-ld domain key store', () => {

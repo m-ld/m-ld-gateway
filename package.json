@@ -40,9 +40,11 @@
   "dependencies": {
     "@m-ld/io-web-runtime": "^0.2.2",
     "@m-ld/m-ld": "^0.9.1",
+    "ably": "^1.2.33",
     "classic-level": "^1.2.0",
     "dotenv": "^16.0.3",
     "env-paths": "^3.0.0",
+    "http-graceful-shutdown": "^3.1.11",
     "jsonwebtoken": "^8.5.1",
     "jtd": "^0.1.1",
     "loglevel": "^1.8.1",
@@ -72,6 +74,9 @@
           "useESM": true
         }
       ]
+    },
+    "moduleNameMapper": {
+      "@m-ld/m-ld/ext/socket.io/server": "<rootDir>/node_modules/@m-ld/m-ld/ext/socket.io/server/index.js"
     }
   }
 }

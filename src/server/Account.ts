@@ -2,7 +2,7 @@ import { GraphSubject, MeldReadState, propertyValue, Query, Read, Reference } fr
 import { AccountOwnedId, AuthKey, idSet, Results } from '../lib';
 import { UserKey } from '../data';
 import {
-  ForbiddenError, InternalServerError, toHttpError, UnauthorizedError
+  BadRequestError, ForbiddenError, InternalServerError, toHttpError, UnauthorizedError
 } from '../http/errors';
 import { Gateway } from './Gateway';
 import { AccessRequest } from './Authorization';
@@ -104,6 +104,8 @@ export class Account {
   async checkAccess(state: MeldReadState, access: AccessRequest) {
     const iri = access.id.toRelativeIri();
     const writable: { [key: string]: Set<string> } = {};
+    if (access.forWrite && !this.ownedTypes.includes(access.forWrite))
+      throw new BadRequestError(`Not a recognised type: ${access.forWrite}`);
     for (let ownedType of this.ownedTypes)
       writable[ownedType] = await this.loadAllOwned(state, ownedType);
     if (access.forWrite && !(await state.ask({ '@where': { '@id': iri } }))) {

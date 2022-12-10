@@ -5,7 +5,7 @@ import { MeldConfig, shortId } from '@m-ld/m-ld';
 /**
  * A key store that persists to a m-ld domain
  */
-export default class DomainKeyStore implements AuthKeyStore {
+export class DomainKeyStore implements AuthKeyStore {
   private readonly appId: string;
 
   constructor(config: MeldConfig) {

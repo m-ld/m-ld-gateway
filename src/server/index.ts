@@ -24,3 +24,4 @@ export interface GatewayConfig extends BaseGatewayConfig {
 }
 
 export { GatewayEnv } from './GatewayEnv';
+export { Gateway } from './Gateway';

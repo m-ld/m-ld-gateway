@@ -5,7 +5,7 @@ import { AccountOwnedId } from '../lib';
 import { ForbiddenError } from '../http/errors';
 import { Server as RestifyServer } from 'restify';
 import LOG from 'loglevel';
-import { Gateway } from '../server/Gateway';
+import { Gateway } from '../server/index';
 
 export class IoService extends IoRemotesService {
   constructor(gateway: Gateway, server: RestifyServer) {
