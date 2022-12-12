@@ -1,7 +1,7 @@
 import { fetchJson as defaultFetchJson } from '@m-ld/io-web-runtime/dist/server/fetch';
 import {
   AccountOwnedId, AuthKey, AuthKeyDetail, AuthKeyStore, BaseGatewayConfig, GetAuthorisedTsIds
-} from '../lib';
+} from '../lib/index.js';
 
 /** Auth key contains appid */
 export interface AblyGatewayConfig extends BaseGatewayConfig {

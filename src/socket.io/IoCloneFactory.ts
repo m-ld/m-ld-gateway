@@ -1,4 +1,6 @@
-import { BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal, resolveGateway } from '..';
+import {
+  BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal, resolveGateway
+} from '../index.js';
 import { IoRemotes } from '@m-ld/m-ld/ext/socket.io';
 import LOG from 'loglevel';
 

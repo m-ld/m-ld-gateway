@@ -1,11 +1,9 @@
-import { Gateway, GatewayEnv } from './server/index';
+import { Gateway, GatewayEnv } from './server/index.js';
 import LOG from 'loglevel';
-import { GatewayHttp } from './http';
-import * as gracefulShutdown from 'http-graceful-shutdown';
-import { AuthKeyStore, CloneFactory, DomainKeyStore } from './lib';
-import { IoCloneFactory, IoService } from './socket.io';
-import { AblyCloneFactory } from './ably/AblyCloneFactory';
-import { AblyGatewayConfig, AblyKeyStore } from './ably/AblyKeyStore';
+import { GatewayHttp } from './http/index.js';
+import gracefulShutdown from 'http-graceful-shutdown';
+import { AuthKeyStore, CloneFactory, DomainKeyStore } from './lib/index.js';
+import type { AblyGatewayConfig } from './ably/index';
 
 (async function () {
   const env = new GatewayEnv();
@@ -15,9 +13,11 @@ import { AblyGatewayConfig, AblyKeyStore } from './ably/AblyKeyStore';
   const setupType = 'ably' in config ? 'ably' : 'io';
   let keyStore: AuthKeyStore, cloneFactory: CloneFactory;
   if (setupType === 'ably') {
+    const { AblyCloneFactory, AblyKeyStore } = await import('./ably/index.js');
     keyStore = new AblyKeyStore(<AblyGatewayConfig>config);
     cloneFactory = new AblyCloneFactory();
   } else {
+    const { IoCloneFactory } = await import('./socket.io/index.js');
     keyStore = new DomainKeyStore(config);
     cloneFactory = new IoCloneFactory();
   }
@@ -26,6 +26,7 @@ import { AblyGatewayConfig, AblyKeyStore } from './ably/AblyKeyStore';
   const http = new GatewayHttp(gateway);
 
   if (setupType === 'io') {
+    const { IoService } = await import('./socket.io/index.js');
     const io = new IoService(gateway, http.server);
     io.on('error', LOG.error);
     io.on('debug', LOG.debug);
@@ -40,10 +41,11 @@ import { AblyGatewayConfig, AblyKeyStore } from './ably/AblyKeyStore';
       LOG.info('Gateway initialised');
     } catch (e) {
       LOG.error('Gateway failed to initialise', e);
+      http.server.close();
     }
   });
 
-  gracefulShutdown(http, {
+  gracefulShutdown(http.server, {
     async onShutdown() {
       LOG.info('Gateway shutting down...');
       await gateway.close();

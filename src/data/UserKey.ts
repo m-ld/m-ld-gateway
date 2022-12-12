@@ -3,7 +3,9 @@ import {
   createPrivateKey, createPublicKey, generateKeyPairSync, KeyObject, PrivateKeyInput,
   PublicKeyInput, RSAKeyPairOptions, sign, verify
 } from 'crypto';
-import { AuthKey, AuthKeyConfig, domainRelativeIri, Key, signJwt, verifyJwt } from '../lib';
+import {
+  AuthKey, AuthKeyConfig, domainRelativeIri, Key, signJwt, verifyJwt
+} from '../lib/index.js';
 import { JwtHeader, Secret, SignOptions } from 'jsonwebtoken';
 
 export interface UserKeyConfig extends AuthKeyConfig {

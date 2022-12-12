@@ -4,19 +4,18 @@ import {
 import {
   AccountOwnedId, AuthKeyStore, BaseGateway, BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal,
   Results
-} from '../lib';
-import { gatewayContext, Iri, UserKey } from '../data';
+} from '../lib/index.js';
+import { gatewayContext, Iri, UserKey } from '../data/index.js';
 import LOG from 'loglevel';
 import { access, rm, writeFile } from 'fs/promises';
 import { finalize, Subscription } from 'rxjs';
-import { ConflictError } from '../http/errors';
-import { GatewayConfig } from './index';
+import { ConflictError } from '../http/errors.js';
+import { GatewayConfig } from './index.js';
 import { Bite } from 'rx-flowable';
-import { Account } from './Account';
-import { accountHasSubdomain } from './statements';
+import { Account } from './Account.js';
+import { accountHasSubdomain } from './statements.js';
 
 export class Gateway extends BaseGateway {
-  public readonly config: GatewayConfig;
   public readonly me: GatewayPrincipal;
   public /*readonly*/ domain: MeldClone;
 
@@ -25,17 +24,11 @@ export class Gateway extends BaseGateway {
 
   constructor(
     private readonly env: Env,
-    /*private readonly*/ config: GatewayConfig,
+    private readonly config: GatewayConfig,
     private readonly cloneFactory: CloneFactory,
     public readonly keyStore: AuthKeyStore
   ) {
     super(config['@domain']);
-    this.config = {
-      '@context': gatewayContext, // Overridable by config
-      ...config,
-      '@id': uuid()
-    };
-    LOG.info('Gateway ID is', this.config['@id']);
     LOG.debug('Gateway domain is', this.domainName);
     this.me = new GatewayPrincipal(this.absoluteId('/'), config);
   }
@@ -43,8 +36,19 @@ export class Gateway extends BaseGateway {
   async initialise() {
     // Load the gateway domain
     const dataDir = await this.env.readyPath('data', 'gw');
-    this.domain = await this.cloneFactory.clone(this.config, dataDir);
+    const id = uuid();
+    LOG.info('Gateway ID is', id);
+    this.domain = await this.cloneFactory.clone({
+      '@context': gatewayContext, // Overridable by config
+      ...this.config,
+      '@id': id
+    }, dataDir);
     await this.domain.status.becomes({ outdated: false });
+    // Create the gateway account with our key, if it doesn't exist
+    await this.domain.write(
+      new Account(this, {
+        name: this.rootAccountName, keyids: [this.me.authKey.keyid]
+      }).toJSON());
     // Enliven all subdomains and connectors already in the domain
     await new Promise(resolve => {
       this.subs.add(this.domain.read(state =>
@@ -57,6 +61,10 @@ export class Gateway extends BaseGateway {
 
   get usingUserKeys() {
     return 'key' in this.config;
+  }
+
+  get rootAccountName() {
+    return this.me.authKey.appId.toLowerCase();
   }
 
   initDomain(state: MeldReadState) {

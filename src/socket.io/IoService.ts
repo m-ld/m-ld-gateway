@@ -1,11 +1,11 @@
 import { Server as SocketIoServer } from 'socket.io';
 import { IoRemotesService } from '@m-ld/m-ld/ext/socket.io/server';
-import { Authorization } from '../server/Authorization';
-import { AccountOwnedId } from '../lib';
-import { ForbiddenError } from '../http/errors';
+import { Authorization } from '../server/Authorization.js';
+import { AccountOwnedId } from '../lib/index.js';
+import { ForbiddenError } from '../http/errors.js';
 import { Server as RestifyServer } from 'restify';
 import LOG from 'loglevel';
-import { Gateway } from '../server/index';
+import { Gateway } from '../server/index.js';
 
 export class IoService extends IoRemotesService {
   constructor(gateway: Gateway, server: RestifyServer) {

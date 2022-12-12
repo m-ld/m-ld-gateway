@@ -1,5 +1,4 @@
-import { UserKey } from '../src/data';
-import { AuthKey, GatewayApp, GatewayPrincipal } from '../src/index';
+import { AuthKey, GatewayApp, GatewayPrincipal, UserKey } from '../src/index.js';
 
 describe('Gateway App', () => {
   test('construct', () => {
@@ -9,9 +8,10 @@ describe('Gateway App', () => {
       new GatewayPrincipal('http://ex.org/test', accessConfig));
     expect(app.principal!['@id']).toBe('http://ex.org/test');
     // noinspection JSCheckFunctionSignatures unused state parameter on sign
-    expect(app.transportSecurity.sign!(Buffer.from('hello'), null)).toMatchObject({
-      pid: 'http://ex.org/test',
-      sig: expect.any(Buffer)
-    });
+    expect(app.transportSecurity!.sign!(Buffer.from('hello'), null))
+      .toMatchObject({
+        pid: 'http://ex.org/test',
+        sig: expect.any(Buffer)
+      });
   });
 });

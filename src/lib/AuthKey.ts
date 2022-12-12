@@ -1,4 +1,4 @@
-import type { AccountOwnedId } from './AccountOwnedId';
+import type { AccountOwnedId } from './AccountOwnedId.js';
 
 export interface AuthKeyConfig {
   auth: { key: string };

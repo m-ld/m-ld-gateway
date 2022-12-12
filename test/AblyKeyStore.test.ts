@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
-import { AblyKeyStore } from '../src/ably/AblyKeyStore';
-import { AccountOwnedId } from '..';
+import { AblyKeyStore } from '../src/ably/index.js';
+import { AccountOwnedId } from '../src/index.js';
 import type { fetchJson as defaultFetchJson } from '@m-ld/io-web-runtime/dist/server/fetch';
 
 describe('Ably as a key store', () => {

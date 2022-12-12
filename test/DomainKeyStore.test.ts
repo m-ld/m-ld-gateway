@@ -1,4 +1,4 @@
-import { DomainKeyStore } from '../src';
+import { DomainKeyStore } from '../src/index.js';
 import { shortId, uuid } from '@m-ld/m-ld';
 
 describe('m-ld domain key store', () => {

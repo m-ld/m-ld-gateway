@@ -3,12 +3,12 @@ import {
   AppPrincipal, Attribution, clone as meldClone, ConstructRemotes, InitialApp, MeldClone,
   MeldConfig, MeldReadState, MeldTransportSecurity, propertyValue
 } from '@m-ld/m-ld';
-import { AuthKey, AuthKeyConfig } from './AuthKey';
-import { gatewayVocab } from '../data';
-import { UserKey, UserKeyConfig } from '../data/UserKey';
+import { AuthKey, AuthKeyConfig } from './AuthKey.js';
+import { gatewayVocab } from '../data/index.js';
+import { UserKey, UserKeyConfig } from '../data/UserKey.js';
 import { SignOptions } from 'jsonwebtoken';
 import { KeyObject } from 'crypto';
-import { BaseGatewayConfig } from './BaseGateway';
+import { BaseGatewayConfig } from './BaseGateway.js';
 
 export abstract class CloneFactory {
   async clone(
@@ -84,18 +84,19 @@ export class GatewayPrincipal implements AppPrincipal {
 }
 
 export class GatewayApp implements InitialApp {
-  readonly transportSecurity: MeldTransportSecurity;
+  readonly transportSecurity?: MeldTransportSecurity;
 
   constructor(
     domain: string,
     readonly principal?: GatewayPrincipal
   ) {
-    // noinspection JSUnusedGlobalSymbols
-    this.transportSecurity = {
-      wire: data => data, // We don't apply wire encryption, yet
-      sign: principal?.signer != null ? this.sign : undefined,
-      verify: GatewayApp.verify(domain)
-    };
+    if (principal?.signer != null) {
+      this.transportSecurity = {
+        wire: data => data, // We don't apply wire encryption, yet
+        sign: this.sign,
+        verify: GatewayApp.verify(domain)
+      };
+    }
     // TODO: Security constraint: only gateway can add/remove users
   }
 

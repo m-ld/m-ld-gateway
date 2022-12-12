@@ -1,5 +1,5 @@
 import * as ablyModule from '@m-ld/m-ld/ext/ably';
-import { BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal } from '../lib';
+import { BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal } from '../lib/index.js';
 import * as xirsys from '@m-ld/io-web-runtime/dist/server/xirsys';
 
 type AblyGatewayConfig = BaseGatewayConfig & ablyModule.MeldAblyConfig;

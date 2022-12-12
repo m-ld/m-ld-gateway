@@ -1,9 +1,9 @@
-import { AccountOwnedId } from './AccountOwnedId';
-import { domainRelativeIri } from './util';
+import { AccountOwnedId } from './AccountOwnedId.js';
+import { domainRelativeIri } from './util.js';
 import { MeldConfig, Reference } from '@m-ld/m-ld';
-import isFQDN from 'validator/lib/isFQDN';
+import isFQDN from 'validator/lib/isFQDN.js';
 import * as dns from 'dns/promises';
-import { AuthKeyConfig } from './AuthKey';
+import { AuthKeyConfig } from './AuthKey.js';
 
 /**
  * The basic config used by both CLI and gateway

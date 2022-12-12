@@ -1,3 +1,5 @@
-ext/
 .idea
+ext/
 node_modules/
+local/
+.env

@@ -1,4 +1,4 @@
-import { AuthKey, AuthKeyStore } from './AuthKey';
+import { AuthKey, AuthKeyStore } from './AuthKey.js';
 import { randomBytes } from 'crypto';
 import { MeldConfig, shortId } from '@m-ld/m-ld';
 

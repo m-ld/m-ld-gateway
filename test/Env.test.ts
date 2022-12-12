@@ -1,4 +1,4 @@
-import { Env } from '../src';
+import { Env } from '../src/index.js';
 import { DirResult, dirSync } from 'tmp';
 import { join } from 'path';
 import { existsSync } from 'fs';

@@ -1,7 +1,7 @@
-import { Env } from '../lib';
+import { Env } from '../lib/Env.js';
 import LOG from 'loglevel';
 import isFQDN from 'validator/lib/isFQDN.js';
-import { GatewayConfig } from './index';
+import { GatewayConfig } from './index.js';
 
 export class GatewayEnv extends Env {
   constructor() {
@@ -17,21 +17,20 @@ export class GatewayEnv extends Env {
   async loadConfig(): Promise<GatewayConfig> {
     // Parse command line, environment variables & configuration
     const argv = (await this.yargs())
-      .demandOption(['@id', '@domain', 'gateway', 'auth'])
-      .string(['@id', '@domain', 'gateway'])
+      .demandOption(['gateway', 'auth'])
       .default('genesis', false)
       .option('address.port', { default: '8080', type: 'number' })
       .parse();
     // Not type-perfect, later failures may occur
-    const config = <GatewayConfig>argv;
+    const config = <Partial<GatewayConfig>>argv;
     LOG.setLevel(config.logLevel || 'INFO');
     LOG.debug('Loaded configuration', config);
     // Set the m-ld domain from the declared gateway
     if (config['@domain'] == null) {
       config['@domain'] =
         typeof config.gateway == 'string' && isFQDN(config.gateway) ?
-          config.gateway : new URL(config.gateway).hostname;
+          config.gateway : new URL(config.gateway!).hostname;
     }
-    return config;
+    return <GatewayConfig>config;
   }
 }

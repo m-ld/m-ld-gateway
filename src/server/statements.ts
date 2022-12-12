@@ -1,4 +1,4 @@
-import type { AccountOwnedId } from '../lib/index';
+import type { AccountOwnedId } from '../lib/index.js';
 import type { Subject } from '@m-ld/m-ld';
 
 export const accountHasSubdomain = (tsId: AccountOwnedId): Subject => ({

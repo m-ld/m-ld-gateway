@@ -1,4 +1,4 @@
-import { AuthKey, UserKey } from '../src';
+import { AuthKey, UserKey } from '../src/index.js';
 
 describe('User key', () => {
   test('key from ref', () => {

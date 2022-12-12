@@ -1,4 +1,4 @@
-import { domainRelativeIri } from './util';
+import { domainRelativeIri } from './util.js';
 import { Reference } from '@m-ld/m-ld';
 
 /**

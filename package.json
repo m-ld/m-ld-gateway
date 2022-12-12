@@ -6,6 +6,9 @@
   "main": "ext/index.js",
   "types": "ext/index.d.ts",
   "scripts": {
+    "start": "tsc --incremental && node ext/start.js",
+    "clean": "rm -rf ext",
+    "build": "npm run clean && tsc && npm run test",
     "test": "jest --silent"
   },
   "repository": {
@@ -52,6 +55,7 @@
     "restify-errors": "^8.0.2",
     "rx-flowable": "^0.1.2",
     "rxjs": "^7.5.7",
+    "simple-peer": "^9.11.1",
     "socket.io": "^4.5.3",
     "socket.io-client": "^4.5.3",
     "validator": "^13.7.0",
@@ -76,6 +80,7 @@
       ]
     },
     "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1",
       "@m-ld/m-ld/ext/socket.io/server": "<rootDir>/node_modules/@m-ld/m-ld/ext/socket.io/server/index.js"
     }
   }

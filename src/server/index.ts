@@ -1,4 +1,4 @@
-import { BaseGatewayConfig } from '../lib/index';
+import { BaseGatewayConfig } from '../lib/index.js';
 import type { ListenOptions } from 'net';
 
 /**
@@ -23,5 +23,5 @@ export interface GatewayConfig extends BaseGatewayConfig {
   address?: ListenOptions;
 }
 
-export { GatewayEnv } from './GatewayEnv';
-export { Gateway } from './Gateway';
+export { GatewayEnv } from './GatewayEnv.js';
+export { Gateway } from './Gateway.js';

@@ -1,8 +1,8 @@
-import { AccountOwnedId, AuthKey, verifyJwt } from '../lib';
-import { UserKey } from '../data';
-import { UnauthorizedError } from '../http/errors';
+import { AccountOwnedId, AuthKey, verifyJwt } from '../lib/index.js';
+import { UserKey } from '../data/index.js';
+import { UnauthorizedError } from '../http/errors.js';
 import type { Request } from 'restify';
-import { Gateway } from './Gateway';
+import { Gateway } from './Gateway.js';
 import { JwtPayload } from 'jsonwebtoken';
 
 export interface AccessRequest {

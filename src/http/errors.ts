@@ -1,4 +1,4 @@
-import * as errors from 'restify-errors';
+import errors from 'restify-errors';
 
 export function toHttpError(e: any) {
   return e instanceof errors.HttpError ?

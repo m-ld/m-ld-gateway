@@ -1,11 +1,11 @@
 import * as restify from 'restify';
-import { domainRelativeIri, Results, ResultsFormat, ResultsReadable } from '../lib';
-import { gatewayContext } from '../data';
-import { Authorization } from '../server/Authorization';
+import { domainRelativeIri, Results, ResultsFormat, ResultsReadable } from '../lib/index.js';
+import { gatewayContext } from '../data/index.js';
+import { Authorization } from '../server/Authorization.js';
 import { pipeline } from 'stream/promises';
 import LOG from 'loglevel';
-import { BadRequestError, NotFoundError, toHttpError } from './errors';
-import { Gateway } from '../server/index';
+import { BadRequestError, NotFoundError, toHttpError } from './errors.js';
+import { Gateway } from '../server/index.js';
 
 const formatter = (format: ResultsFormat): restify.Formatter => {
   return (req, res, body) => {
@@ -58,7 +58,7 @@ export class GatewayHttp {
       });
     }
 
-    this.server.get('/api/config/:account/domain/:name',
+    this.server.get('/api/init/:account/domain/:name',
       async (req, res, next) => {
         // account is the subdomain account (may not be user account)
         const { account, name } = req.params;
@@ -75,7 +75,7 @@ export class GatewayHttp {
         } catch (e) {
           // TimesheetId.validate throw strings
           return next(new BadRequestError(
-            'Bad timesheet %s/%s', account, name));
+            'Bad domain %s/%s', account, name));
         }
       });
 

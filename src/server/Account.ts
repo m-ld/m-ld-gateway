@@ -1,12 +1,12 @@
 import { GraphSubject, MeldReadState, propertyValue, Query, Read, Reference } from '@m-ld/m-ld';
-import { AccountOwnedId, AuthKey, idSet, Results } from '../lib';
-import { UserKey } from '../data';
+import { AccountOwnedId, AuthKey, idSet, Results } from '../lib/index.js';
+import { UserKey } from '../data/index.js';
 import {
   BadRequestError, ForbiddenError, InternalServerError, toHttpError, UnauthorizedError
-} from '../http/errors';
-import { Gateway } from './Gateway';
-import { AccessRequest } from './Authorization';
-import { userIsAdmin } from './statements';
+} from '../http/errors.js';
+import { Gateway } from './Gateway.js';
+import { AccessRequest } from './Authorization.js';
+import { userIsAdmin } from './statements.js';
 
 /**
  * Javascript representation of an Account subject in the Gateway domain.
@@ -81,15 +81,21 @@ export class Account {
           if (access != null)
             await this.checkAccess(state, access);
           try {
-            const keyDetail = await this.gateway.keyStore.pingKey(
-              keyid, () => this.allSubdomainIds(state));
-            if (keyDetail == null && userKey == null)
-              return reject(new InternalServerError(
-                `Configuration error: key ${keyid} not available`));
-            if (keyDetail?.revoked)
-              // TODO: If keystore says revoked, update the userKey
-              return reject(new UnauthorizedError('Key revoked'));
-            return resolve(keyDetail?.key ?? userKey!);
+            if (this.name === this.gateway.rootAccountName) {
+              // Special case: do not ping the key if it's the root
+              const principal = this.gateway.me;
+              resolve(principal.userKey ?? principal.authKey);
+            } else {
+              const keyDetail = await this.gateway.keyStore.pingKey(
+                keyid, () => this.allSubdomainIds(state));
+              if (keyDetail == null && userKey == null)
+                return reject(new InternalServerError(
+                  `Configuration error: key ${keyid} not available`));
+              if (keyDetail?.revoked)
+                // TODO: If keystore says revoked, update the userKey
+                return reject(new UnauthorizedError('Key revoked'));
+              return resolve(keyDetail?.key ?? userKey!);
+            }
           } catch (e) {
             // TODO: Assuming this is a Not Found
             return reject(new UnauthorizedError(e));
@@ -203,6 +209,10 @@ export class Account {
   }
 
   async write(query: Query, tsId?: AccountOwnedId) {
+    // Only the gateway account is able to write to the gateway domain
+    if (tsId == null && this.name !== this.gateway.rootAccountName)
+      throw new UnauthorizedError();
+    // TODO: Other authorisations
     const clone = await this.targetClone(tsId);
     await clone.write(query);
   }
