@@ -1,0 +1,57 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma teoz true
+hide footbox
+
+participant Gateway as gw
+box App
+participant "(thread 1)" as app
+participant "(thread 2)" as app2
+end box
+
+group concurrent write & poll [happy]
+activate app
+app -> gw ++: POST /state { ... }
+return 200 OK: Update 1
+app -> app: process Update 1
+activate app2
+app2 -> gw ++: GET /updates
+note over gw
+Update 1 is
+pending
+end note
+return 425 Too Early
+deactivate app2
+app -> gw ++: DELETE /state/1/lock
+return 200 OK
+deactivate app
+end group
+
+group timeout write processing [unhappy]
+activate app
+app -> gw ++: POST /state { ... }
+return 200 OK: Update 1
+app -> app: process Update 1
+...lock timeout but not actually dead...
+gw -> app2 ++: POST /webhook?state=1&dequeueCount=2
+note left
+dequeueCount
+warns Update 1
+is pending
+end note
+note over app2: ignore warning
+app2 -> app2: process Update 1
+note left #pink
+duplicate processing!
+(OK if idempotent)
+end note
+app2 -> gw ++: DELETE /state/1/lock
+return 200 OK
+deactivate app2
+...
+app -> gw ++: DELETE /state/1/lock
+return 404 Not Found
+deactivate app
+end group
+
+@enduml

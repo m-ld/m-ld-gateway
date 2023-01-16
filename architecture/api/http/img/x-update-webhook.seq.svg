@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentStyleType="text/css" height="701px" preserveAspectRatio="none"
+     style="width:422px;height:701px;background:#FFFFFF;" version="1.1" viewBox="0 0 422 701"
+     width="422px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="42.9766" id="_title" style="stroke:none;stroke-width:1.0;" width="181" x="143.25" y="10"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="152" x="157.75" y="28.5352">Ordering Issues with</text><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="171" x="148.25" y="45.0234">Responses &amp; Webhooks</text><rect fill="none" height="275.1055" style="stroke:#000000;stroke-width:1.5;" width="396" x="8" y="153.0859"/><rect fill="none" height="224.4844" style="stroke:#000000;stroke-width:1.5;" width="408.5" x="8" y="446.1914"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="122" x2="122" y1="90.4648" y2="694.6758"/><rect fill="#FFFFFF" height="109.2422" style="stroke:#181818;stroke-width:1.0;" width="10" x="117" y="201.707"/><rect fill="#FFFFFF" height="138.5527" style="stroke:#181818;stroke-width:1.0;" width="10" x="117" y="524.123"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="311" x2="311" y1="90.4648" y2="694.6758"/><rect fill="#FFFFFF" height="29.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="306" y="390.8809"/><rect fill="#FFFFFF" height="29.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="306" y="553.4336"/><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="71" x="86.5" y="58.9766"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="93.5" y="79.5117">Gateway</text><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="42" x="290" y="58.9766"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="297" y="79.5117">App</text><path d="M23.5,103.4648 L23.5,143.4648 L409.5,143.4648 L409.5,113.4648 L399.5,103.4648 L23.5,103.4648 " fill="#FFC0CB" style="stroke:#181818;stroke-width:0.5;"/><path d="M399.5,103.4648 L399.5,113.4648 L409.5,113.4648 L399.5,103.4648 " fill="#FFC0CB" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="365" x="29.5" y="121.0332">Ordering is problematic for webhooks just by themselves,</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="346" x="29.5" y="136.3438">but also for combining write responses with webhooks</text><path d="M8,153.0859 L118,153.0859 L118,160.3965 L108,170.3965 L8,170.3965 L8,153.0859 " fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="275.1055" style="stroke:#000000;stroke-width:1.5;" width="396" x="8" y="153.0859"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="61" x="23" y="166.6543">app wins</text><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacing" textLength="55" x="133" y="165.7207">[unhappy]</text><polygon fill="#181818" points="138,197.707,128,201.707,138,205.707,134,201.707" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="132" x2="310" y1="201.707" y2="201.707"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="106" x="144" y="196.9648">POST /state { ... }</text><polygon fill="#181818" points="105,227.0176,115,231.0176,105,235.0176,109,231.0176" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="5" x2="111" y1="231.0176" y2="231.0176"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="74" x="12" y="226.2754">Operation 2</text><path d="M50,244.0176 L50,284.0176 L194,284.0176 L194,254.0176 L184,244.0176 L50,244.0176 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M184,244.0176 L184,254.0176 L194,254.0176 L184,244.0176 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="123" x="56" y="261.5859">Update 2 is delayed</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="91" x="56" y="276.8965">by active write</text><polygon fill="#181818" points="299,306.9492,309,310.9492,299,314.9492,303,310.9492" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="127" x2="305" y1="310.9492" y2="310.9492"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="82" x="134" y="306.207">OK: Update 1</text><text fill="#000000" font-family="sans-serif" font-size="13" font-style="italic" lengthAdjust="spacing" textLength="79" x="220" y="306.207">via response</text><polygon fill="#181818" points="16,306.9492,6,310.9492,16,314.9492,12,310.9492" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="10" x2="121" y1="310.9492" y2="310.9492"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="74" x="22" y="306.207">Operation 1</text><path d="M239,323.9492 L239,363.9492 L383,363.9492 L383,333.9492 L373,323.9492 L239,323.9492 " fill="#FFC0CB" style="stroke:#181818;stroke-width:0.5;"/><path d="M373,323.9492 L373,333.9492 L383,333.9492 L373,323.9492 " fill="#FFC0CB" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="123" x="245" y="341.5176">ordering dependent</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="107" x="245" y="356.8281">on app threading</text><polygon fill="#181818" points="294,386.8809,304,390.8809,294,394.8809,298,390.8809" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="122" x2="300" y1="390.8809" y2="390.8809"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="56" x="129" y="386.1387">Update 2</text><text fill="#000000" font-family="sans-serif" font-size="13" font-style="italic" lengthAdjust="spacing" textLength="79" x="189" y="386.1387">via webhook</text><polygon fill="#181818" points="133,416.1914,123,420.1914,133,424.1914,129,420.1914" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="127" x2="305" y1="420.1914" y2="420.1914"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="18" x="139" y="415.4492">OK</text><path d="M8,446.1914 L121,446.1914 L121,453.502 L111,463.502 L8,463.502 L8,446.1914 " fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="224.4844" style="stroke:#000000;stroke-width:1.5;" width="408.5" x="8" y="446.1914"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="64" x="23" y="459.7598">app loses</text><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacing" textLength="65" x="136" y="458.8262">[happy-ish]</text><polygon fill="#181818" points="110,490.8125,120,494.8125,110,498.8125,114,494.8125" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="5" x2="116" y1="494.8125" y2="494.8125"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="74" x="12" y="490.0703">Operation 2</text><polygon fill="#181818" points="138,520.123,128,524.123,138,528.123,134,524.123" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="132" x2="310" y1="524.123" y2="524.123"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="106" x="144" y="519.3809">POST /state { ... }</text><polygon fill="#181818" points="294,549.4336,304,553.4336,294,557.4336,298,553.4336" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="127" x2="300" y1="553.4336" y2="553.4336"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="56" x="134" y="548.6914">Update 2</text><text fill="#000000" font-family="sans-serif" font-size="13" font-style="italic" lengthAdjust="spacing" textLength="79" x="194" y="548.6914">via webhook</text><polygon fill="#181818" points="138,578.7441,128,582.7441,138,586.7441,134,582.7441" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="132" x2="305" y1="582.7441" y2="582.7441"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="18" x="144" y="578.002">OK</text><path d="M46,595.7441 L46,635.7441 L198,635.7441 L198,605.7441 L188,595.7441 L46,595.7441 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M188,595.7441 L188,605.7441 L198,605.7441 L188,595.7441 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="123" x="52" y="613.3125">Update 1 is delayed</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="131" x="52" y="628.623">by pending webhook</text><path d="M226.5,595.7441 L226.5,635.7441 L395.5,635.7441 L395.5,605.7441 L385.5,595.7441 L226.5,595.7441 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M385.5,595.7441 L385.5,605.7441 L395.5,605.7441 L385.5,595.7441 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="53" x="232.5" y="613.3125">ordering</text><text fill="#000000" font-family="sans-serif" font-size="13" font-style="italic" lengthAdjust="spacing" textLength="21" x="289.5" y="613.3125">not</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="66" x="314.5" y="613.3125">dependent</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="107" x="232.5" y="628.623">on app threading</text><polygon fill="#181818" points="299,658.6758,309,662.6758,299,666.6758,303,662.6758" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="127" x2="305" y1="662.6758" y2="662.6758"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="82" x="134" y="657.9336">OK: Update 1</text><text fill="#000000" font-family="sans-serif" font-size="13" font-style="italic" lengthAdjust="spacing" textLength="79" x="220" y="657.9336">via response</text><polygon fill="#181818" points="16,658.6758,6,662.6758,16,666.6758,12,662.6758" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="10" x2="121" y1="662.6758" y2="662.6758"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="74" x="22" y="657.9336">Operation 1</text><!--MD5=[af75d3f9981c8552e9aed2d20bd1f704]
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma teoz true
+hide footbox
+
+title
+Ordering Issues with
+Responses & Webhooks
+end title
+
+note across #pink
+Ordering is problematic for webhooks just by themselves,
+but also for combining write responses with webhooks
+end note
+
+participant Gateway as gw
+participant "App" as app
+
+group app wins [unhappy]
+app -> gw ++: POST /state { ... }
+-> gw: Operation 2
+note over gw: Update 2 is delayed\nby active write
+return OK: Update 1 //via response//
+& <- gw: Operation 1
+note over app #pink
+ordering dependent
+on app threading
+end note
+gw -> app ++: Update 2 //via webhook//
+return OK
+end group
+
+group app loses [happy-ish]
+-> gw: Operation 2
+app -> gw ++: POST /state { ... }
+gw -> app ++: Update 2 //via webhook//
+return OK
+note over gw: Update 1 is delayed\nby pending webhook
+& note over app: ordering //not// dependent\non app threading
+return OK: Update 1 //via response//
+& <- gw: Operation 1
+end group
+
+@enduml
+
+@startuml
+!pragma teoz true
+hide footbox
+
+title
+Ordering Issues with
+Responses & Webhooks
+end title
+
+note across #pink
+Ordering is problematic for webhooks just by themselves,
+but also for combining write responses with webhooks
+end note
+
+participant Gateway as gw
+participant "App" as app
+
+group app wins [unhappy]
+app -> gw ++: POST /state { ... }
+-> gw: Operation 2
+note over gw: Update 2 is delayed\nby active write
+return OK: Update 1 //via response//
+& <- gw: Operation 1
+note over app #pink
+ordering dependent
+on app threading
+end note
+gw -> app ++: Update 2 //via webhook//
+return OK
+end group
+
+group app loses [happy-ish]
+-> gw: Operation 2
+app -> gw ++: POST /state { ... }
+gw -> app ++: Update 2 //via webhook//
+return OK
+note over gw: Update 1 is delayed\nby pending webhook
+& note over app: ordering //not// dependent\non app threading
+return OK: Update 1 //via response//
+& <- gw: Operation 1
+end group
+
+@enduml
+
+PlantUML version 1.2022.8(Sun Sep 25 10:00:33 BST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

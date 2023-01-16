@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentStyleType="text/css" height="449px" preserveAspectRatio="none"
+     style="width:558px;height:449px;background:#FFFFFF;" version="1.1" viewBox="0 0 558 449"
+     width="558px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="370.416" style="stroke:#000000;stroke-width:1.5;" width="544" x="8" y="48.4883"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="122" x2="122" y1="36.4883" y2="442.9043"/><rect fill="#FFFFFF" height="148.2422" style="stroke:#181818;stroke-width:1.0;" width="10" x="117" y="97.1094"/><rect fill="#FFFFFF" height="71.6211" style="stroke:#181818;stroke-width:1.0;" width="10" x="117" y="303.9727"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="373" x2="373" y1="36.4883" y2="442.9043"/><rect fill="#FFFFFF" height="177.5527" style="stroke:#181818;stroke-width:1.0;" width="10" x="368" y="211.041"/><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="71" x="86.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="93.5" y="25.5352">Gateway</text><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="42" x="352" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="359" y="25.5352">App</text><path d="M8,48.4883 L220,48.4883 L220,55.7988 L210,65.7988 L8,65.7988 L8,48.4883 " fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="370.416" style="stroke:#000000;stroke-width:1.5;" width="544" x="8" y="48.4883"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="163" x="23" y="62.0566">operation with webhook</text><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacing" textLength="41" x="235" y="61.123">[happy]</text><polygon fill="#181818" points="105,93.1094,115,97.1094,105,101.1094,109,97.1094" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="5" x2="111" y1="97.1094" y2="97.1094"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="74" x="12" y="92.3672">Operation 1</text><line style="stroke:#181818;stroke-width:1.0;" x1="127" x2="169" y1="126.4199" y2="126.4199"/><line style="stroke:#181818;stroke-width:1.0;" x1="169" x2="169" y1="126.4199" y2="139.4199"/><line style="stroke:#181818;stroke-width:1.0;" x1="128" x2="169" y1="139.4199" y2="139.4199"/><polygon fill="#181818" points="138,135.4199,128,139.4199,138,143.4199,134,139.4199" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="112" x="134" y="121.6777">apply Operation 1</text><line style="stroke:#181818;stroke-width:1.0;" x1="127" x2="169" y1="168.7305" y2="168.7305"/><line style="stroke:#181818;stroke-width:1.0;" x1="169" x2="169" y1="168.7305" y2="181.7305"/><line style="stroke:#181818;stroke-width:1.0;" x1="128" x2="169" y1="181.7305" y2="181.7305"/><polygon fill="#181818" points="138,177.7305,128,181.7305,138,185.7305,134,181.7305" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="113" x="134" y="163.9883">enqueue Update 1</text><polygon fill="#181818" points="356,207.041,366,211.041,356,215.041,360,211.041" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="127" x2="362" y1="211.041" y2="211.041"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="222" x="134" y="206.2988">POST /webhook?state=1 [Update 1]</text><path d="M383,194.7305 L383,234.7305 L531,234.7305 L531,204.7305 L521,194.7305 L383,194.7305 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M521,194.7305 L521,204.7305 L531,204.7305 L521,194.7305 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="127" x="389" y="212.2988">Webhook eliminates</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="100" x="389" y="227.6094">need for polling</text><line style="stroke:#181818;stroke-width:1.0;" x1="378" x2="420" y1="261.6621" y2="261.6621"/><line style="stroke:#181818;stroke-width:1.0;" x1="420" x2="420" y1="261.6621" y2="274.6621"/><line style="stroke:#181818;stroke-width:1.0;" x1="379" x2="420" y1="274.6621" y2="274.6621"/><polygon fill="#181818" points="389,270.6621,379,274.6621,389,278.6621,385,274.6621" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="109" x="385" y="256.9199">process Update 1</text><polygon fill="#181818" points="138,299.9727,128,303.9727,138,307.9727,134,303.9727" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="132" x2="367" y1="303.9727" y2="303.9727"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="137" x="144" y="299.2305">DELETE /state/1/lock</text><line style="stroke:#181818;stroke-width:1.0;" x1="127" x2="169" y1="333.2832" y2="333.2832"/><line style="stroke:#181818;stroke-width:1.0;" x1="169" x2="169" y1="333.2832" y2="346.2832"/><line style="stroke:#181818;stroke-width:1.0;" x1="128" x2="169" y1="346.2832" y2="346.2832"/><polygon fill="#181818" points="138,342.2832,128,346.2832,138,350.2832,134,346.2832" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="113" x="134" y="328.541">dequeue Update 1</text><polygon fill="#181818" points="356,371.5938,366,375.5938,356,379.5938,360,375.5938" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="127" x2="362" y1="375.5938" y2="375.5938"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="134" y="370.8516">200 OK</text><path d="M98.75,388.5938 L98.75,413.5938 L395.75,413.5938 L395.75,398.5938 L385.75,388.5938 L98.75,388.5938 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M385.75,388.5938 L385.75,398.5938 L395.75,398.5938 L385.75,388.5938 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="208" x="139" y="406.1621">/state/1 may now be superseded</text><!--MD5=[52c83cdf0ddfd5df3a9646ad7573912c]
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma teoz true
+hide footbox
+
+participant Gateway as gw
+participant "App" as app
+
+group operation with webhook [happy]
+-> gw ++: Operation 1
+gw -> gw: apply Operation 1
+gw -> gw: enqueue Update 1
+gw -> app ++- -: POST /webhook?state=1 [Update 1]
+note right
+Webhook eliminates
+need for polling
+end note
+app -> app: process Update 1
+app -> gw ++: DELETE /state/1/lock
+gw -> gw: dequeue Update 1
+return 200 OK
+deactivate app
+note across: /state/1 may now be superseded
+end group
+
+@enduml
+
+@startuml
+!pragma teoz true
+hide footbox
+
+participant Gateway as gw
+participant "App" as app
+
+group operation with webhook [happy]
+-> gw ++: Operation 1
+gw -> gw: apply Operation 1
+gw -> gw: enqueue Update 1
+gw -> app ++- -: POST /webhook?state=1 [Update 1]
+note right
+Webhook eliminates
+need for polling
+end note
+app -> app: process Update 1
+app -> gw ++: DELETE /state/1/lock
+gw -> gw: dequeue Update 1
+return 200 OK
+deactivate app
+note across: /state/1 may now be superseded
+end group
+
+@enduml
+
+PlantUML version 1.2022.8(Sun Sep 25 10:00:33 BST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

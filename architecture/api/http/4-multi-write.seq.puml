@@ -1,0 +1,32 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma teoz true
+hide footbox
+
+participant Gateway as gw
+participant "App" as app
+
+group multi-write "transaction" [happy]
+activate app
+app -> gw ++: POST /state { ... }
+gw -> gw: enqueue Update 1
+return 200 OK: {Update 1, state=1}
+& <- gw: Operation 1
+app -> app: process Update 1
+app -> gw ++: POST /state/1 { ... }
+note right
+implicit DELETE
+state/1/lock
+end note
+gw -> gw: dequeue Update 1
+gw -> gw: enqueue Update 2
+return 200 OK: {Update 2, state=2}
+& <- gw: Operation 2
+app -> app: process Update 2
+app -> gw ++: DELETE /state/2/lock
+gw -> gw: dequeue Update 2
+return 200 OK
+deactivate app
+end group
+
+@enduml

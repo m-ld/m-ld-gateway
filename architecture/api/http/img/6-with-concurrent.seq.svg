@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentStyleType="text/css" height="885px" preserveAspectRatio="none"
+     style="width:603px;height:885px;background:#FFFFFF;" version="1.1" viewBox="0 0 603 885"
+     width="603px" zoomAndPan="magnify"><defs/><g><rect fill="#DDDDDD" height="873.207" style="stroke:#181818;stroke-width:0.5;" width="220" x="278" y="6"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="28" x="374" y="18.5684">App</text><rect fill="none" height="296.1055" style="stroke:#000000;stroke-width:1.5;" width="425" x="85" y="68.7988"/><rect fill="none" height="466.3027" style="stroke:#000000;stroke-width:1.5;" width="589" x="8" y="382.9043"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="152" x2="152" y1="56.7988" y2="511.1465"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:1.0,4.0;" x1="152" x2="152" y1="511.1465" y2="552.1016"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="152" x2="152" y1="552.1016" y2="762.5859"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:1.0,4.0;" x1="152" x2="152" y1="762.5859" y2="790.5859"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="152" x2="152" y1="790.5859" y2="873.207"/><rect fill="#FFFFFF" height="29.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="147" y="117.4199"/><rect fill="#FFFFFF" height="79.9316" style="stroke:#181818;stroke-width:1.0;" width="10" x="147" y="218.3516"/><rect fill="#FFFFFF" height="29.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="147" y="327.5938"/><rect fill="#FFFFFF" height="29.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="147" y="431.5254"/><rect fill="#FFFFFF" height="29.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="147" y="725.2754"/><rect fill="#FFFFFF" height="29.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="147" y="811.8965"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="323" x2="323" y1="56.7988" y2="511.1465"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:1.0,4.0;" x1="323" x2="323" y1="511.1465" y2="552.1016"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="323" x2="323" y1="552.1016" y2="762.5859"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:1.0,4.0;" x1="323" x2="323" y1="762.5859" y2="790.5859"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="323" x2="323" y1="790.5859" y2="873.207"/><rect fill="#FFFFFF" height="273.7949" style="stroke:#181818;stroke-width:1.0;" width="10" x="318" y="96.1094"/><rect fill="#FFFFFF" height="100.9316" style="stroke:#FFFFFF;stroke-width:1.0;" width="10" x="318" y="410.2148"/><line style="stroke:#181818;stroke-width:1.0;" x1="318" x2="318" y1="410.2148" y2="511.1465"/><line style="stroke:#181818;stroke-width:1.0;" x1="328" x2="328" y1="410.2148" y2="511.1465"/><line style="stroke:#181818;stroke-width:1.0;" x1="318" x2="328" y1="410.2148" y2="410.2148"/><rect fill="#FFFFFF" height="210.4844" style="stroke:#FFFFFF;stroke-width:1.0;" width="10" x="318" y="552.1016"/><line style="stroke:#181818;stroke-width:1.0;" x1="318" x2="318" y1="552.1016" y2="762.5859"/><line style="stroke:#181818;stroke-width:1.0;" x1="328" x2="328" y1="552.1016" y2="762.5859"/><rect fill="#FFFFFF" height="63.6211" style="stroke:#FFFFFF;stroke-width:1.0;" width="10" x="318" y="790.5859"/><line style="stroke:#181818;stroke-width:1.0;" x1="318" x2="318" y1="790.5859" y2="854.207"/><line style="stroke:#181818;stroke-width:1.0;" x1="328" x2="328" y1="790.5859" y2="854.207"/><line style="stroke:#181818;stroke-width:1.0;" x1="318" x2="328" y1="854.207" y2="854.207"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="453" x2="453" y1="56.7988" y2="511.1465"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:1.0,4.0;" x1="453" x2="453" y1="511.1465" y2="552.1016"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="453" x2="453" y1="552.1016" y2="762.5859"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:1.0,4.0;" x1="453" x2="453" y1="762.5859" y2="790.5859"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="453" x2="453" y1="790.5859" y2="873.207"/><rect fill="#FFFFFF" height="114.2422" style="stroke:#181818;stroke-width:1.0;" width="10" x="448" y="197.041"/><rect fill="#FFFFFF" height="194.1738" style="stroke:#181818;stroke-width:1.0;" width="10" x="448" y="573.4121"/><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="71" x="116.5" y="25.3105"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="123.5" y="45.8457">Gateway</text><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="82" x="282" y="25.3105"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="289" y="45.8457">(thread 1)</text><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="82" x="412" y="25.3105"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="419" y="45.8457">(thread 2)</text><path d="M85,68.7988 L289,68.7988 L289,76.1094 L279,86.1094 L85,86.1094 L85,68.7988 " fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="296.1055" style="stroke:#000000;stroke-width:1.5;" width="425" x="85" y="68.7988"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="155" x="100" y="82.3672">concurrent write &amp; poll</text><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacing" textLength="41" x="304" y="81.4336">[happy]</text><polygon fill="#181818" points="168,113.4199,158,117.4199,168,121.4199,164,117.4199" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="162" x2="317" y1="117.4199" y2="117.4199"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="106" x="174" y="112.6777">POST /state { ... }</text><polygon fill="#181818" points="306,142.7305,316,146.7305,306,150.7305,310,146.7305" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="157" x2="312" y1="146.7305" y2="146.7305"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="110" x="164" y="141.9883">200 OK: Update 1</text><line style="stroke:#181818;stroke-width:1.0;" x1="328" x2="370" y1="176.041" y2="176.041"/><line style="stroke:#181818;stroke-width:1.0;" x1="370" x2="370" y1="176.041" y2="189.041"/><line style="stroke:#181818;stroke-width:1.0;" x1="329" x2="370" y1="189.041" y2="189.041"/><polygon fill="#181818" points="339,185.041,329,189.041,339,193.041,335,189.041" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="109" x="335" y="171.2988">process Update 1</text><polygon fill="#181818" points="168,214.3516,158,218.3516,168,222.3516,164,218.3516" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="162" x2="447" y1="218.3516" y2="218.3516"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="85" x="174" y="213.6094">GET /updates</text><path d="M106,231.3516 L106,271.3516 L198,271.3516 L198,241.3516 L188,231.3516 L106,231.3516 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M188,231.3516 L188,241.3516 L198,241.3516 L188,231.3516 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="71" x="112" y="248.9199">Update 1 is</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="51" x="112" y="264.2305">pending</text><polygon fill="#181818" points="436,294.2832,446,298.2832,436,302.2832,440,298.2832" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="157" x2="442" y1="298.2832" y2="298.2832"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="86" x="164" y="293.541">425 Too Early</text><polygon fill="#181818" points="168,323.5938,158,327.5938,168,331.5938,164,327.5938" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="162" x2="317" y1="327.5938" y2="327.5938"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="137" x="174" y="322.8516">DELETE /state/1/lock</text><polygon fill="#181818" points="306,352.9043,316,356.9043,306,360.9043,310,356.9043" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="157" x2="312" y1="356.9043" y2="356.9043"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="164" y="352.1621">200 OK</text><path d="M8,382.9043 L225,382.9043 L225,390.2148 L215,400.2148 L8,400.2148 L8,382.9043 " fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="466.3027" style="stroke:#000000;stroke-width:1.5;" width="589" x="8" y="382.9043"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="168" x="23" y="396.4727">timeout write processing</text><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacing" textLength="55" x="240" y="395.5391">[unhappy]</text><polygon fill="#181818" points="168,427.5254,158,431.5254,168,435.5254,164,431.5254" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="162" x2="317" y1="431.5254" y2="431.5254"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="106" x="174" y="426.7832">POST /state { ... }</text><polygon fill="#181818" points="306,456.8359,316,460.8359,306,464.8359,310,460.8359" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="157" x2="312" y1="460.8359" y2="460.8359"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="110" x="164" y="456.0938">200 OK: Update 1</text><line style="stroke:#181818;stroke-width:1.0;" x1="328" x2="370" y1="490.1465" y2="490.1465"/><line style="stroke:#181818;stroke-width:1.0;" x1="370" x2="370" y1="490.1465" y2="503.1465"/><line style="stroke:#181818;stroke-width:1.0;" x1="329" x2="370" y1="503.1465" y2="503.1465"/><polygon fill="#181818" points="339,499.1465,329,503.1465,339,507.1465,335,503.1465" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="109" x="335" y="485.4043">process Update 1</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="181" x="212" y="535.7813">lock timeout but not actually dead</text><polygon fill="#181818" points="436,569.4121,446,573.4121,436,577.4121,440,573.4121" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="152" x2="442" y1="573.4121" y2="573.4121"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="272" x="159" y="568.6699">POST /webhook?state=1&amp;dequeueCount=2</text><path d="M29,557.1016 L29,612.1016 L147,612.1016 L147,567.1016 L137,557.1016 L29,557.1016 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M137,557.1016 L137,567.1016 L147,567.1016 L137,557.1016 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="91" x="35" y="574.6699">dequeueCount</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="97" x="35" y="589.9805">warns Update 1</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="66" x="35" y="605.291">is pending</text><path d="M395.5,623.0332 L395.5,648.0332 L510.5,648.0332 L510.5,633.0332 L500.5,623.0332 L395.5,623.0332 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M500.5,623.0332 L500.5,633.0332 L510.5,633.0332 L500.5,623.0332 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="94" x="401.5" y="640.6016">ignore warning</text><line style="stroke:#181818;stroke-width:1.0;" x1="458" x2="500" y1="674.6543" y2="674.6543"/><line style="stroke:#181818;stroke-width:1.0;" x1="500" x2="500" y1="674.6543" y2="687.6543"/><line style="stroke:#181818;stroke-width:1.0;" x1="459" x2="500" y1="687.6543" y2="687.6543"/><polygon fill="#181818" points="469,683.6543,459,687.6543,469,691.6543,465,687.6543" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="109" x="465" y="669.9121">process Update 1</text><path d="M292,658.3438 L292,698.3438 L448,698.3438 L448,668.3438 L438,658.3438 L292,658.3438 " fill="#FFC0CB" style="stroke:#181818;stroke-width:0.5;"/><path d="M438,658.3438 L438,668.3438 L448,668.3438 L438,658.3438 " fill="#FFC0CB" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="135" x="298" y="675.9121">duplicate processing!</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="115" x="298" y="691.2227">(OK if idempotent)</text><polygon fill="#181818" points="168,721.2754,158,725.2754,168,729.2754,164,725.2754" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="162" x2="447" y1="725.2754" y2="725.2754"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="137" x="174" y="720.5332">DELETE /state/1/lock</text><polygon fill="#181818" points="436,750.5859,446,754.5859,436,758.5859,440,754.5859" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="157" x2="442" y1="754.5859" y2="754.5859"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="164" y="749.8438">200 OK</text><polygon fill="#181818" points="168,807.8965,158,811.8965,168,815.8965,164,811.8965" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="162" x2="317" y1="811.8965" y2="811.8965"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="137" x="174" y="807.1543">DELETE /state/1/lock</text><polygon fill="#181818" points="306,837.207,316,841.207,306,845.207,310,841.207" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="157" x2="312" y1="841.207" y2="841.207"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="94" x="164" y="836.4648">404 Not Found</text><!--MD5=[1178907d5fdb60aad951094fe6bcf9ba]
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma teoz true
+hide footbox
+
+participant Gateway as gw
+box App
+participant "(thread 1)" as app
+participant "(thread 2)" as app2
+end box
+
+group concurrent write & poll [happy]
+activate app
+app -> gw ++: POST /state { ... }
+return 200 OK: Update 1
+app -> app: process Update 1
+activate app2
+app2 -> gw ++: GET /updates
+note over gw
+Update 1 is
+pending
+end note
+return 425 Too Early
+deactivate app2
+app -> gw ++: DELETE /state/1/lock
+return 200 OK
+deactivate app
+end group
+
+group timeout write processing [unhappy]
+activate app
+app -> gw ++: POST /state { ... }
+return 200 OK: Update 1
+app -> app: process Update 1
+...lock timeout but not actually dead...
+gw -> app2 ++: POST /webhook?state=1&dequeueCount=2
+note left
+dequeueCount
+warns Update 1
+is pending
+end note
+note over app2: ignore warning
+app2 -> app2: process Update 1
+note left #pink
+duplicate processing!
+(OK if idempotent)
+end note
+app2 -> gw ++: DELETE /state/1/lock
+return 200 OK
+deactivate app2
+...
+app -> gw ++: DELETE /state/1/lock
+return 404 Not Found
+deactivate app
+end group
+
+@enduml
+
+@startuml
+!pragma teoz true
+hide footbox
+
+participant Gateway as gw
+box App
+participant "(thread 1)" as app
+participant "(thread 2)" as app2
+end box
+
+group concurrent write & poll [happy]
+activate app
+app -> gw ++: POST /state { ... }
+return 200 OK: Update 1
+app -> app: process Update 1
+activate app2
+app2 -> gw ++: GET /updates
+note over gw
+Update 1 is
+pending
+end note
+return 425 Too Early
+deactivate app2
+app -> gw ++: DELETE /state/1/lock
+return 200 OK
+deactivate app
+end group
+
+group timeout write processing [unhappy]
+activate app
+app -> gw ++: POST /state { ... }
+return 200 OK: Update 1
+app -> app: process Update 1
+...lock timeout but not actually dead...
+gw -> app2 ++: POST /webhook?state=1&dequeueCount=2
+note left
+dequeueCount
+warns Update 1
+is pending
+end note
+note over app2: ignore warning
+app2 -> app2: process Update 1
+note left #pink
+duplicate processing!
+(OK if idempotent)
+end note
+app2 -> gw ++: DELETE /state/1/lock
+return 200 OK
+deactivate app2
+...
+app -> gw ++: DELETE /state/1/lock
+return 404 Not Found
+deactivate app
+end group
+
+@enduml
+
+PlantUML version 1.2022.8(Sun Sep 25 10:00:33 BST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

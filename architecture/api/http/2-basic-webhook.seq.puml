@@ -1,0 +1,26 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma teoz true
+hide footbox
+
+participant Gateway as gw
+participant "App" as app
+
+group operation with webhook [happy]
+-> gw ++: Operation 1
+gw -> gw: apply Operation 1
+gw -> gw: enqueue Update 1
+gw -> app ++--: POST /webhook?state=1 [Update 1]
+note right
+Webhook eliminates
+need for polling
+end note
+app -> app: process Update 1
+app -> gw ++: DELETE /state/1/lock
+gw -> gw: dequeue Update 1
+return 200 OK
+deactivate app
+note across: /state/1 may now be superseded
+end group
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma teoz true
+hide footbox
+
+participant Gateway as gw
+participant "App" as app
+
+group operation with polling [happy]
+-> gw ++: Operation 1
+gw -> gw: apply Operation 1
+gw -> gw --: enqueue Update 1
+...
+app -> gw ++: GET /updates
+activate app
+note left: Implicit lock
+return 200 OK: {Update 1, state=1}
+note left: May return\nmultiple updates
+app -> app: process Update 1
+app -> gw ++: DELETE /state/1/lock
+gw -> gw: dequeue Update 1
+return 200 OK
+deactivate app
+note across: /state/1 may now be superseded
+end group
+
+@enduml

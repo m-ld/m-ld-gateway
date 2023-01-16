@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentStyleType="text/css" height="866px" preserveAspectRatio="none"
+     style="width:457px;height:866px;background:#FFFFFF;" version="1.1" viewBox="0 0 457 866"
+     width="457px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="313.7949" style="stroke:#000000;stroke-width:1.5;" width="404" x="37" y="48.4883"/><rect fill="none" height="404.6582" style="stroke:#000000;stroke-width:1.5;" width="443" x="8" y="380.2832"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="151" x2="151" y1="36.4883" y2="859.5625"/><rect fill="#FFFFFF" height="126.9316" style="stroke:#181818;stroke-width:1.0;" width="10" x="146" y="97.1094"/><rect fill="#FFFFFF" height="71.6211" style="stroke:#181818;stroke-width:1.0;" width="10" x="146" y="282.6621"/><rect fill="#FFFFFF" height="152.8633" style="stroke:#181818;stroke-width:1.0;" width="10" x="146" y="428.9043"/><rect fill="#FFFFFF" height="123.5527" style="stroke:#181818;stroke-width:1.0;" width="10" x="146" y="653.3887"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="297" x2="297" y1="36.4883" y2="859.5625"/><rect fill="#FFFFFF" height="156.2422" style="stroke:#181818;stroke-width:1.0;" width="10" x="292" y="211.041"/><rect fill="#FFFFFF" height="382.3477" style="stroke:#181818;stroke-width:1.0;" width="10" x="292" y="407.5938"/><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="71" x="115.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="122.5" y="25.5352">Gateway</text><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="42" x="276" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="283" y="25.5352">App</text><path d="M37,48.4883 L151,48.4883 L151,55.7988 L141,65.7988 L37,65.7988 L37,48.4883 " fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="313.7949" style="stroke:#000000;stroke-width:1.5;" width="404" x="37" y="48.4883"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="65" x="52" y="62.0566">operation</text><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacing" textLength="41" x="166" y="61.123">[happy]</text><polygon fill="#181818" points="134,93.1094,144,97.1094,134,101.1094,138,97.1094" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="5" x2="140" y1="97.1094" y2="97.1094"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="74" x="12" y="92.3672">Operation 1</text><line style="stroke:#181818;stroke-width:1.0;" x1="156" x2="198" y1="126.4199" y2="126.4199"/><line style="stroke:#181818;stroke-width:1.0;" x1="198" x2="198" y1="126.4199" y2="139.4199"/><line style="stroke:#181818;stroke-width:1.0;" x1="157" x2="198" y1="139.4199" y2="139.4199"/><polygon fill="#181818" points="167,135.4199,157,139.4199,167,143.4199,163,139.4199" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="112" x="163" y="121.6777">apply Operation 1</text><line style="stroke:#181818;stroke-width:1.0;" x1="156" x2="198" y1="168.7305" y2="168.7305"/><line style="stroke:#181818;stroke-width:1.0;" x1="198" x2="198" y1="168.7305" y2="181.7305"/><line style="stroke:#181818;stroke-width:1.0;" x1="157" x2="198" y1="181.7305" y2="181.7305"/><polygon fill="#181818" points="167,177.7305,157,181.7305,167,185.7305,163,181.7305" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="113" x="163" y="163.9883">enqueue Update 1</text><polygon fill="#181818" points="280,207.041,290,211.041,280,215.041,284,211.041" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="156" x2="286" y1="211.041" y2="211.041"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="117" x="163" y="206.2988">MESSAGE Update 1</text><line style="stroke:#181818;stroke-width:1.0;" x1="302" x2="344" y1="240.3516" y2="240.3516"/><line style="stroke:#181818;stroke-width:1.0;" x1="344" x2="344" y1="240.3516" y2="253.3516"/><line style="stroke:#181818;stroke-width:1.0;" x1="303" x2="344" y1="253.3516" y2="253.3516"/><polygon fill="#181818" points="313,249.3516,303,253.3516,313,257.3516,309,253.3516" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="109" x="309" y="235.6094">process Update 1</text><polygon fill="#181818" points="167,278.6621,157,282.6621,167,286.6621,163,282.6621" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="161" x2="291" y1="282.6621" y2="282.6621"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="38" x="173" y="277.9199">ACK 1</text><line style="stroke:#181818;stroke-width:1.0;" x1="156" x2="198" y1="311.9727" y2="311.9727"/><line style="stroke:#181818;stroke-width:1.0;" x1="198" x2="198" y1="311.9727" y2="324.9727"/><line style="stroke:#181818;stroke-width:1.0;" x1="157" x2="198" y1="324.9727" y2="324.9727"/><polygon fill="#181818" points="167,320.9727,157,324.9727,167,328.9727,163,324.9727" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="113" x="163" y="307.2305">dequeue Update 1</text><polygon fill="#181818" points="280,350.2832,290,354.2832,280,358.2832,284,354.2832" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="156" x2="286" y1="354.2832" y2="354.2832"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="50" x="163" y="349.541">RECEIPT</text><path d="M8,380.2832 L91,380.2832 L91,387.5938 L81,397.5938 L8,397.5938 L8,380.2832 " fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="404.6582" style="stroke:#000000;stroke-width:1.5;" width="443" x="8" y="380.2832"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="34" x="23" y="393.8516">write</text><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacing" textLength="41" x="106" y="392.918">[happy]</text><polygon fill="#181818" points="167,424.9043,157,428.9043,167,432.9043,163,428.9043" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="161" x2="291" y1="428.9043" y2="428.9043"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="78" x="173" y="424.1621">SEND 1 { ... }</text><line style="stroke:#181818;stroke-width:1.0;" x1="156" x2="198" y1="458.2148" y2="458.2148"/><line style="stroke:#181818;stroke-width:1.0;" x1="198" x2="198" y1="458.2148" y2="471.2148"/><line style="stroke:#181818;stroke-width:1.0;" x1="157" x2="198" y1="471.2148" y2="471.2148"/><polygon fill="#181818" points="167,467.2148,157,471.2148,167,475.2148,163,471.2148" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="113" x="163" y="453.4727">enqueue Update 1</text><polygon fill="#181818" points="280,496.5254,290,500.5254,280,504.5254,284,500.5254" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="156" x2="286" y1="500.5254" y2="500.5254"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="62" x="163" y="495.7832">RECEIPT 1</text><path d="M307,484.2148 L307,555.2148 L430,555.2148 L430,494.2148 L420,484.2148 L307,484.2148 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M420,484.2148 L420,494.2148 L430,494.2148 L420,484.2148 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="90" x="313" y="501.7832">receipt cannot</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="87" x="313" y="517.0938">have a body -</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="84" x="313" y="532.4043">must wait for</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="102" x="313" y="547.7148">update message</text><polygon fill="#181818" points="280,577.7676,290,581.7676,280,585.7676,284,581.7676" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="156" x2="286" y1="581.7676" y2="581.7676"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="117" x="163" y="577.0254">MESSAGE Update 1</text><polygon fill="#181818" points="16,577.7676,6,581.7676,16,585.7676,12,581.7676" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="10" x2="150" y1="581.7676" y2="581.7676"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="74" x="22" y="577.0254">Operation 1</text><line style="stroke:#181818;stroke-width:1.0;" x1="302" x2="344" y1="611.0781" y2="611.0781"/><line style="stroke:#181818;stroke-width:1.0;" x1="344" x2="344" y1="611.0781" y2="624.0781"/><line style="stroke:#181818;stroke-width:1.0;" x1="303" x2="344" y1="624.0781" y2="624.0781"/><polygon fill="#181818" points="313,620.0781,303,624.0781,313,628.0781,309,624.0781" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="109" x="309" y="606.3359">process Update 1</text><polygon fill="#181818" points="167,649.3887,157,653.3887,167,657.3887,163,653.3887" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="161" x2="291" y1="653.3887" y2="653.3887"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="38" x="173" y="648.6465">ACK 1</text><path d="M29,637.0781 L29,708.0781 L146,708.0781 L146,647.0781 L136,637.0781 L29,637.0781 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M136,637.0781 L136,647.0781 L146,647.0781 L136,637.0781 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="39" x="35" y="654.6465">Ack is</text><text fill="#000000" font-family="sans-serif" font-size="13" font-style="italic" lengthAdjust="spacing" textLength="21" x="78" y="654.6465">not</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="23" x="103" y="654.6465">like</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="96" x="35" y="669.957">ACID commit -</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="75" x="35" y="685.2676">operation is</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="76" x="35" y="700.5781">already sent</text><line style="stroke:#181818;stroke-width:1.0;" x1="156" x2="198" y1="734.6309" y2="734.6309"/><line style="stroke:#181818;stroke-width:1.0;" x1="198" x2="198" y1="734.6309" y2="747.6309"/><line style="stroke:#181818;stroke-width:1.0;" x1="157" x2="198" y1="747.6309" y2="747.6309"/><polygon fill="#181818" points="167,743.6309,157,747.6309,167,751.6309,163,747.6309" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="113" x="163" y="729.8887">dequeue Update 1</text><polygon fill="#181818" points="280,772.9414,290,776.9414,280,780.9414,284,776.9414" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="156" x2="286" y1="776.9414" y2="776.9414"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="50" x="163" y="772.1992">RECEIPT</text><path d="M119,803.9414 L119,843.9414 L329,843.9414 L329,813.9414 L319,803.9414 L119,803.9414 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M319,803.9414 L319,813.9414 L329,813.9414 L319,803.9414 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="189" x="125" y="821.5098">Using STOMP, correlations are</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="147" x="125" y="836.8203">manual, even for writes</text><!--MD5=[7da417e132ec9060f9cc8c2d1c978cc7]
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma teoz true
+hide footbox
+
+participant Gateway as gw
+participant "App" as app
+
+group operation [happy]
+-> gw ++: Operation 1
+gw -> gw: apply Operation 1
+gw -> gw: enqueue Update 1
+gw -> app ++- -: MESSAGE Update 1
+app -> app: process Update 1
+app -> gw ++: ACK 1
+gw -> gw: dequeue Update 1
+return RECEIPT
+deactivate app
+end group
+
+group write [happy]
+activate app
+app -> gw ++: SEND 1 { ... }
+gw -> gw: enqueue Update 1
+gw - -> app: RECEIPT 1
+note right
+receipt cannot
+have a body -
+must wait for
+update message
+end note
+return MESSAGE Update 1
+& <- gw: Operation 1
+app -> app: process Update 1
+app -> gw ++: ACK 1
+note left
+Ack is //not// like
+ACID commit -
+operation is
+already sent
+end note
+gw -> gw: dequeue Update 1
+return RECEIPT
+deactivate app
+end group
+
+note across
+Using STOMP, correlations are
+manual, even for writes
+end note
+
+@enduml
+
+@startuml
+!pragma teoz true
+hide footbox
+
+participant Gateway as gw
+participant "App" as app
+
+group operation [happy]
+-> gw ++: Operation 1
+gw -> gw: apply Operation 1
+gw -> gw: enqueue Update 1
+gw -> app ++- -: MESSAGE Update 1
+app -> app: process Update 1
+app -> gw ++: ACK 1
+gw -> gw: dequeue Update 1
+return RECEIPT
+deactivate app
+end group
+
+group write [happy]
+activate app
+app -> gw ++: SEND 1 { ... }
+gw -> gw: enqueue Update 1
+gw - -> app: RECEIPT 1
+note right
+receipt cannot
+have a body -
+must wait for
+update message
+end note
+return MESSAGE Update 1
+& <- gw: Operation 1
+app -> app: process Update 1
+app -> gw ++: ACK 1
+note left
+Ack is //not// like
+ACID commit -
+operation is
+already sent
+end note
+gw -> gw: dequeue Update 1
+return RECEIPT
+deactivate app
+end group
+
+note across
+Using STOMP, correlations are
+manual, even for writes
+end note
+
+@enduml
+
+PlantUML version 1.2022.8(Sun Sep 25 10:00:33 BST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

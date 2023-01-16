@@ -1,0 +1,28 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma teoz true
+hide footbox
+
+participant Gateway as gw
+participant "App" as app
+
+group write [happy]
+activate app
+app -> gw ++: POST /state/1 { ... }
+gw -> gw: enqueue Update 1
+return 200 OK: {Update 1, state=1}
+& <- gw: Operation 1
+app -> app: process Update 1
+app -> gw ++: DELETE /state/1/lock
+note left
+Update deletion is //not//
+like ACID commit –
+operation has already
+been sent
+end note
+gw -> gw: dequeue Update 1
+return 200 OK
+deactivate app
+end group
+
+@enduml
