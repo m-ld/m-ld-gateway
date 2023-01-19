@@ -31,8 +31,10 @@ async function sendStream(res: restify.Response, results: Results) {
   await pipeline(new ResultsReadable(results, ND_JSON_FORMAT), res);
 }
 
+type LeafHandler = (req: restify.Request, res: restify.Response) => Promise<void>;
+
 export class GatewayHttp {
-  public readonly server: restify.Server;
+  readonly server: restify.Server;
 
   constructor(
     protected readonly gateway: Gateway
@@ -58,103 +60,79 @@ export class GatewayHttp {
       });
     }
 
-    this.server.get('/api/init/:account/domain/:name',
-      async (req, res, next) => {
-        // account is the subdomain account (may not be user account)
-        const { account, name } = req.params;
-        try {
-          const id = gateway.ownedId(account, name).validate();
-          try {
-            const who = await Authorization.fromRequest(req).verifyUser(
-              gateway, { id, forWrite: 'Subdomain' });
-            res.json(await gateway.subdomainConfig(id, who));
-          } catch (e) {
-            next(toHttpError(e));
-          }
-          next();
-        } catch (e) {
-          // TimesheetId.validate throw strings
-          return next(new BadRequestError(
-            'Bad domain %s/%s', account, name));
-        }
-      });
+    this.v1.get('/domain/:account/:name', async (req, res) => {
+      const id = this.ownedId(req.params);
+      const who = await Authorization.fromRequest(req).verifyUser(
+        gateway, { id, forWrite: 'Subdomain' });
+      res.json(await gateway.subdomainConfig(id, who));
+    });
 
-    this.server.post('/api/read', restify.plugins.bodyParser(),
-      async (req, res, next) => {
-        try {
-          const { acc } = await Authorization.fromRequest(req).verifyUser(gateway);
-          await sendStream(res, await acc.read(req.body));
-          next();
-        } catch (e) {
-          next(toHttpError(e));
-        }
-      });
+    this.v1.get('/domain/:account/:name/state', async (req, res) => {
+      const id = this.ownedId(req.params);
+      const query = JSON.parse(req.params.query || req.params.q);
+      await Authorization.fromRequest(req).verifyUser(gateway, { id });
+      const clone = await this.gateway.initSubdomain(id, false)
+      await sendStream(res, clone.read(query).consume);
+    });
 
-    this.server.post('/api/read/:account/domain/:name', restify.plugins.bodyParser(),
-      async (req, res, next) => {
-        // account is the subdomain account (may not be user account)
-        const { account, name } = req.params;
-        try {
-          const id = gateway.ownedId(account, name).validate();
-          const { acc } = await Authorization.fromRequest(req).verifyUser(
-            gateway, { id });
-          await sendStream(res, await acc.read(req.body, id));
-          next();
-        } catch (e) {
-          next(toHttpError(e));
-        }
-      });
+    this.v1.post('/domain/:account/:name/state', async (req, res) => {
+      const id = this.ownedId(req.params);
+      await Authorization.fromRequest(req).verifyUser(gateway, { id, forWrite: 'Subdomain' });
+      const clone = await this.gateway.initSubdomain(id, false)
+      await clone.write(req.body);
+      res.send(200);
+    });
 
-    this.server.post('/api/write', restify.plugins.bodyParser(),
-      async (req, res, next) => {
-        try {
-          const { acc } = await Authorization.fromRequest(req).verifyUser(gateway);
-          await acc.write(req.body);
-          res.send(200);
-          next();
-        } catch (e) {
-          next(toHttpError(e));
-        }
+    this.v1.get('/context', async (req, res) => {
+      res.contentType = req.accepts('html') ? 'html' : 'application/ld+json';
+      res.send({
+        '@base': domainRelativeIri('/', gateway.domainName),
+        ...gatewayContext // TODO: actual gateway context
       });
+    });
 
-    this.server.post('/api/write/:account/domain/:name', restify.plugins.bodyParser(),
-      async (req, res, next) => {
-        // account is the subdomain account (may not be user account)
-        const { account, name } = req.params;
-        try {
-          const id = gateway.ownedId(account, name).validate();
-          const { acc } = await Authorization.fromRequest(req).verifyUser(
-            gateway, { id, forWrite: 'Subdomain' });
-          await acc.write(req.body, id);
-          res.send(200);
-          next();
-        } catch (e) {
-          next(toHttpError(e));
-        }
-      });
+    this.v1.get('/publicKey', async (req, res) => {
+      if (!gateway.usingUserKeys)
+        throw new NotFoundError();
+      res.contentType = 'text';
+      res.send(gateway.me.userKey!.getCryptoPublicKey().export({
+        format: 'pem', type: 'spki'
+      }));
+    });
+  }
 
-    this.server.get('/context',
-      async (req, res, next) => {
-        res.contentType = req.accepts('html') ? 'html' : 'application/ld+json';
-        // noinspection HttpUrlsUsage
-        res.send({
-          '@base': domainRelativeIri('/', gateway.domainName),
-          ...gatewayContext
-        });
-        next();
-      });
+  private v1 = {
+    get(route: string, handler: LeafHandler) {
+      return this.server.get(this.api(route), this.toHandler(handler));
+    },
+    post(route: string, handler: LeafHandler) {
+      return this.server.post(this.api(route),
+        restify.plugins.bodyParser(),
+        this.toHandler(handler));
+    }
+  };
 
-    this.server.get('/publicKey',
-      async (req, res, next) => {
-        if (gateway.usingUserKeys) {
-          res.contentType = 'text';
-          res.send(gateway.me.userKey!.getCryptoPublicKey().export({
-            format: 'pem', type: 'spki'
-          }));
-          next();
-        } else {
-          next(new NotFoundError());
-        }
-      });
+  private api(route: string, v?: number) {
+    if (!route.startsWith('/'))
+      throw new RangeError('Route must start with "/"');
+    return `/api/v${v || 1}${route}`;
+  }
+
+  private toHandler(handler: LeafHandler): restify.RequestHandlerType {
+    return (req, res, next) =>
+      handler(req, res).then(next).catch(e => next(toHttpError(e)));
+  }
+
+  /**
+   * @param account subdomain account (may not be requesting user account)
+   * @param name subdomain name
+   */
+  private ownedId({ account, name }: { account: string, name: string }) {
+    try {
+      return this.gateway.ownedId(account, name).validate();
+    } catch (e) {
+      // AccountOwnedId.validate throw strings
+      throw new BadRequestError('Bad domain %s/%s', account, name);
+    }
   }
 }

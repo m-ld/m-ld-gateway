@@ -3,24 +3,24 @@
 !pragma teoz true
 hide footbox
 
+title: Operation with Webhook
+
 participant Gateway as gw
 participant "App" as app
 
-group operation with webhook [happy]
 -> gw ++: Operation 1
 gw -> gw: apply Operation 1
 gw -> gw: enqueue Update 1
-gw -> app ++--: POST /webhook?state=1 [Update 1]
-note right
+note over app
 Webhook eliminates
 need for polling
 end note
+gw -> app ++--: POST /webhook?ETag="1" [Update 1]
 app -> app: process Update 1
-app -> gw ++: DELETE /state/1/lock
+app -> gw ++: DELETE \~/state/lock If-Match: "1"
 gw -> gw: dequeue Update 1
 return 200 OK
 deactivate app
-note across: /state/1 may now be superseded
-end group
+note across: ETag: "1" may now be superseded
 
 @enduml

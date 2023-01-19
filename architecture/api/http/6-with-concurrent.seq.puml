@@ -3,6 +3,8 @@
 !pragma teoz true
 hide footbox
 
+title More Concurrent Cases
+
 participant Gateway as gw
 box App
 participant "(thread 1)" as app
@@ -11,8 +13,8 @@ end box
 
 group concurrent write & poll [happy]
 activate app
-app -> gw ++: POST /state { ... }
-return 200 OK: Update 1
+app -> gw ++: POST \~/state { ... }
+return 200 OK ETag: "1" Update 1
 app -> app: process Update 1
 activate app2
 app2 -> gw ++: GET /updates
@@ -22,18 +24,18 @@ pending
 end note
 return 425 Too Early
 deactivate app2
-app -> gw ++: DELETE /state/1/lock
+app -> gw ++: DELETE \~/state/lock If-Match: "1"
 return 200 OK
 deactivate app
 end group
 
 group timeout write processing [unhappy]
 activate app
-app -> gw ++: POST /state { ... }
+app -> gw ++: POST \~/state { ... }
 return 200 OK: Update 1
 app -> app: process Update 1
 ...lock timeout but not actually dead...
-gw -> app2 ++: POST /webhook?state=1&dequeueCount=2
+gw -> app2 ++: POST /webhook?ETag="1"&dequeueCount=2
 note left
 dequeueCount
 warns Update 1
@@ -45,11 +47,11 @@ note left #pink
 duplicate processing!
 (OK if idempotent)
 end note
-app2 -> gw ++: DELETE /state/1/lock
+app2 -> gw ++: DELETE \~/state/lock If-Match: "1"
 return 200 OK
 deactivate app2
 ...
-app -> gw ++: DELETE /state/1/lock
+app -> gw ++: DELETE \~/state/lock If-Match: "1"
 return 404 Not Found
 deactivate app
 end group

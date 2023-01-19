@@ -38,7 +38,7 @@ export class Gateway extends BaseGateway {
     const dataDir = await this.env.readyPath('data', 'gw');
     const id = uuid();
     LOG.info('Gateway ID is', id);
-    this.domain = await this.cloneFactory.clone({
+    [this.domain] = await this.cloneFactory.clone({
       '@context': gatewayContext, // Overridable by config
       ...this.config,
       '@id': id
@@ -68,10 +68,6 @@ export class Gateway extends BaseGateway {
   }
 
   initDomain(state: MeldReadState) {
-    return this.initSubdomains(state);
-  }
-
-  initSubdomains(state: MeldReadState) {
     // Subdomains are the range of the 'subdomain' Account property
     return this.readAsync(state.read({
       '@select': '?d', '@where': { 'subdomain': '?d' }
@@ -79,7 +75,6 @@ export class Gateway extends BaseGateway {
       this.subdomainAdded(this.ownedRefAsId(<Reference>value['?d'])).finally(next);
     });
   }
-
   onUpdateDomain(update: MeldUpdate, _state: MeldReadState) {
     return this.onUpdateSubdomains(update);
   }
@@ -113,7 +108,7 @@ export class Gateway extends BaseGateway {
       '@id': uuid(), '@domain': tsId.toDomain()
     }), { genesis });
     LOG.info(tsId, 'ID is', config['@id']);
-    const ts = await this.cloneFactory.clone(config, await this.getDataPath(tsId), this.me);
+    const [ts] = await this.cloneFactory.clone(config, await this.getDataPath(tsId), this.me);
     // Attach change listener
     // Note we have not waited for up to date, so this picks up rev-ups
     ts.follow((update, state) => this.onUpdateSubdomain(tsId, update, state));

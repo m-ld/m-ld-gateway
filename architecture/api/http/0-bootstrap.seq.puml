@@ -7,32 +7,37 @@ participant Gateway as gw
 participant "App" as app
 
 activate app
-app -> gw ++: POST /init/≪acc≫/domain/≪dn≫
+app -> gw ++: GET /domain/≪acc≫/≪name≫
 note right
 ?user=..
 &subscribe=≪webhook≫
 authorisation=..
 end note
-gw -> gw: create/rev-up clone
-return 200 OK
 note left
+//from here//
+""/domain/≪acc≫/≪name≫""
+//will be denoted// \~
+end note
+gw -> gw: create/rev-up clone
+return 200 OK ETag: "1"
+note left
+<code>
 {
   config,
-  state: 1,
   updates: []
-  subsId: ≪guid≫
 }
+</code>
 end note
 app -> app: process updates
 loop
-app -> gw ++: GET /state/1?query={...}
+app -> gw ++: GET \~/state?query={ ... } If-Match: "1"
 return 200 OK: //chunked subjects//
 end loop
-app -> gw ++: DELETE /state/1/lock
+app -> gw ++: DELETE \~/state/lock If-Match: "1"
 return 200 OK
 deactivate app
 
 ...interactions e.g. ←GET, ←POST, POST→...
-app -> gw: DELETE /subs/≪guid≫
+app -> gw: DELETE /subs
 
 @enduml

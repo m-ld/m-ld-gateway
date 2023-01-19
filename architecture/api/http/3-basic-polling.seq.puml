@@ -3,25 +3,25 @@
 !pragma teoz true
 hide footbox
 
+title: Operation with Polling
+
 participant Gateway as gw
 participant "App" as app
 
-group operation with polling [happy]
 -> gw ++: Operation 1
 gw -> gw: apply Operation 1
 gw -> gw --: enqueue Update 1
 ...
-app -> gw ++: GET /updates
+app -> gw ++: GET \~/state/updates
 activate app
 note left: Implicit lock
-return 200 OK: {Update 1, state=1}
+return 200 OK ETag: "1" {Update 1}
 note left: May return\nmultiple updates
 app -> app: process Update 1
-app -> gw ++: DELETE /state/1/lock
+app -> gw ++: DELETE \~/state/lock If-Match: "1"
 gw -> gw: dequeue Update 1
 return 200 OK
 deactivate app
-note across: /state/1 may now be superseded
-end group
+note across: ETag: "1" may now be superseded
 
 @enduml

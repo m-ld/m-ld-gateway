@@ -17,7 +17,7 @@ participant Gateway as gw
 participant "App" as app
 
 group app wins [unhappy]
-app -> gw ++: POST /state { ... }
+app -> gw ++: POST \~ { ... }
 -> gw: Operation 2
 note over gw: Update 2 is delayed\nby active write
 return OK: Update 1 //via response//
@@ -32,7 +32,7 @@ end group
 
 group app loses [happy-ish]
 -> gw: Operation 2
-app -> gw ++: POST /state { ... }
+app -> gw ++: POST \~ { ... }
 gw -> app ++: Update 2 //via webhook//
 return OK
 note over gw: Update 1 is delayed\nby pending webhook

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg xmlns="http://www.w3.org/2000/svg"
-     contentStyleType="text/css" height="556px" preserveAspectRatio="none"
-     style="width:576px;height:556px;background:#FFFFFF;" version="1.1" viewBox="0 0 576 556"
-     width="576px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="85.9316" style="stroke:#000000;stroke-width:1.5;" width="308.5" x="89.5" y="310.9043"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="141" x2="141" y1="36.4883" y2="469.457"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:1.0,4.0;" x1="141" x2="141" y1="469.457" y2="510.4121"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="141" x2="141" y1="510.4121" y2="549.7227"/><rect fill="#FFFFFF" height="108.2422" style="stroke:#181818;stroke-width:1.0;" width="10" x="136" y="65.7988"/><rect fill="#FFFFFF" height="29.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="136" y="359.5254"/><rect fill="#FFFFFF" height="29.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="136" y="432.1465"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="382" x2="382" y1="36.4883" y2="469.457"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:1.0,4.0;" x1="382" x2="382" y1="469.457" y2="510.4121"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="382" x2="382" y1="510.4121" y2="549.7227"/><rect fill="#FFFFFF" height="429.9688" style="stroke:#181818;stroke-width:1.0;" width="10" x="377" y="44.4883"/><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="71" x="105.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="112.5" y="25.5352">Gateway</text><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="42" x="361" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="368" y="25.5352">App</text><polygon fill="#181818" points="157,61.7988,147,65.7988,157,69.7988,153,65.7988" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="151" x2="376" y1="65.7988" y2="65.7988"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="207" x="163" y="61.0566">POST /init/≪acc≫/domain/≪dn≫</text><path d="M392,49.4883 L392,104.4883 L569,104.4883 L569,59.4883 L559,49.4883 L392,49.4883 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M559,49.4883 L559,59.4883 L569,59.4883 L559,49.4883 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="50" x="398" y="67.0566">?user=..</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="156" x="398" y="82.3672">&amp;subscribe=≪webhook≫</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="102" x="398" y="97.6777">authorisation=..</text><line style="stroke:#181818;stroke-width:1.0;" x1="146" x2="188" y1="131.7305" y2="131.7305"/><line style="stroke:#181818;stroke-width:1.0;" x1="188" x2="188" y1="131.7305" y2="144.7305"/><line style="stroke:#181818;stroke-width:1.0;" x1="147" x2="188" y1="144.7305" y2="144.7305"/><polygon fill="#181818" points="157,140.7305,147,144.7305,157,148.7305,153,144.7305" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="126" x="153" y="126.9883">create/rev-up clone</text><polygon fill="#181818" points="365,170.041,375,174.041,365,178.041,369,174.041" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="146" x2="371" y1="174.041" y2="174.041"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="153" y="169.2988">200 OK</text><path d="M10,157.7305 L10,258.7305 L136,258.7305 L136,167.7305 L126,157.7305 L10,157.7305 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M126,157.7305 L126,167.7305 L136,167.7305 L126,157.7305 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="4" x="16" y="175.2988">{</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="44" x="24" y="190.6094">config,</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="51" x="24" y="205.9199">state: 1,</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="66" x="24" y="221.2305">updates: []</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="97" x="24" y="236.541">subsId: ≪guid≫</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="4" x="16" y="251.8516">}</text><line style="stroke:#181818;stroke-width:1.0;" x1="387" x2="429" y1="285.9043" y2="285.9043"/><line style="stroke:#181818;stroke-width:1.0;" x1="429" x2="429" y1="285.9043" y2="298.9043"/><line style="stroke:#181818;stroke-width:1.0;" x1="388" x2="429" y1="298.9043" y2="298.9043"/><polygon fill="#181818" points="398,294.9043,388,298.9043,398,302.9043,394,298.9043" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="103" x="394" y="281.1621">process updates</text><path d="M89.5,310.9043 L163.5,310.9043 L163.5,318.2148 L153.5,328.2148 L89.5,328.2148 L89.5,310.9043 " fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="85.9316" style="stroke:#000000;stroke-width:1.5;" width="308.5" x="89.5" y="310.9043"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="29" x="104.5" y="324.4727">loop</text><polygon fill="#181818" points="157,355.5254,147,359.5254,157,363.5254,153,359.5254" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="151" x2="376" y1="359.5254" y2="359.5254"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="151" x="163" y="354.7832">GET /state/1?query={...}</text><polygon fill="#181818" points="365,384.8359,375,388.8359,365,392.8359,369,388.8359" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="146" x2="371" y1="388.8359" y2="388.8359"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="50" x="153" y="384.0938">200 OK:</text><text fill="#000000" font-family="sans-serif" font-size="13" font-style="italic" lengthAdjust="spacing" textLength="111" x="207" y="384.0938">chunked subjects</text><polygon fill="#181818" points="157,428.1465,147,432.1465,157,436.1465,153,432.1465" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="151" x2="376" y1="432.1465" y2="432.1465"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="137" x="163" y="427.4043">DELETE /state/1/lock</text><polygon fill="#181818" points="365,457.457,375,461.457,365,465.457,369,461.457" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="146" x2="371" y1="461.457" y2="461.457"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="153" y="456.7148">200 OK</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="211" x="156" y="494.0918">interactions e.g. ←GET, ←POST, POST→</text><polygon fill="#181818" points="152,527.7227,142,531.7227,152,535.7227,148,531.7227" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="146" x2="381" y1="531.7227" y2="531.7227"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="141" x="158" y="526.9805">DELETE /subs/≪guid≫</text><!--MD5=[4a3313ce943feb315f8e1a1050a3bda1]
+     contentStyleType="text/css" height="525px" preserveAspectRatio="none"
+     style="width:667px;height:525px;background:#FFFFFF;" version="1.1" viewBox="0 0 667 525"
+     width="667px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="85.9316" style="stroke:#000000;stroke-width:1.5;" width="338.5" x="150.5" y="279.5723"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="202" x2="202" y1="36.4883" y2="438.125"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:1.0,4.0;" x1="202" x2="202" y1="438.125" y2="479.0801"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="202" x2="202" y1="479.0801" y2="518.3906"/><rect fill="#FFFFFF" height="108.2422" style="stroke:#181818;stroke-width:1.0;" width="10" x="197" y="65.7988"/><rect fill="#FFFFFF" height="29.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="197" y="328.1934"/><rect fill="#FFFFFF" height="29.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="197" y="400.8145"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="473" x2="473" y1="36.4883" y2="438.125"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:1.0,4.0;" x1="473" x2="473" y1="438.125" y2="479.0801"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="473" x2="473" y1="479.0801" y2="518.3906"/><rect fill="#FFFFFF" height="398.6367" style="stroke:#181818;stroke-width:1.0;" width="10" x="468" y="44.4883"/><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="71" x="166.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="173.5" y="25.5352">Gateway</text><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="42" x="452" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="459" y="25.5352">App</text><polygon fill="#181818" points="218,61.7988,208,65.7988,218,69.7988,214,65.7988" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="212" x2="467" y1="65.7988" y2="65.7988"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="189" x="224" y="61.0566">GET /domain/≪acc≫/≪name≫</text><path d="M483,49.4883 L483,104.4883 L660,104.4883 L660,59.4883 L650,49.4883 L483,49.4883 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M650,49.4883 L650,59.4883 L660,59.4883 L650,49.4883 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="50" x="489" y="67.0566">?user=..</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="156" x="489" y="82.3672">&amp;subscribe=≪webhook≫</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="102" x="489" y="97.6777">authorisation=..</text><path d="M10,49.4883 L10,104.4883 L197,104.4883 L197,59.4883 L187,49.4883 L10,49.4883 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M187,49.4883 L187,59.4883 L197,59.4883 L187,49.4883 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" font-style="italic" lengthAdjust="spacing" textLength="61" x="16" y="67.0566">from here</text><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="166" x="16" y="81.8657">/domain/≪acc≫/≪name≫</text><text fill="#000000" font-family="sans-serif" font-size="13" font-style="italic" lengthAdjust="spacing" textLength="96" x="16" y="97.5">will be denoted</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="116" y="97.5">~</text><line style="stroke:#181818;stroke-width:1.0;" x1="207" x2="249" y1="131.7305" y2="131.7305"/><line style="stroke:#181818;stroke-width:1.0;" x1="249" x2="249" y1="131.7305" y2="144.7305"/><line style="stroke:#181818;stroke-width:1.0;" x1="208" x2="249" y1="144.7305" y2="144.7305"/><polygon fill="#181818" points="218,140.7305,208,144.7305,218,148.7305,214,144.7305" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="126" x="214" y="126.9883">create/rev-up clone</text><polygon fill="#181818" points="456,170.041,466,174.041,456,178.041,460,174.041" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="207" x2="462" y1="174.041" y2="174.041"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="106" x="214" y="169.2988">200 OK ETag: "1"</text><path d="M72,157.7305 L72,227.7305 L197,227.7305 L197,167.7305 L187,157.7305 L72,157.7305 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M187,157.7305 L187,167.7305 L197,167.7305 L187,157.7305 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="8" x="78" y="174.7974">{</text><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="56" x="94" y="189.9302">config,</text><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="88" x="94" y="205.063">updates: []</text><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="8" x="78" y="220.1958">}</text><line style="stroke:#181818;stroke-width:1.0;" x1="478" x2="520" y1="254.5723" y2="254.5723"/><line style="stroke:#181818;stroke-width:1.0;" x1="520" x2="520" y1="254.5723" y2="267.5723"/><line style="stroke:#181818;stroke-width:1.0;" x1="479" x2="520" y1="267.5723" y2="267.5723"/><polygon fill="#181818" points="489,263.5723,479,267.5723,489,271.5723,485,267.5723" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="103" x="485" y="249.8301">process updates</text><path d="M150.5,279.5723 L224.5,279.5723 L224.5,286.8828 L214.5,296.8828 L150.5,296.8828 L150.5,279.5723 " fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="85.9316" style="stroke:#000000;stroke-width:1.5;" width="338.5" x="150.5" y="279.5723"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="29" x="165.5" y="293.1406">loop</text><polygon fill="#181818" points="218,324.1934,208,328.1934,218,332.1934,214,328.1934" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="212" x2="467" y1="328.1934" y2="328.1934"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="237" x="224" y="323.4512">GET ~/state?query={ ... } If-Match: "1"</text><polygon fill="#181818" points="456,353.5039,466,357.5039,456,361.5039,460,357.5039" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="207" x2="462" y1="357.5039" y2="357.5039"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="50" x="214" y="352.7617">200 OK:</text><text fill="#000000" font-family="sans-serif" font-size="13" font-style="italic" lengthAdjust="spacing" textLength="111" x="268" y="352.7617">chunked subjects</text><polygon fill="#181818" points="218,396.8145,208,400.8145,218,404.8145,214,400.8145" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="212" x2="467" y1="400.8145" y2="400.8145"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="215" x="224" y="396.0723">DELETE ~/state/lock If-Match: "1"</text><polygon fill="#181818" points="456,426.125,466,430.125,456,434.125,460,430.125" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="207" x2="462" y1="430.125" y2="430.125"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="214" y="425.3828">200 OK</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="211" x="232" y="462.7598">interactions e.g. ←GET, ←POST, POST→</text><polygon fill="#181818" points="213,496.3906,203,500.3906,213,504.3906,209,500.3906" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="207" x2="472" y1="500.3906" y2="500.3906"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="87" x="219" y="495.6484">DELETE /subs</text><!--MD5=[6f5453f7ccc2b4d0ab837132e35fa8c6]
 @startuml
 'https://plantuml.com/sequence-diagram
 !pragma teoz true
@@ -12,33 +12,38 @@ participant Gateway as gw
 participant "App" as app
 
 activate app
-app -> gw ++: POST /init/≪acc≫/domain/≪dn≫
+app -> gw ++: GET /domain/≪acc≫/≪name≫
 note right
 ?user=..
 &subscribe=≪webhook≫
 authorisation=..
 end note
-gw -> gw: create/rev-up clone
-return 200 OK
 note left
+//from here//
+""/domain/≪acc≫/≪name≫""
+//will be denoted// \~
+end note
+gw -> gw: create/rev-up clone
+return 200 OK ETag: "1"
+note left
+<code>
 {
   config,
-  state: 1,
   updates: []
-  subsId: ≪guid≫
 }
+</code>
 end note
 app -> app: process updates
 loop
-app -> gw ++: GET /state/1?query={...}
+app -> gw ++: GET \~/state?query={ ... } If-Match: "1"
 return 200 OK: //chunked subjects//
 end loop
-app -> gw ++: DELETE /state/1/lock
+app -> gw ++: DELETE \~/state/lock If-Match: "1"
 return 200 OK
 deactivate app
 
 ...interactions e.g. ←GET, ←POST, POST→...
-app -> gw: DELETE /subs/≪guid≫
+app -> gw: DELETE /subs
 
 @enduml
 
@@ -50,33 +55,38 @@ participant Gateway as gw
 participant "App" as app
 
 activate app
-app -> gw ++: POST /init/≪acc≫/domain/≪dn≫
+app -> gw ++: GET /domain/≪acc≫/≪name≫
 note right
 ?user=..
 &subscribe=≪webhook≫
 authorisation=..
 end note
-gw -> gw: create/rev-up clone
-return 200 OK
 note left
+//from here//
+""/domain/≪acc≫/≪name≫""
+//will be denoted// \~
+end note
+gw -> gw: create/rev-up clone
+return 200 OK ETag: "1"
+note left
+<code>
 {
   config,
-  state: 1,
   updates: []
-  subsId: ≪guid≫
 }
+</code>
 end note
 app -> app: process updates
 loop
-app -> gw ++: GET /state/1?query={...}
+app -> gw ++: GET \~/state?query={ ... } If-Match: "1"
 return 200 OK: //chunked subjects//
 end loop
-app -> gw ++: DELETE /state/1/lock
+app -> gw ++: DELETE \~/state/lock If-Match: "1"
 return 200 OK
 deactivate app
 
 ...interactions e.g. ←GET, ←POST, POST→...
-app -> gw: DELETE /subs/≪guid≫
+app -> gw: DELETE /subs
 
 @enduml
 

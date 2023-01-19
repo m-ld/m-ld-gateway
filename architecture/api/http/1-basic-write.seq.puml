@@ -3,17 +3,19 @@
 !pragma teoz true
 hide footbox
 
+title: Basic Write
+
 participant Gateway as gw
 participant "App" as app
 
-group write [happy]
 activate app
-app -> gw ++: POST /state/1 { ... }
+app -> gw ++: POST \~/state { ... }
 gw -> gw: enqueue Update 1
-return 200 OK: {Update 1, state=1}
-& <- gw: Operation 1
+'Note that other operations on the domain can happen independently
+return 200 OK ETag: "1" {Update 1}
+& <- gw: Operation 1 <<publish>>
 app -> app: process Update 1
-app -> gw ++: DELETE /state/1/lock
+app -> gw ++: DELETE \~/state/lock If-Match: "1"
 note left
 Update deletion is //not//
 like ACID commit –
@@ -23,6 +25,5 @@ end note
 gw -> gw: dequeue Update 1
 return 200 OK
 deactivate app
-end group
 
 @enduml

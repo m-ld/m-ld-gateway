@@ -3,41 +3,41 @@
 !pragma teoz true
 hide footbox
 
+title: Concurrent Write and Update
+
 participant Gateway as gw
 box App
 participant "(thread 1)" as app
 participant "(thread 2)" as app2
 end box
 
-group POST to state with pending [happy]
+group write to expected tick
 -> gw ++: Operation 1
-gw -> app2 ++--: POST /webhook?state=1
+gw -> app2 ++--: POST /webhook?ETag="1" [Update 1]
 note over app2: Update being\nprocessed
 activate app
-app -> gw ++: POST /state/0 { ... }
-return 404 Not Found\n(Update 1 is pending)
+app -> gw ++: POST \~/state If-Match: "0" { ... }
+return 412 Precondition Failed\n(Update 1 is pending)
 deactivate app
 deactivate app2
 end group
 
-group POST to wildcard state [happy]
+group write to wildcard tick
 -> gw ++: Operation 1
-gw -> app2 ++--: POST /webhook?state=1
+gw -> app2 ++--: POST /webhook?ETag="1" [Update 1]
 note over app2: Update being\nprocessed
 activate app
-app -> gw ++: POST /state { ... }
+app -> gw ++: POST \~ { ... }
 note over gw
 write is delayed
 by pending Update
 end note
-app2 -> gw ++: GET /updates
-return 200 OK: Update 1
-app2 -> gw ++: DELETE /state/1/lock
+app2 -> gw ++: DELETE \~/state/lock If-Match: "1"
 return 200 OK
 deactivate app2
 gw --> app: 200 OK: Update 2\n//or// 408 Request Timeout
 deactivate gw
-app -> gw ++: DELETE /state/2/lock
+app -> gw ++: DELETE \~/state/lock If-Match: "2"
 return 200 OK
 deactivate app
 end group
