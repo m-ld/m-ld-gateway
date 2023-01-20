@@ -19,30 +19,39 @@ export class Gateway extends BaseGateway {
   public readonly me: GatewayPrincipal;
   public /*readonly*/ domain: MeldClone;
 
+  private readonly config: GatewayConfig;
   private readonly subdomains: { [name: string]: MeldClone } = {};
   private readonly subs: Subscription = new Subscription();
 
   constructor(
     private readonly env: Env,
-    private readonly config: GatewayConfig,
+    config: Partial<GatewayConfig>,
     private readonly cloneFactory: CloneFactory,
     public readonly keyStore: AuthKeyStore
   ) {
+    if (!config['@domain'])
+      throw new RangeError('No domain specified for Gateway');
+    if (!config.auth)
+      throw new RangeError('No auth key specified for Gateway');
+    if (!config.gateway)
+      throw new RangeError('No gateway address specified for Gateway');
     super(config['@domain']);
     LOG.debug('Gateway domain is', this.domainName);
-    this.me = new GatewayPrincipal(this.absoluteId('/'), config);
+    const id = uuid();
+    LOG.info('Gateway ID is', id);
+    this.config = {
+      // Overridable by config
+      '@context': gatewayContext, genesis: false,
+      ...config,
+      '@id': id // Not overrideable
+    } as GatewayConfig;
+    this.me = new GatewayPrincipal(this.absoluteId('/'), this.config);
   }
 
   async initialise() {
     // Load the gateway domain
     const dataDir = await this.env.readyPath('data', 'gw');
-    const id = uuid();
-    LOG.info('Gateway ID is', id);
-    [this.domain] = await this.cloneFactory.clone({
-      '@context': gatewayContext, // Overridable by config
-      ...this.config,
-      '@id': id
-    }, dataDir);
+    [this.domain] = await this.cloneFactory.clone(this.config, dataDir);
     await this.domain.status.becomes({ outdated: false });
     // Create the gateway account with our key, if it doesn't exist
     await this.domain.write(
@@ -105,7 +114,7 @@ export class Gateway extends BaseGateway {
 
   async cloneSubdomain(tsId: AccountOwnedId, genesis = false): Promise<MeldClone> {
     const config = Object.assign(Env.mergeConfig<BaseGatewayConfig>(this.config, {
-      '@id': uuid(), '@domain': tsId.toDomain()
+      '@id': uuid(), '@domain': tsId.toDomain(), '@context': false
     }), { genesis });
     LOG.info(tsId, 'ID is', config['@id']);
     const [ts] = await this.cloneFactory.clone(config, await this.getDataPath(tsId), this.me);
@@ -148,7 +157,7 @@ export class Gateway extends BaseGateway {
   }
 
   getDataPath(tsId: AccountOwnedId) {
-    return this.env.readyPath('data', 'tsh', tsId.account, tsId.name);
+    return this.env.readyPath('data', 'domain', tsId.account, tsId.name);
   }
 
   async subdomainAdded(tsId: AccountOwnedId) {
@@ -241,7 +250,7 @@ export class Gateway extends BaseGateway {
   }
 
   async initSubdomain(tsId: AccountOwnedId, genesis: boolean) {
-    if (tsId.toDomain() in this.subdomains)
+    if (this.hasClonedSubdomain(tsId))
       return this.subdomains[tsId.toDomain()];
     // If genesis, check that this subdomain has not existed before
     if (genesis && await this.tsTombstoneExists(tsId))
@@ -250,6 +259,10 @@ export class Gateway extends BaseGateway {
     // Ensure that the clone is online to avoid race with the client
     await ts.status.becomes({ online: true });
     return ts;
+  }
+
+  hasClonedSubdomain(tsId: AccountOwnedId) {
+    return tsId.toDomain() in this.subdomains;
   }
 
   close() {

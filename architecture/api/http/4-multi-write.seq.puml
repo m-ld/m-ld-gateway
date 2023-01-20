@@ -9,23 +9,23 @@ participant Gateway as gw
 participant "App" as app
 
 activate app
-app -> gw ++: POST \~/state { ... }
+app -> gw ++: POST \~/state?lock { ... }
 gw -> gw: enqueue Update 1
-return 200 OK ETag: "1" {Update 1}
+return 201 Created ETag: "1" Location: \~/state?lock {Update 1}
 & <- gw: Operation 1
-app -> app: process Update 1
+app -> app: process\nUpdate 1
 app -> gw ++: POST \~/state { ... }
 note right
 implicit DELETE
-\~/state/lock
+\~/state?lock
 If-Match: "1"
 end note
 gw -> gw: dequeue Update 1
 gw -> gw: enqueue Update 2
 return 200 OK ETag: "2" {Update 2}
 & <- gw: Operation 2
-app -> app: process Update 2
-app -> gw ++: DELETE \~/state/lock If-Match: "2"
+app -> app: process\nUpdate 2
+app -> gw ++: DELETE \~/state?lock If-Match: "2"
 gw -> gw: dequeue Update 2
 return 200 OK
 deactivate app

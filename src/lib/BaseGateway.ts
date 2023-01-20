@@ -16,6 +16,8 @@ export interface BaseGatewayConfig extends MeldConfig, AuthKeyConfig {
   gateway: string | URL | false;
   /** The user; undefined if this is a service */
   user?: string;
+  /** Allow any other keys for config */
+  [key: string]: any;
 }
 
 
@@ -25,10 +27,7 @@ export interface BaseGatewayConfig extends MeldConfig, AuthKeyConfig {
 export class BaseGateway {
   constructor(
     public readonly domainName: string
-  ) {
-    if (!domainName)
-      throw new RangeError('No domain specified for Gateway');
-  }
+  ) {}
 
   ownedRefAsId(tsRef: Reference) {
     // A timesheet reference may be relative to the domain base

@@ -12,13 +12,13 @@ participant "App" as app
 gw -> gw: apply Operation 1
 gw -> gw --: enqueue Update 1
 ...
-app -> gw ++: GET \~/state/updates
+app -> gw ++: POST \~/poll
 activate app
 note left: Implicit lock
-return 200 OK ETag: "1" {Update 1}
+return 201 Created ETag: "1" Location: \~/state?lock [Update 1]
 note left: May return\nmultiple updates
-app -> app: process Update 1
-app -> gw ++: DELETE \~/state/lock If-Match: "1"
+app -> app: process\nUpdate 1
+app -> gw ++: DELETE \~/state?lock If-Match: "1"
 gw -> gw: dequeue Update 1
 return 200 OK
 deactivate app

@@ -1,6 +1,6 @@
 import { Server as SocketIoServer } from 'socket.io';
 import { IoRemotesService } from '@m-ld/m-ld/ext/socket.io/server';
-import { Authorization } from '../server/Authorization.js';
+import { BasicAuthorization } from '../server/Authorization.js';
 import { AccountOwnedId } from '../lib/index.js';
 import { ForbiddenError } from '../http/errors.js';
 import { Server as RestifyServer } from 'restify';
@@ -19,7 +19,7 @@ export class IoService extends IoRemotesService {
         if (user) {
           if (typeof domainName == 'string') {
             // A user is trying to access a given domain
-            await new Authorization({ user, key }).verifyUser(gateway, {
+            await new BasicAuthorization(user, key).verifyUser(gateway, {
               id: AccountOwnedId.fromDomain(domainName), forWrite: 'Subdomain'
             });
           } else {

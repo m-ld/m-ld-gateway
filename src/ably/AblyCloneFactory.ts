@@ -22,10 +22,8 @@ export class AblyCloneFactory extends CloneFactory {
   // TODO: This is a duplication of m-ld-cli/ext/ably.js
   async remotes(config: AblyGatewayConfig) {
     // Load WRTC config from Xirsys if available
-    if ('xirsys' in config) {
-      // @ts-ignore
+    if ('xirsys' in config)
       config.wrtc = await xirsys.loadWrtcConfig(config.xirsys);
-    }
     if ('wrtc' in config)
       return ablyModule.AblyWrtcRemotes;
     else

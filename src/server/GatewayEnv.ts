@@ -14,7 +14,7 @@ export class GatewayEnv extends Env {
   /**
    * Parse command line, environment variables & configuration
    */
-  async loadConfig(): Promise<GatewayConfig> {
+  async loadConfig(): Promise<Partial<GatewayConfig>> {
     // Parse command line, environment variables & configuration
     const argv = (await this.yargs())
       .demandOption(['gateway', 'auth'])
@@ -31,6 +31,6 @@ export class GatewayEnv extends Env {
         typeof config.gateway == 'string' && isFQDN(config.gateway) ?
           config.gateway : new URL(config.gateway!).hostname;
     }
-    return <GatewayConfig>config;
+    return config;
   }
 }

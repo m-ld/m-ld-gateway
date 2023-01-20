@@ -60,30 +60,31 @@ export class GatewayHttp {
       });
     }
 
-    this.v1.get('/domain/:account/:name', async (req, res) => {
+    this.put('/domain/:account/:name', async (req, res) => {
       const id = this.ownedId(req.params);
       const who = await Authorization.fromRequest(req).verifyUser(
         gateway, { id, forWrite: 'Subdomain' });
       res.json(await gateway.subdomainConfig(id, who));
     });
 
-    this.v1.get('/domain/:account/:name/state', async (req, res) => {
+    this.get('/domain/:account/:name/state', async (req, res) => {
       const id = this.ownedId(req.params);
       const query = JSON.parse(req.params.query || req.params.q);
       await Authorization.fromRequest(req).verifyUser(gateway, { id });
-      const clone = await this.gateway.initSubdomain(id, false)
+      const clone = await this.gateway.initSubdomain(id, false);
       await sendStream(res, clone.read(query).consume);
     });
 
-    this.v1.post('/domain/:account/:name/state', async (req, res) => {
+    this.post('/domain/:account/:name/state', async (req, res) => {
       const id = this.ownedId(req.params);
-      await Authorization.fromRequest(req).verifyUser(gateway, { id, forWrite: 'Subdomain' });
-      const clone = await this.gateway.initSubdomain(id, false)
+      await Authorization.fromRequest(req).verifyUser(
+        gateway, { id, forWrite: 'Subdomain' });
+      const clone = await this.gateway.initSubdomain(id, false);
       await clone.write(req.body);
       res.send(200);
     });
 
-    this.v1.get('/context', async (req, res) => {
+    this.get('/context', async (req, res) => {
       res.contentType = req.accepts('html') ? 'html' : 'application/ld+json';
       res.send({
         '@base': domainRelativeIri('/', gateway.domainName),
@@ -91,7 +92,7 @@ export class GatewayHttp {
       });
     });
 
-    this.v1.get('/publicKey', async (req, res) => {
+    this.get('/publicKey', async (req, res) => {
       if (!gateway.usingUserKeys)
         throw new NotFoundError();
       res.contentType = 'text';
@@ -101,21 +102,26 @@ export class GatewayHttp {
     });
   }
 
-  private v1 = {
-    get(route: string, handler: LeafHandler) {
-      return this.server.get(this.api(route), this.toHandler(handler));
-    },
-    post(route: string, handler: LeafHandler) {
-      return this.server.post(this.api(route),
-        restify.plugins.bodyParser(),
-        this.toHandler(handler));
-    }
-  };
+  get(route: string, handler: LeafHandler) {
+    return this.server.get(this.api(route), this.toHandler(handler));
+  }
 
-  private api(route: string, v?: number) {
+  post(route: string, handler: LeafHandler) {
+    return this.server.post(this.api(route),
+      restify.plugins.bodyParser(),
+      this.toHandler(handler));
+  }
+
+  put(route: string, handler: LeafHandler) {
+    return this.server.put(this.api(route),
+      restify.plugins.bodyParser(),
+      this.toHandler(handler));
+  }
+
+  private api(route: string, v = 1) {
     if (!route.startsWith('/'))
       throw new RangeError('Route must start with "/"');
-    return `/api/v${v || 1}${route}`;
+    return `/api/v${v}${route}`;
   }
 
   private toHandler(handler: LeafHandler): restify.RequestHandlerType {

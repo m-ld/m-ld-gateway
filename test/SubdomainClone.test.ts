@@ -1,15 +1,10 @@
-import { clone as meldClone, ConstructRemotes, Describe, MeldClone } from '@m-ld/m-ld';
+import { clone as meldClone, Describe, MeldClone } from '@m-ld/m-ld';
 import { MemoryLevel } from 'memory-level';
-import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { SubdomainClone, SubdomainUpdate } from '../src/server/SubdomainClone';
 import { setTimeout } from 'timers/promises';
 import { once } from 'events';
-
-// noinspection JSUnusedGlobalSymbols
-const DeadRemotes: ConstructRemotes = <any>(class {
-  live = new BehaviorSubject(false);
-  setLocal() {}
-});
+import { DeadRemotes } from './fixtures';
 
 describe('Subdomain clone', () => {
   let clone: MeldClone;

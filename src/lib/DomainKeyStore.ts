@@ -8,7 +8,7 @@ import { MeldConfig, shortId } from '@m-ld/m-ld';
 export class DomainKeyStore implements AuthKeyStore {
   private readonly appId: string;
 
-  constructor(config: MeldConfig) {
+  constructor(config: Partial<MeldConfig>) {
     this.appId = shortId(config['@domain']);
   }
 

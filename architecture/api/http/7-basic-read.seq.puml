@@ -11,13 +11,13 @@ participant "App" as app
 activate app
 opt not already locked
 app -> gw ++: POST ~/state //(undefined "write")//
-return 200 OK: ETag: "1"
+return 201 Created ETag: "1" Location: \~/state?lock
 end opt
 app -> gw ++: GET \~/state?query={ ... } If-Match: "1"
 'Note that other operations on the domain can happen independently
 return 200 OK: <<chunked>> Subject stream
 alt if locked
-app -> gw ++: DELETE \~/state/lock If-Match: "1"
+app -> gw ++: DELETE \~/state?lock If-Match: "1"
 return 200 OK
 deactivate app
 end alt
