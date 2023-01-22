@@ -1,9 +1,7 @@
-import type { MeldClone, MeldReadState, MeldUpdate, Read, Write } from '@m-ld/m-ld';
+import type { MeldClone, MeldReadState, MeldState, MeldUpdate, Write } from '@m-ld/m-ld';
 import type { BackendLevel } from '../lib/index';
-import { Results } from '../lib/index';
 import { AbstractSublevel } from 'abstract-level';
 import { EventEmitter, once } from 'events';
-import { BehaviorSubject } from 'rxjs';
 
 type JsonMeldUpdate = Omit<MeldUpdate, 'trace'>;
 
@@ -28,6 +26,10 @@ export function tickKey(tick: number) {
   return `tick:${TICK_KEY_PAD.concat(tick.toString(TICK_KEY_RADIX)).slice(-TICK_KEY_LEN)}`;
 }
 
+type CloneState =
+  { state: MeldReadState, lock?: 'read' } |
+  { state: MeldState, lock: 'write' };
+
 /**
  * Mediates access to the given clone.
  *
@@ -35,22 +37,22 @@ export function tickKey(tick: number) {
  * which emit disjoint sets of updates under normal operation.
  */
 export class SubdomainClone extends EventEmitter {
-  private queueStore: AbstractSublevel<BackendLevel, unknown, string, any>;
-  private state: BehaviorSubject<MeldReadState>;
+  private readonly queueStore: AbstractSublevel<BackendLevel, unknown, string, any>;
+  private _state: CloneState;
 
   constructor(
-    private readonly clone: MeldClone,
+    private readonly _clone: MeldClone,
     backend: BackendLevel
   ) {
     super();
     this.queueStore = backend.sublevel('_gw:', { valueEncoding: 'json' });
     // Follow the clone to enqueue updates
-    clone.follow(async (update, state) => {
+    _clone.follow(async (update, state) => {
       if (this.listenerCount('echo') > 0) {
         this.emit('echo', await this.enqueue(update));
       } else if (this.listenerCount('update') > 0) {
         // LOCKS the state if anyone is subscribed
-        await this.doAndStayLocked(state, async () => {
+        await this.doAndStayLocked({ state }, async () => {
           this.emit('update', await this.enqueue(update));
         });
       } else {
@@ -58,7 +60,16 @@ export class SubdomainClone extends EventEmitter {
         await this.enqueue(update, false);
       }
     });
-    this.state = new BehaviorSubject(clone);
+    this._state = { state: _clone };
+  }
+
+  /** Getter omits state, which is managed by this class */
+  get clone(): Omit<MeldClone, keyof MeldState> {
+    return this._clone;
+  }
+
+  get state(): MeldReadState {
+    return this._state.state;
   }
 
   private async enqueue(update: JsonMeldUpdate | SubdomainUpdate, emitting = true) {
@@ -70,17 +81,17 @@ export class SubdomainClone extends EventEmitter {
     return subdomainUpdate;
   }
 
-  private async doAndStayLocked(state: MeldReadState, proc: () => Promise<unknown> | unknown) {
-    this.state.next(state);
+  private async doAndStayLocked(state: CloneState, proc: () => Promise<unknown> | unknown) {
+    this._state = { lock: 'read', ...state };
     // Start waiting for the lock before the proc
     const lockReleased = once(this, 'lockRelease'); // TODO timeout
     await proc();
     await lockReleased;
-    this.state.next(this.clone);
+    this._state = { state: this._clone };
   }
 
   get tick() {
-    return this.clone.status.value.ticks;
+    return this._clone.status.value.ticks;
   }
 
   /**
@@ -90,8 +101,8 @@ export class SubdomainClone extends EventEmitter {
   async *poll(): AsyncGenerator<SubdomainUpdate> {
     // Grab a read lock on the clone that waits for lockRelease
     await new Promise<void>(resolve =>
-      this.clone.read(state =>
-        this.doAndStayLocked(state, resolve)));
+      this._clone.read(state =>
+        this.doAndStayLocked({ state }, resolve)));
     for await (let [_key, update] of this.queueStore.iterator())
       // Re-enqueue the update with an incremented emit count
       yield this.enqueue(update);
@@ -102,13 +113,13 @@ export class SubdomainClone extends EventEmitter {
    */
   write(request?: Write): Promise<SubdomainUpdate | null> {
     return new Promise((resolve, reject) => {
-      this.clone.write(state => this.doAndStayLocked(state, async () => {
+      const doWrite = async (state: MeldState) => {
         if (request != null) {
           // Every write should produce one echo update or none.
           const beforeTick = this.tick;
           this.on('echo', resolve);
           try {
-            this.state.next(await state.write(request));
+            this._state.state = await state.write(request);
             if (beforeTick === this.tick)
               resolve(null);
           } finally {
@@ -119,16 +130,26 @@ export class SubdomainClone extends EventEmitter {
         } else {
           resolve(null);
         }
-      })).catch(reject);
+      };
+      if (this._state.lock === 'write')
+        doWrite(this._state.state).catch(reject);
+      else
+        this._clone.write(state =>
+          this.doAndStayLocked({ state, lock: 'write' },
+            () => doWrite(state))).catch(reject);
     });
   }
 
-  read<R extends Read>(request: R): Results {
-    return this.state.value.read(request).consume;
+  get locked() {
+    return this._state.lock != null;
   }
 
   async unlock() {
     await this.queueStore.clear();
     this.emit('lockRelease');
+  }
+
+  close() {
+    return this._clone.close();
   }
 }

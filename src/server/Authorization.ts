@@ -2,7 +2,7 @@ import { AccountOwnedId, AuthKey, verifyJwt } from '../lib/index.js';
 import { UserKey } from '../data/index.js';
 import { UnauthorizedError } from '../http/errors.js';
 import type { Request } from 'restify';
-import { Gateway } from './Gateway.js';
+import { Gateway, Who } from './Gateway.js';
 import { decode } from 'jsonwebtoken';
 import { Account } from './Account';
 
@@ -81,7 +81,7 @@ export class BearerAuthorization extends Authorization {
     super();
   }
 
-  async verifyUser(gateway: Gateway, access?: AccessRequest) {
+  async verifyUser(gateway: Gateway, access?: AccessRequest): Promise<Who> {
     const payload = decode(this.jwt, { json: true });
     if (payload?.sub == null)
       throw new UnauthorizedError('Missing user identity');

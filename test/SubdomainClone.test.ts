@@ -18,6 +18,10 @@ describe('Subdomain clone', () => {
     sdc = new SubdomainClone(clone, backend);
   });
 
+  test('initialises unlocked', () => {
+    expect(sdc.locked).toBe(false);
+  });
+
   test('poll for an update', async () => {
     // Using an unmanaged local write to simulate a remote update
     await clone.write({ '@id': 'fred', name: 'Fred' });
@@ -28,6 +32,7 @@ describe('Subdomain clone', () => {
         '@emitCount': 1
       });
     }
+    expect(sdc.locked).toBe(true);
     await sdc.unlock();
   });
 
@@ -57,15 +62,17 @@ describe('Subdomain clone', () => {
         '@insert': [{ '@id': 'fred', name: 'Fred' }],
         '@emitCount': 1
       });
+    expect(sdc.locked).toBe(true);
     await sdc.unlock();
   });
 
   test('empty write returns null', async () => {
     await expect(sdc.write()).resolves.toBeNull();
+    expect(sdc.locked).toBe(true);
     await sdc.unlock();
   });
 
-  test('write blocks write until unlock', async () => {
+  test('write blocks external write until unlock', async () => {
     await sdc.write({ '@id': 'wilma', name: 'Wilma' });
     const willWrite = clone.write({ '@id': 'fred', name: 'Fred' });
     await expect(Promise.race([
@@ -75,11 +82,20 @@ describe('Subdomain clone', () => {
     await expect(willWrite).resolves.toBeDefined();
   });
 
+  test('can write multiple before unlock', async () => {
+    await sdc.write({ '@id': 'wilma', name: 'Wilma' });
+    expect(sdc.locked).toBe(true);
+    await sdc.write({ '@id': 'fred', name: 'Fred' });
+    expect(sdc.tick).toBe(2);
+    await sdc.unlock();
+  });
+
   test('read gets write before unlock', async () => {
     await sdc.write({ '@id': 'fred', name: 'Fred' });
     expect(sdc.tick).toBe(1);
-    await expect(firstValueFrom(sdc.read<Describe>({ '@describe': 'fred' })))
-      .resolves.toMatchObject({ value: { name: 'Fred' } });
+    expect(sdc.locked).toBe(true);
+    await expect(firstValueFrom(sdc.state.read<Describe>({ '@describe': 'fred' })))
+      .resolves.toMatchObject({ name: 'Fred' });
     await sdc.unlock();
   });
 
@@ -90,6 +106,7 @@ describe('Subdomain clone', () => {
       '@insert': [{ '@id': 'fred', name: 'Fred' }],
       '@emitCount': 1
     }]);
+    expect(sdc.locked).toBe(true);
     await sdc.unlock();
   });
 

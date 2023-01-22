@@ -157,8 +157,8 @@ describe('Gateway', () => {
         });
         expect(existsSync(join(tmpDir.name, 'data', 'domain', 'test', 'sd1')));
         // Expect subdomain clone to contain user principal for signing
-        const ts = await gateway.initSubdomain(sdId, false);
-        await expect(ts.get('http://ex.org/test')).resolves.toEqual({
+        const sd = await gateway.getSubdomain(sdId);
+        await expect(sd.state.get('http://ex.org/test')).resolves.toEqual({
           '@id': 'http://ex.org/test', '@type': 'Account', key: { '@id': '.keyid' }
         });
       });

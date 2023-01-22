@@ -2,8 +2,7 @@ import {
   GraphSubject, MeldClone, MeldConfig, MeldReadState, MeldUpdate, propertyValue, Reference, uuid
 } from '@m-ld/m-ld';
 import {
-  AccountOwnedId, AuthKeyStore, BaseGateway, BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal,
-  Results
+  AccountOwnedId, AuthKeyStore, BaseGateway, BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal
 } from '../lib/index.js';
 import { gatewayContext, Iri, UserKey } from '../data/index.js';
 import LOG from 'loglevel';
@@ -11,16 +10,19 @@ import { access, rm, writeFile } from 'fs/promises';
 import { finalize, Subscription } from 'rxjs';
 import { ConflictError } from '../http/errors.js';
 import { GatewayConfig } from './index.js';
-import { Bite } from 'rx-flowable';
+import { Bite, Consumable } from 'rx-flowable';
 import { Account } from './Account.js';
 import { accountHasSubdomain } from './statements.js';
+import { SubdomainClone } from './SubdomainClone';
+
+export type Who = { acc: Account, keyid: string };
 
 export class Gateway extends BaseGateway {
   public readonly me: GatewayPrincipal;
   public /*readonly*/ domain: MeldClone;
 
   private readonly config: GatewayConfig;
-  private readonly subdomains: { [name: string]: MeldClone } = {};
+  private readonly subdomains: { [name: string]: SubdomainClone } = {};
   private readonly subs: Subscription = new Subscription();
 
   constructor(
@@ -105,32 +107,16 @@ export class Gateway extends BaseGateway {
    * Hoop-jumping to ensure that an asynchronous read does not throw an
    * unhandled exception if the gateway is closed too soon.
    */
-  readAsync(results: Results, sub: (value: Bite<GraphSubject>) => void) {
+  readAsync(results: Consumable<GraphSubject>, sub: (value: Bite<GraphSubject>) => void) {
     return new Promise<void>(resolve => {
       // noinspection JSCheckFunctionSignatures
       this.subs.add(results.pipe(finalize(resolve)).subscribe(sub));
     });
   }
 
-  async cloneSubdomain(tsId: AccountOwnedId, genesis = false): Promise<MeldClone> {
-    const config = Object.assign(Env.mergeConfig<BaseGatewayConfig>(this.config, {
-      '@id': uuid(), '@domain': tsId.toDomain(), '@context': false
-    }), { genesis });
-    LOG.info(tsId, 'ID is', config['@id']);
-    const [ts] = await this.cloneFactory.clone(config, await this.getDataPath(tsId), this.me);
-    // Attach change listener
-    // Note we have not waited for up to date, so this picks up rev-ups
-    ts.follow((update, state) => this.onUpdateSubdomain(tsId, update, state));
-    if (genesis && this.usingUserKeys) {
-      // Add our machine identity and key to the subdomain for signing
-      await this.writePrincipalToSubdomain(ts, '/', 'Gateway', this.me.userKey!);
-    }
-    return this.subdomains[tsId.toDomain()] = ts;
-  }
-
   // TODO: implement this in timeld
   onUpdateSubdomain(
-    _tsId: AccountOwnedId,
+    _id: AccountOwnedId,
     _update: MeldUpdate,
     _state: MeldReadState
   ): Promise<unknown> {
@@ -138,58 +124,59 @@ export class Gateway extends BaseGateway {
   }
 
   /**
-   * @param ts
+   * @param sd
    * @param iri gateway-relative or absolute IRI
    * @param type note vocabulary is common between gw and ts
    * @param key
    */
   async writePrincipalToSubdomain(
-    ts: MeldClone,
+    sd: SubdomainClone,
     iri: Iri,
     type: 'Account' | 'Gateway',
     key: UserKey
   ) {
-    await ts.write({
+    await sd.write({
       '@id': this.absoluteId(iri),
       '@type': type,
       key: key.toJSON(true)
     });
+    await sd.unlock();
   }
 
-  getDataPath(tsId: AccountOwnedId) {
-    return this.env.readyPath('data', 'domain', tsId.account, tsId.name);
+  getDataPath(id: AccountOwnedId) {
+    return this.env.readyPath('data', 'domain', id.account, id.name);
   }
 
-  async subdomainAdded(tsId: AccountOwnedId) {
-    if (!(tsId.toDomain() in this.subdomains)) {
+  async subdomainAdded(id: AccountOwnedId) {
+    if (!(id.toDomain() in this.subdomains)) {
       try {
-        await this.cloneSubdomain(tsId);
-        LOG.info('Loaded declared subdomain', tsId);
+        await this.cloneSubdomain(id);
+        LOG.info('Loaded declared subdomain', id);
       } catch (e) {
         // If the clone fails that's fine, we'll try again if it's asked for
-        LOG.warn('Failed to load declared subdomain', tsId, e);
+        LOG.warn('Failed to load declared subdomain', id, e);
       }
     }
   }
 
-  async subdomainRemoved(tsId: AccountOwnedId) {
+  async subdomainRemoved(id: AccountOwnedId) {
     try {
-      await this.subdomains[tsId.toDomain()]?.close();
-      const path = await this.getDataPath(tsId);
+      await this.subdomains[id.toDomain()]?.close();
+      const path = await this.getDataPath(id);
       // Remove the persistent data
       await rm(path, { recursive: true, force: true });
       // Write the tombstone file to prevent re-creation
       await writeFile(`${path}.rip`, '');
       // TODO: Remove all channel permissions
-      delete this.subdomains[tsId.toDomain()];
-      LOG.info('Removed declared subdomain', tsId);
+      delete this.subdomains[id.toDomain()];
+      LOG.info('Removed declared subdomain', id);
     } catch (e) {
-      LOG.warn('Error removing declared subdomain', tsId, e);
+      LOG.warn('Error removing declared subdomain', id, e);
     }
   }
 
-  async tsTombstoneExists(tsId: AccountOwnedId) {
-    const path = await this.getDataPath(tsId);
+  async tsTombstoneExists(id: AccountOwnedId) {
+    const path = await this.getDataPath(id);
     return access(`${path}.rip`).then(() => true, () => false);
   }
 
@@ -218,25 +205,25 @@ export class Gateway extends BaseGateway {
    * The caller must have already checked user access to the subdomain.
    */
   async subdomainConfig(
-    tsId: AccountOwnedId,
-    { acc: user, keyid }: { acc: Account, keyid: string }
+    id: AccountOwnedId,
+    { acc: user, keyid }: Who
   ): Promise<Partial<MeldConfig>> {
-    const tsDomain = tsId.toDomain();
+    const tsDomain = id.toDomain();
     // Use m-ld write locking to guard against API race conditions
     await this.domain.write(async state => {
       // Do we already have a clone of this subdomain?
-      let ts = this.subdomains[tsDomain];
-      if (ts == null) {
+      let sd = this.subdomains[tsDomain];
+      if (sd == null) {
         // Genesis if the subdomain is not already in the account
-        ts = await this.initSubdomain(tsId, await this.isGenesisTs(state, tsId));
+        sd = await this.getSubdomain(id, await this.isGenesis(state, id));
         // Ensure the subdomain is in the domain
-        state = await state.write(accountHasSubdomain(tsId));
+        state = await state.write(accountHasSubdomain(id));
       }
       if (this.usingUserKeys) {
         // Ensure that the account is in the subdomain for signing
         const userKey = await user.key(state, keyid);
         await this.writePrincipalToSubdomain(
-          ts, user.name, 'Account', userKey!);
+          sd, user.name, 'Account', userKey!);
       }
     });
     // Return the config required for a new clone, using some of our config
@@ -245,24 +232,41 @@ export class Gateway extends BaseGateway {
     }, this.cloneFactory.reusableConfig(this.config));
   }
 
-  async isGenesisTs(state: MeldReadState, tsId: AccountOwnedId) {
-    return !(await state.ask({ '@where': accountHasSubdomain(tsId) }));
+  async isGenesis(state: MeldReadState, id: AccountOwnedId) {
+    return !(await state.ask({ '@where': accountHasSubdomain(id) }));
   }
 
-  async initSubdomain(tsId: AccountOwnedId, genesis: boolean) {
-    if (this.hasClonedSubdomain(tsId))
-      return this.subdomains[tsId.toDomain()];
+  async getSubdomain(id: AccountOwnedId, genesis = false) {
+    if (this.hasClonedSubdomain(id))
+      return this.subdomains[id.toDomain()];
     // If genesis, check that this subdomain has not existed before
-    if (genesis && await this.tsTombstoneExists(tsId))
+    if (genesis && await this.tsTombstoneExists(id))
       throw new ConflictError();
-    const ts = await this.cloneSubdomain(tsId, genesis);
+    const sd = await this.cloneSubdomain(id, genesis);
     // Ensure that the clone is online to avoid race with the client
-    await ts.status.becomes({ online: true });
-    return ts;
+    await sd.clone.status.becomes({ online: true });
+    return sd;
   }
 
-  hasClonedSubdomain(tsId: AccountOwnedId) {
-    return tsId.toDomain() in this.subdomains;
+  async cloneSubdomain(id: AccountOwnedId, genesis = false): Promise<SubdomainClone> {
+    const config = Object.assign(Env.mergeConfig<BaseGatewayConfig>(this.config, {
+      '@id': uuid(), '@domain': id.toDomain(), '@context': false
+    }), { genesis });
+    LOG.info(id, 'ID is', config['@id']);
+    const sd = new SubdomainClone(
+      ...await this.cloneFactory.clone(config, await this.getDataPath(id), this.me));
+    // Attach change listener
+    // Note we have not waited for up to date, so this picks up rev-ups
+    sd.clone.follow((update, state) => this.onUpdateSubdomain(id, update, state));
+    if (genesis && this.usingUserKeys) {
+      // Add our machine identity and key to the subdomain for signing
+      await this.writePrincipalToSubdomain(sd, '/', 'Gateway', this.me.userKey!);
+    }
+    return this.subdomains[id.toDomain()] = sd;
+  }
+
+  hasClonedSubdomain(id: AccountOwnedId) {
+    return id.toDomain() in this.subdomains;
   }
 
   close() {
