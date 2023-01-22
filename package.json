@@ -9,7 +9,7 @@
     "start": "tsc --incremental && node ext/start.js",
     "clean": "rm -rf ext",
     "build": "npm run clean && tsc && npm run test",
-    "test": "jest --silent"
+    "test": "node --experimental-vm-modules node_modules/.bin/jest --silent"
   },
   "repository": {
     "type": "git",
