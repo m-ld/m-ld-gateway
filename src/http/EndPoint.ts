@@ -30,12 +30,12 @@ export async function sendChunked(res: Response, results: Consumable<any>, statu
 
 type NextFreeHandler = (req: Request, res: Response) => Promise<unknown> | unknown;
 function nextifyHandler(handler: NextFreeHandler): RequestHandlerType {
-  return async (req, res, next) => {
+  return (req, res, next) => {
     try {
-      await handler(req, res);
-      next();
+      Promise.resolve(handler(req, res)).then(next)
+        .catch(e => next(toHttpError(e)));
     } catch (e) {
-      next(toHttpError(e));
+      next(toHttpError(e)); // in case of synchronous error
     }
   };
 }

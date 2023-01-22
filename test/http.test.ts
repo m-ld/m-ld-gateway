@@ -97,7 +97,7 @@ describe('Gateway REST API', () => {
           .accept('application/json');
         expect(res.status).toBe(200);
         expect(res.headers['etag']).toMatch(/"\w+"/);
-        expect(res.body).toBeNull();
+        expect(res.body).toBe(false);
       });
 
       test('basic write', async () => {

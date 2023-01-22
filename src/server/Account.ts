@@ -2,7 +2,7 @@ import { GraphSubject, MeldReadState, propertyValue, Reference } from '@m-ld/m-l
 import { AccountOwnedId, AuthKey, idSet } from '../lib/index.js';
 import { UserKey } from '../data/index.js';
 import {
-  BadRequestError, ForbiddenError, InternalServerError, toHttpError, UnauthorizedError
+  BadRequestError, ForbiddenError, InternalServerError, UnauthorizedError
 } from '../http/errors.js';
 import { Gateway } from './Gateway.js';
 import { AccessRequest } from './Authorization.js';
@@ -101,7 +101,7 @@ export class Account {
             return reject(new UnauthorizedError(e));
           }
         } catch (e) {
-          return reject(toHttpError(e));
+          return reject(e);
         }
       });
     });

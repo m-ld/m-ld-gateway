@@ -26,6 +26,7 @@
   "homepage": "https://github.com/m-ld/m-ld-gateway#readme",
   "devDependencies": {
     "@types/jest": "^29.2.4",
+    "@types/jsonwebtoken": "^8.5.9",
     "@types/restify": "^8.5.5",
     "@types/restify-errors": "^4.3.4",
     "@types/supertest": "^2.0.12",
@@ -53,7 +54,7 @@
     "jsonwebtoken": "^8.5.1",
     "jtd": "^0.1.1",
     "loglevel": "^1.8.1",
-    "restify": "^8.6.1",
+    "restify": "^11.0.0",
     "restify-errors": "^8.0.2",
     "rx-flowable": "^0.1.2",
     "rxjs": "^7.5.7",
