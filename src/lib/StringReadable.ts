@@ -1,22 +1,20 @@
 import { Readable, ReadableOptions } from 'stream';
-import type { GraphSubject, ReadResult } from '@m-ld/m-ld';
 import { Subscription } from 'rxjs';
+import { Consumable } from 'rx-flowable';
 
-export interface ResultsFormat {
+export interface StringFormat {
   opening?: string;
   closing?: string;
   separator: string;
-  stringify(s: GraphSubject): string;
+  stringify(value: any): string;
 }
 
-export type Results = ReadResult['consume'];
-
-export class ResultsReadable extends Readable {
+export class StringReadable extends Readable {
   private index = -1;
   private subs: Subscription;
   private next?: () => true;
 
-  constructor(results: Results, format: ResultsFormat, opts?: ReadableOptions) {
+  constructor(source: Consumable<any>, format: StringFormat, opts?: ReadableOptions) {
     super(opts);
     const openIfRequired = () => {
       if (this.index === -1) {
@@ -25,7 +23,7 @@ export class ResultsReadable extends Readable {
         this.index = 0;
       }
     };
-    this.subs = results.subscribe({
+    this.subs = source.subscribe({
       next: async bite => {
         openIfRequired();
         const subjectStr = format.stringify(bite.value);

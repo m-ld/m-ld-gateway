@@ -1,8 +1,8 @@
-import { GraphSubject, MeldReadState, propertyValue, Query, Read, Reference } from '@m-ld/m-ld';
-import { AccountOwnedId, AuthKey, idSet, Results } from '../lib/index.js';
+import { GraphSubject, MeldReadState, propertyValue, Reference } from '@m-ld/m-ld';
+import { AccountOwnedId, AuthKey, idSet } from '../lib/index.js';
 import { UserKey } from '../data/index.js';
 import {
-  BadRequestError, ForbiddenError, InternalServerError, toHttpError, UnauthorizedError
+  BadRequestError, ForbiddenError, InternalServerError, UnauthorizedError
 } from '../http/errors.js';
 import { Gateway } from './Gateway.js';
 import { AccessRequest } from './Authorization.js';
@@ -101,7 +101,7 @@ export class Account {
             return reject(new UnauthorizedError(e));
           }
         } catch (e) {
-          return reject(toHttpError(e));
+          return reject(e);
         }
       });
     });
@@ -192,35 +192,6 @@ export class Account {
   async allSubdomainIds(state: MeldReadState) {
     return [...await this.loadAllOwned(state, 'Subdomain')]
       .map(iri => AccountOwnedId.fromIri(iri, this.gateway.domainName));
-  }
-
-  async read(query: Read, tsId?: AccountOwnedId): Promise<Results> {
-    return new Promise(async (resolve, reject) => {
-      const clone = await this.targetClone(tsId);
-      clone.read(async state => {
-        try {
-          // noinspection JSCheckFunctionSignatures
-          resolve(state.read(query).consume);
-        } catch (e) {
-          reject(e);
-        }
-      });
-    });
-  }
-
-  async write(query: Query, tsId?: AccountOwnedId) {
-    // Only the gateway account is able to write to the gateway domain
-    if (tsId == null && this.name !== this.gateway.rootAccountName)
-      throw new UnauthorizedError();
-    // TODO: Other authorisations
-    const clone = await this.targetClone(tsId);
-    await clone.write(query);
-  }
-
-  private async targetClone(tsId: AccountOwnedId | undefined) {
-    return tsId != null ?
-      await this.gateway.initSubdomain(tsId, false) :
-      this.gateway.domain;
   }
 
   toJSON() {

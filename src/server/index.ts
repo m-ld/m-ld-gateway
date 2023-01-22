@@ -25,3 +25,4 @@ export interface GatewayConfig extends BaseGatewayConfig {
 
 export { GatewayEnv } from './GatewayEnv.js';
 export { Gateway } from './Gateway.js';
+export { Account } from './Account.js';

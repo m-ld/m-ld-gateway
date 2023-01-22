@@ -1,0 +1,34 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma teoz true
+hide footbox
+
+participant Gateway as gw
+participant "App" as app
+
+activate app
+app -> gw ++: PUT /domain/≪acc≫/≪name≫\nAuthorisation: ..
+note across
+//from here// "/domain/≪acc≫/≪name≫" //will be denoted// "\~"
+end note
+gw -> gw: create/rev-up clone
+return 200 OK {config}
+app -> gw ++: POST \~/poll {subscribe: ≪webhook≫}
+note left
+Poll creates lock
+and subscribes
+end note
+return 201 Created ETag: "1" Location: \~/state?lock [Update 1]
+app -> app: process\nUpdate 1
+loop
+app -> gw ++: GET \~/state?query={ ... } If-Match: "1"
+return 200 OK: //chunked subjects//
+end loop
+app -> gw ++: DELETE \~/state?lock If-Match: "1"
+return 200 OK
+deactivate app
+
+...interactions e.g. ←GET, ←POST, POST→...
+app -> gw: DELETE /subs
+
+@enduml

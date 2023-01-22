@@ -1,0 +1,41 @@
+@startuml
+'https://plantuml.com/component-diagram
+skinparam componentStyle rectangle
+
+node Browser {
+  database "Browser\nStorage" as bs
+  component page {
+    component "m-ld clone" as jsClone #lightyellow
+    jsClone <..> bs : <<optional>>\npersist
+    component "Form Controller" as form
+    form <--> jsClone : JS
+  }
+}
+
+node "App Service Tier" {
+  component "App Service\nContainer" {
+    component [App Service] as app
+  }
+  component "m-ld Gateway" as gw #lightgreen {
+    component "m-ld clone" as gwClone #lightyellow
+  }
+}
+
+database volume #lightyellow
+
+cloud {
+  component "m-ld remotes service" as remotes #lightyellow
+}
+
+database "App Database" {
+  [DB_TABLE]
+}
+
+form <--> app
+app <--> gw : JSON/HTTP/ws
+app <-> DB_TABLE
+jsClone <--> remotes : pubsub
+gwClone <--> volume : persist
+gwClone <--> remotes : pubsub
+
+@enduml

@@ -9,19 +9,25 @@ import { UserKey, UserKeyConfig } from '../data/UserKey.js';
 import { SignOptions } from 'jsonwebtoken';
 import { KeyObject } from 'crypto';
 import { BaseGatewayConfig } from './BaseGateway.js';
+import { AbstractLevel } from 'abstract-level';
+
+export type BackendLevel = AbstractLevel<unknown, string, unknown>;
 
 export abstract class CloneFactory {
   async clone(
     config: BaseGatewayConfig,
     dataDir: string,
     principal?: GatewayPrincipal
-  ): Promise<MeldClone> {
+  ): Promise<[MeldClone, BackendLevel]> {
     // noinspection JSCheckFunctionSignatures
-    return meldClone(
-      new ClassicLevel(dataDir),
+    const backend = new ClassicLevel<string, Buffer>(
+      dataDir, { valueEncoding: 'buffer' });
+    const clone = await meldClone(
+      backend,
       await this.remotes(config),
       config,
       new GatewayApp(config['@domain'], principal));
+    return [clone, backend];
   }
 
   /**

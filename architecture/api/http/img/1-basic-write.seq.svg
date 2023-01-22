@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentStyleType="text/css" height="410px" preserveAspectRatio="none"
+     style="width:646px;height:410px;background:#FFFFFF;" version="1.1" viewBox="0 0 646 410"
+     width="646px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="26.4883" id="_title" style="stroke:none;stroke-width:1.0;" width="90" x="280" y="10"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="80" x="285" y="28.5352">Basic Write</text><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="194" x2="194" y1="73.9766" y2="403.3926"/><rect fill="#FFFFFF" height="71.6211" style="stroke:#181818;stroke-width:1.0;" width="10" x="189" y="103.2871"/><rect fill="#FFFFFF" height="123.5527" style="stroke:#181818;stroke-width:1.0;" width="10" x="189" y="261.8398"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="571" x2="571" y1="73.9766" y2="403.3926"/><rect fill="#FFFFFF" height="316.416" style="stroke:#181818;stroke-width:1.0;" width="10" x="566" y="81.9766"/><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="71" x="158.5" y="42.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="165.5" y="63.0234">Gateway</text><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="42" x="550" y="42.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="557" y="63.0234">App</text><polygon fill="#181818" points="210,99.2871,200,103.2871,210,107.2871,206,103.2871" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="204" x2="565" y1="103.2871" y2="103.2871"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="146" x="216" y="98.5449">POST ~/state?lock { ... }</text><line style="stroke:#181818;stroke-width:1.0;" x1="199" x2="241" y1="132.5977" y2="132.5977"/><line style="stroke:#181818;stroke-width:1.0;" x1="241" x2="241" y1="132.5977" y2="145.5977"/><line style="stroke:#181818;stroke-width:1.0;" x1="200" x2="241" y1="145.5977" y2="145.5977"/><polygon fill="#181818" points="210,141.5977,200,145.5977,210,149.5977,206,145.5977" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="113" x="206" y="127.8555">enqueue Update 1</text><polygon fill="#181818" points="554,170.9082,564,174.9082,554,178.9082,558,174.9082" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="199" x2="560" y1="174.9082" y2="174.9082"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="348" x="206" y="170.166">201 Created ETag: "1" Location: ~/state?lock {Update 1}</text><polygon fill="#181818" points="16,170.9082,6,174.9082,16,178.9082,12,174.9082" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="10" x2="193" y1="174.9082" y2="174.9082"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="165" x="22" y="170.166">Operation 1 &lt;&lt;publish&gt;&gt;</text><line style="stroke:#181818;stroke-width:1.0;" x1="576" x2="618" y1="219.5293" y2="219.5293"/><line style="stroke:#181818;stroke-width:1.0;" x1="618" x2="618" y1="219.5293" y2="232.5293"/><line style="stroke:#181818;stroke-width:1.0;" x1="577" x2="618" y1="232.5293" y2="232.5293"/><polygon fill="#181818" points="587,228.5293,577,232.5293,587,236.5293,583,232.5293" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="49" x="583" y="199.4766">process</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="56" x="583" y="214.7871">Update 1</text><polygon fill="#181818" points="210,257.8398,200,261.8398,210,265.8398,206,261.8398" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="204" x2="565" y1="261.8398" y2="261.8398"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="213" x="216" y="257.0977">DELETE ~/state?lock If-Match: "1"</text><path d="M29,245.5293 L29,316.5293 L189,316.5293 L189,255.5293 L179,245.5293 L29,245.5293 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M179,245.5293 L179,255.5293 L189,255.5293 L179,245.5293 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="114" x="35" y="263.0977">Update deletion is</text><text fill="#000000" font-family="sans-serif" font-size="13" font-style="italic" lengthAdjust="spacing" textLength="21" x="153" y="263.0977">not</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="123" x="35" y="278.4082">like ACID commit -</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="135" x="35" y="293.7188">operation has already</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="61" x="35" y="309.0293">been sent</text><line style="stroke:#181818;stroke-width:1.0;" x1="199" x2="241" y1="343.082" y2="343.082"/><line style="stroke:#181818;stroke-width:1.0;" x1="241" x2="241" y1="343.082" y2="356.082"/><line style="stroke:#181818;stroke-width:1.0;" x1="200" x2="241" y1="356.082" y2="356.082"/><polygon fill="#181818" points="210,352.082,200,356.082,210,360.082,206,356.082" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="113" x="206" y="338.3398">dequeue Update 1</text><polygon fill="#181818" points="554,381.3926,564,385.3926,554,389.3926,558,385.3926" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="199" x2="560" y1="385.3926" y2="385.3926"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="206" y="380.6504">200 OK</text><!--MD5=[b2b67790d44318c63f81e354d726c32d]
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma teoz true
+hide footbox
+
+title: Basic Write
+
+participant Gateway as gw
+participant "App" as app
+
+activate app
+app -> gw ++: POST \~/state?lock { ... }
+gw -> gw: enqueue Update 1
+'Note that other operations on the domain can happen independently
+return 201 Created ETag: "1" Location: \~/state?lock {Update 1}
+& <- gw: Operation 1 <<publish>>
+app -> app: process\nUpdate 1
+app -> gw ++: DELETE \~/state?lock If-Match: "1"
+note left
+Update deletion is //not//
+like ACID commit -
+operation has already
+been sent
+end note
+gw -> gw: dequeue Update 1
+return 200 OK
+deactivate app
+
+@enduml
+
+@startuml
+!pragma teoz true
+hide footbox
+
+title: Basic Write
+
+participant Gateway as gw
+participant "App" as app
+
+activate app
+app -> gw ++: POST \~/state?lock { ... }
+gw -> gw: enqueue Update 1
+return 201 Created ETag: "1" Location: \~/state?lock {Update 1}
+& <- gw: Operation 1 <<publish>>
+app -> app: process\nUpdate 1
+app -> gw ++: DELETE \~/state?lock If-Match: "1"
+note left
+Update deletion is //not//
+like ACID commit -
+operation has already
+been sent
+end note
+gw -> gw: dequeue Update 1
+return 200 OK
+deactivate app
+
+@enduml
+
+PlantUML version 1.2022.8(Sun Sep 25 10:00:33 BST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

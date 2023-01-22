@@ -1,0 +1,44 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma teoz true
+hide footbox
+
+title
+Ordering Issues with
+Responses & Webhooks
+end title
+
+note across #pink
+Ordering is problematic for webhooks just by themselves,
+but also for combining write responses with webhooks
+end note
+
+participant Gateway as gw
+participant "App" as app
+
+group app wins [unhappy]
+app -> gw ++: POST \~ { ... }
+-> gw: Operation 2
+note over gw: Update 2 is delayed\nby active write
+return OK: Update 1 //via response//
+& <- gw: Operation 1
+note over app #pink
+ordering dependent
+on app threading
+end note
+gw -> app ++: Update 2 //via webhook//
+return OK
+end group
+
+group app loses [happy-ish]
+-> gw: Operation 2
+app -> gw ++: POST \~ { ... }
+gw -> app ++: Update 2 //via webhook//
+return OK
+note over gw: Update 1 is delayed\nby pending webhook
+& note over app: ordering //not// dependent\non app threading
+return OK: Update 1 //via response//
+& <- gw: Operation 1
+end group
+
+@enduml
