@@ -1,5 +1,5 @@
 import { GraphSubject, MeldReadState, propertyValue, Reference } from '@m-ld/m-ld';
-import { AccountOwnedId, AuthKey, idSet } from '../lib/index.js';
+import { AccountOwnedId, AuthKey, AuthKeyConfig, idSet } from '../lib/index.js';
 import { UserKey } from '../data/index.js';
 import {
   BadRequestError, ForbiddenError, InternalServerError, UnauthorizedError
@@ -7,6 +7,15 @@ import {
 import { Gateway } from './Gateway.js';
 import { AccessRequest } from './Authorization.js';
 import { userIsAdmin } from './statements.js';
+
+/** Abstract account */
+type AccountSpec = {
+  name: string,
+  emails?: Iterable<string>,
+  keyids?: Iterable<string>,
+  admins?: Iterable<string>,
+  subdomains?: Reference[]
+};
 
 /**
  * Javascript representation of an Account subject in the Gateway domain.
@@ -21,7 +30,7 @@ export class Account {
       keyids: propertyValue(src, 'key', Array, Reference).map(UserKey.keyidFromRef),
       admins: idSet(propertyValue(src, 'vf:primaryAccountable', Array, Reference)),
       subdomains: propertyValue(src, 'subdomain', Array, Reference)
-    });
+    }, false);
   }
 
   /** plain account name */
@@ -40,19 +49,17 @@ export class Account {
    */
   private readonly allOwned: { [type: string]: Set<string> };
 
-  constructor(private readonly gateway: Gateway, {
-    name,
-    emails = [],
-    keyids = [],
-    admins = [],
-    subdomains = []
-  }: {
-    name: string,
-    emails?: Iterable<string>,
-    keyids?: Iterable<string>,
-    admins?: Iterable<string>,
-    subdomains?: Reference[]
-  }) {
+  constructor(
+    private readonly gateway: Gateway,
+    {
+      name,
+      emails = [],
+      keyids = [],
+      admins = [],
+      subdomains = []
+    }: AccountSpec,
+    readonly isNew = true
+  ) {
     this.gateway = gateway;
     this.name = name;
     this.emails = new Set([...emails ?? []]);
@@ -62,7 +69,30 @@ export class Account {
     this.allOwned = {}; // See allOwned
   }
 
-  // TODO: User registration
+  /**
+   * Activation of a gateway account with a user email.
+   * @returns key config for the account
+   */
+  async generateKey() {
+    // Every activation creates a new key (assumes new device)
+    const keyDetails = await this.gateway.keyStore
+      .mintKey(`${this.name}@${this.gateway.domainName}`);
+    let key: GraphSubject, config: AuthKeyConfig;
+    if (this.gateway.usingUserKeys) {
+      // Generate a key pair for signing
+      const userKey = UserKey.generate(keyDetails.key);
+      key = userKey.toJSON();
+      config = userKey.toConfig(keyDetails.key);
+    } else {
+      key = UserKey.refFromKeyid(keyDetails.key.keyid);
+      config = keyDetails.key.toConfig();
+    }
+    // Store the keyid and the email
+    this.keyids.add(keyDetails.key.keyid);
+    // Write the changed details, including the new key
+    await this.gateway.domain.write({ '@id': this.name, key });
+    return config;
+  }
 
   /**
    * TODO: Refactor awkward return type
@@ -177,6 +207,8 @@ export class Account {
       throw new UnauthorizedError(
         `Key ${keyid} does not belong to account ${this.name}`);
     if (this.gateway.usingUserKeys) {
+      if (this.name === this.gateway.rootAccountName)
+        return this.gateway.me.userKey;
       const src = await state.get(UserKey.refFromKeyid(keyid)['@id']);
       if (src != null)
         return UserKey.fromJSON(src);

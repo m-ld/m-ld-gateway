@@ -70,6 +70,7 @@ export class Gateway extends BaseGateway {
     return this;
   }
 
+  // TODO: use polymorphism for this
   get usingUserKeys() {
     return 'key' in this.config;
   }
@@ -184,6 +185,8 @@ export class Gateway extends BaseGateway {
    * @param account name
    * @param [orCreate] allow creation of new account
    */
+  async account(account: string, orCreate: true): Promise<Account>;
+  async account(account: string, orCreate?: false): Promise<Account | undefined>;
   async account(account: string, orCreate = false) {
     let acc: Account | undefined;
     await this.domain.write(async state => {

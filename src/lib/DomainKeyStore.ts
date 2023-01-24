@@ -1,16 +1,13 @@
 import { AuthKey, AuthKeyStore } from './AuthKey.js';
 import { randomBytes } from 'crypto';
-import { MeldConfig, shortId } from '@m-ld/m-ld';
 
 /**
  * A key store that persists to a m-ld domain
  */
 export class DomainKeyStore implements AuthKeyStore {
-  private readonly appId: string;
-
-  constructor(config: Partial<MeldConfig>) {
-    this.appId = shortId(config['@domain']);
-  }
+  constructor(
+    private readonly appId: string
+  ) {}
 
   async mintKey(name: string) {
     const material = randomBytes(40).toString('base64');

@@ -5,6 +5,7 @@ import { formatter, HTML_FORMAT, JSON_LD_FORMAT } from './EndPoint';
 import { GatewayEndPoint } from './GatewayEndPoint';
 import { SubdomainEndPoint } from './SubdomainEndPoint';
 import { SubdomainStateEndPoint } from './SubdomainStateEndPoint';
+import { AccountEndPoint } from './AccountEndPoint';
 
 export class GatewayHttp {
   readonly server: RestServer;
@@ -33,9 +34,10 @@ export class GatewayHttp {
         return next();
       });
     }
-    // Set up routes
-    const gatewayRoute = new GatewayEndPoint(gateway, this.server);
-    const subdomainRoute = new SubdomainEndPoint(gatewayRoute);
-    new SubdomainStateEndPoint(subdomainRoute);
+    // Set up endpoints
+    const gatewayEndPoint = new GatewayEndPoint(gateway, this.server);
+    new AccountEndPoint(gatewayEndPoint);
+    const subdomainEndPoint = new SubdomainEndPoint(gatewayEndPoint);
+    new SubdomainStateEndPoint(subdomainEndPoint);
   }
 }

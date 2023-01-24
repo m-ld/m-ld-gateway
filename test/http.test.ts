@@ -1,6 +1,8 @@
+// noinspection SpellCheckingInspection
+
 import { DirResult, dirSync } from 'tmp';
 import {
-  AccountOwnedId, AuthKey, AuthKeyStore, BackendLevel, CloneFactory, Env, gatewayContext, UserKey
+  AccountOwnedId, AuthKey, BackendLevel, CloneFactory, DomainKeyStore, Env, gatewayContext, UserKey
 } from '../src/index.js';
 import { join } from 'path';
 import { clone as meldClone, Describe, MeldClone } from '@m-ld/m-ld';
@@ -16,6 +18,7 @@ describe('Gateway REST API', () => {
   let tmpDir: DirResult;
   let gateway: Gateway;
   let clone: MeldClone;
+  let app: Server;
 
   beforeEach(async () => {
     tmpDir = dirSync({ unsafeCleanup: true });
@@ -26,16 +29,16 @@ describe('Gateway REST API', () => {
       clone = await meldClone(backend, DeadRemotes, config);
       return [clone, backend];
     });
-    const keyStore = mock<AuthKeyStore>();
-    const authKey = AuthKey.fromString('app.id:secret');
+    const authKey = AuthKey.fromString('app.rootid:secret');
     const machineKey = UserKey.generate(authKey);
     gateway = new Gateway(env, {
       '@domain': 'ex.org',
       genesis: true,
       gateway: 'ex.org',
       ...machineKey.toConfig(authKey)
-    }, cloneFactory, keyStore);
+    }, cloneFactory, new DomainKeyStore('app'));
     await gateway.initialise();
+    app = new GatewayHttp(gateway).server;
   });
 
   afterEach(async () => {
@@ -55,9 +58,21 @@ describe('Gateway REST API', () => {
     });
   });
 
+  test('puts a new account', async () => {
+    const res = await request(app)
+      .put('/api/v1/account/test')
+      .auth('app', 'app.rootid:secret')
+      .accept('application/json');
+    expect(res.status).toBe(201);
+    expect(res.headers['location']).toMatch(/account\/test$/);
+    expect(res.body).toMatchObject({
+      auth: { key: expect.stringMatching(/app\..{6}:.{20,}/) },
+      key: { private: expect.any(String), public: expect.any(String) }
+    });
+  });
+
   describe('with user account', () => {
     let userKey: UserKey;
-    let app: Server;
     let acc: Account;
 
     beforeEach(async () => {
@@ -65,8 +80,21 @@ describe('Gateway REST API', () => {
       await gateway.domain.write({
         '@id': 'test', '@type': 'Account', key: userKey.toJSON()
       });
-      app = new GatewayHttp(gateway).server;
       acc = (await gateway.account('test'))!;
+    });
+
+    test.todo('account security');
+
+    test('generates a new key', async () => {
+      const res = await request(app)
+        .post('/api/v1/account/test/key')
+        .auth('test', 'app.keyid:secret')
+        .accept('application/json');
+      expect(res.status).toBe(200);
+      expect(res.body).toMatchObject({
+        auth: { key: expect.stringMatching(/app\..{6}:.{20,}/) },
+        key: { private: expect.any(String), public: expect.any(String) }
+      });
     });
 
     test('puts new subdomain', async () => {

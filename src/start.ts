@@ -2,7 +2,7 @@ import { Gateway, GatewayEnv } from './server/index.js';
 import LOG from 'loglevel';
 import { GatewayHttp } from './http/index.js';
 import gracefulShutdown from 'http-graceful-shutdown';
-import { AuthKeyStore, CloneFactory, DomainKeyStore } from './lib/index.js';
+import { AuthKey, AuthKeyStore, CloneFactory, DomainKeyStore } from './lib/index.js';
 import type { AblyGatewayConfig } from './ably/index';
 
 (async function () {
@@ -18,7 +18,7 @@ import type { AblyGatewayConfig } from './ably/index';
     cloneFactory = new AblyCloneFactory();
   } else {
     const { IoCloneFactory } = await import('./socket.io/index.js');
-    keyStore = new DomainKeyStore(config);
+    keyStore = new DomainKeyStore(AuthKey.fromString(config.auth.key).appId);
     cloneFactory = new IoCloneFactory();
   }
 
