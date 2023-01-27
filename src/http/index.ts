@@ -1,18 +1,16 @@
 import { createServer, plugins, pre, Server as RestServer } from 'restify';
 import LOG from 'loglevel';
-import { Gateway } from '../server/index.js';
+import { Gateway, Notifier } from '../server/index.js';
 import { formatter, HTML_FORMAT, JSON_LD_FORMAT } from './EndPoint';
 import { GatewayEndPoint } from './GatewayEndPoint';
 import { SubdomainEndPoint } from './SubdomainEndPoint';
 import { SubdomainStateEndPoint } from './SubdomainStateEndPoint';
-import { AccountEndPoint } from './AccountEndPoint';
+import { UserEndPoint } from './UserEndPoint';
 
 export class GatewayHttp {
   readonly server: RestServer;
 
-  constructor(
-    protected readonly gateway: Gateway
-  ) {
+  constructor(gateway: Gateway, notifier?: Notifier) {
     this.server = createServer({
       formatters: {
         'application/ld+json': formatter(JSON_LD_FORMAT),
@@ -36,7 +34,7 @@ export class GatewayHttp {
     }
     // Set up endpoints
     const gatewayEndPoint = new GatewayEndPoint(gateway, this.server);
-    new AccountEndPoint(gatewayEndPoint);
+    new UserEndPoint(gatewayEndPoint, notifier);
     const subdomainEndPoint = new SubdomainEndPoint(gatewayEndPoint);
     new SubdomainStateEndPoint(subdomainEndPoint);
   }

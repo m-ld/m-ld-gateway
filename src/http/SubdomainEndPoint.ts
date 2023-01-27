@@ -1,10 +1,8 @@
 import { EndPoint, HasContext, sendChunked } from './EndPoint';
 import { GatewayEndPoint, GatewayRequest } from './GatewayEndPoint';
-import { Gateway } from '../server/index';
+import { Authorization, Gateway, Who } from '../server/index.js';
 import { AccountOwnedId } from '../lib/index';
 import { BadRequestError } from './errors';
-import { Authorization } from '../server/Authorization';
-import { Who } from '../server/Gateway';
 import { consume } from 'rx-flowable/consume';
 import { Readable } from 'stream';
 import { SubdomainClone } from '../server/SubdomainClone';

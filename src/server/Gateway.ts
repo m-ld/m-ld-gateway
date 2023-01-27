@@ -8,28 +8,33 @@ import { gatewayContext, Iri, UserKey } from '../data/index.js';
 import LOG from 'loglevel';
 import { access, rm, writeFile } from 'fs/promises';
 import { finalize, Subscription } from 'rxjs';
-import { ConflictError } from '../http/errors.js';
+import { ConflictError, UnauthorizedError } from '../http/errors.js';
 import { GatewayConfig } from './index.js';
 import { Bite, Consumable } from 'rx-flowable';
-import { Account } from './Account.js';
+import { Account, AccountContext } from './Account.js';
 import { accountHasSubdomain } from './statements.js';
 import { SubdomainClone } from './SubdomainClone';
+import { randomInt } from 'crypto';
+import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
+import Cryptr from 'cryptr';
 
 export type Who = { acc: Account, keyid: string };
 
-export class Gateway extends BaseGateway {
-  public readonly me: GatewayPrincipal;
-  public /*readonly*/ domain: MeldClone;
+export class Gateway extends BaseGateway implements AccountContext {
+  readonly me: GatewayPrincipal;
+  /*readonly*/
+  domain: MeldClone;
 
   private readonly config: GatewayConfig;
   private readonly subdomains: { [name: string]: SubdomainClone } = {};
   private readonly subs: Subscription = new Subscription();
 
+  // noinspection JSUnusedGlobalSymbols keyStore is in account context
   constructor(
     private readonly env: Env,
     config: Partial<GatewayConfig>,
     private readonly cloneFactory: CloneFactory,
-    public readonly keyStore: AuthKeyStore
+    readonly keyStore: AuthKeyStore
   ) {
     if (!config['@domain'])
       throw new RangeError('No domain specified for Gateway');
@@ -199,6 +204,39 @@ export class Gateway extends BaseGateway {
       }
     });
     return acc;
+  }
+
+  /**
+   * @param user name
+   * @param email
+   */
+  async activation(user: string, email: string): Promise<{ code: string, jwe: string }> {
+    // If the account exists, check the email is registered
+    const acc = await this.account(user);
+    if (acc != null && !acc.emails.has(email))
+      throw new UnauthorizedError(
+        'Email %s not registered to account %s', email, user);
+    // Construct a JWT with the email, using our authorisation key
+    const { secret, keyid } = this.me.authKey;
+    const jwt = jsonwebtoken.sign({ email }, secret, {
+      keyid, expiresIn: '10m', subject: user
+    });
+    // Encrypt the JWT with the activation code
+    const code = randomInt(111111, 1000000).toString(10);
+    const jwe = new Cryptr(code).encrypt(jwt);
+    return { jwe, code };
+  }
+
+  /**
+   * Verify the JWT was an activation created by us
+   * @param code an activation code created by this Gateway
+   * @param jwe a corresponding encrypted JWT
+   */
+  verifyActivation(code: string, jwe: string) {
+    const jwt = new Cryptr(code).decrypt(jwe);
+    const { sub, email } =
+      jsonwebtoken.verify(jwt, this.me.authKey.secret) as JwtPayload;
+    return { user: sub, email };
   }
 
   /**

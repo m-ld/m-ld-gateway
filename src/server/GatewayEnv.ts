@@ -4,6 +4,9 @@ import isFQDN from 'validator/lib/isFQDN.js';
 import { GatewayConfig } from './index.js';
 import { AuthKeyConfig } from '../lib/index';
 
+export type LoadedConfig =
+  AuthKeyConfig & { '@domain': string } & Partial<GatewayConfig>;
+
 export class GatewayEnv extends Env {
   constructor() {
     super('m-ld-gateway', {
@@ -15,23 +18,21 @@ export class GatewayEnv extends Env {
   /**
    * Parse command line, environment variables & configuration
    */
-  async loadConfig(): Promise<AuthKeyConfig & Partial<GatewayConfig>> {
+  async loadConfig(): Promise<LoadedConfig> {
     // Parse command line, environment variables & configuration
-    const argv = (await this.yargs())
+    const argv = <Partial<GatewayConfig>>(await this.yargs())
       .demandOption(['gateway', 'auth'])
       .default('genesis', false)
       .option('address.port', { default: '8080', type: 'number' })
       .parse();
-    // Not type-perfect, later failures may occur
-    const config = <AuthKeyConfig & Partial<GatewayConfig>>argv;
-    LOG.setLevel(config.logLevel || 'INFO');
-    LOG.debug('Loaded configuration', config);
+    LOG.setLevel(argv.logLevel || 'INFO');
+    LOG.debug('Loaded configuration', argv);
     // Set the m-ld domain from the declared gateway
-    if (config['@domain'] == null) {
-      config['@domain'] =
-        typeof config.gateway == 'string' && isFQDN(config.gateway) ?
-          config.gateway : new URL(config.gateway!).hostname;
+    if (argv['@domain'] == null) {
+      argv['@domain'] =
+        typeof argv.gateway == 'string' && isFQDN(argv.gateway) ?
+          argv.gateway : new URL(argv.gateway!).hostname;
     }
-    return config;
+    return argv as LoadedConfig;
   }
 }

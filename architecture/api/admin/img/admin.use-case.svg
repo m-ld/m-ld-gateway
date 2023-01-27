@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentStyleType="text/css" height="699px" preserveAspectRatio="none"
+     style="width:808px;height:699px;background:#FFFFFF;" version="1.1" viewBox="0 0 808 699"
+     width="808px" zoomAndPan="magnify"><defs/><g><!--MD5=[114274d28d17c5df55f7fe5a44697fdc]
+cluster User End-Point--><g id="cluster_User End-Point"><path d="M302.5,6 L413.5,6 A3.75,3.75 0 0 1 416,8.5 L423,28.4883 L798.5,28.4883 A2.5,2.5 0 0 1 801,30.9883 L801,426.5 A2.5,2.5 0 0 1 798.5,429 L302.5,429 A2.5,2.5 0 0 1 300,426.5 L300,8.5 A2.5,2.5 0 0 1 302.5,6 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="300" x2="423" y1="28.4883" y2="28.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="110" x="304" y="21.5352">User End-Point</text></g><!--MD5=[e2ac1270f25e1363b8a094626316fd07]
+cluster Organisation End-Point--><g id="cluster_Organisation End-Point"><path d="M304.5,477 L477.5,477 A3.75,3.75 0 0 1 480,479.5 L487,499.4883 L487.5,499.4883 A2.5,2.5 0 0 1 490,501.9883 L490,689.5 A2.5,2.5 0 0 1 487.5,692 L304.5,692 A2.5,2.5 0 0 1 302,689.5 L302,479.5 A2.5,2.5 0 0 1 304.5,477 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="302" x2="487" y1="499.4883" y2="499.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="172" x="306" y="492.5352">Organisation End-Point</text></g><g id="elem_change details"><ellipse cx="396.1429" cy="118.8286" fill="#F1F1F1" rx="72.1429" ry="16.8286" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="99" x="345.9529" y="122.3054">change details</text></g><g id="elem_GMN8"><path d="M542,71.5 L542,96.8105 A0,0 0 0 0 542,96.8105 L563.31,96.8105 L459.13,110.79 L571.31,96.8105 L784,96.8105 A0,0 0 0 0 784,96.8105 L784,81.5 L774,71.5 L542,71.5 A0,0 0 0 0 542,71.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M774,71.5 L774,81.5 L784,81.5 L774,71.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="221" x="548" y="89.0684">PATCH /user/:user {emails, keyids}</text></g><g id="elem_GMN11"><path d="M320,41.5 L320,66.8105 A0,0 0 0 0 320,66.8105 L392,66.8105 L396,101.99 L400,66.8105 L472,66.8105 A0,0 0 0 0 472,66.8105 L472,51.5 L462,41.5 L320,41.5 A0,0 0 0 0 320,41.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M462,41.5 L462,51.5 L472,51.5 L462,41.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="131" x="326" y="59.0684">including revoke key</text></g><g id="elem_get activation"><ellipse cx="395.9425" cy="395.7885" fill="#90EE90" rx="69.4425" ry="16.2885" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92" x="347.8398" y="399.61">get activation</text></g><g id="elem_GMN16"><path d="M588.5,327.5 L588.5,352.8105 A0,0 0 0 0 588.5,352.8105 L598.4,352.8105 L448.41,385.14 L606.4,352.8105 L737.5,352.8105 A0,0 0 0 0 737.5,352.8105 L737.5,337.5 L727.5,327.5 L588.5,327.5 A0,0 0 0 0 588.5,327.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M727.5,327.5 L727.5,337.5 L737.5,337.5 L727.5,327.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="128" x="594.5" y="345.0684">sends code by email</text></g><g id="elem_GMN19"><path d="M541,387.5 L541,394.17 L465.59,397.04 L541,402.17 L541,412.8105 A0,0 0 0 0 541,412.8105 L785,412.8105 A0,0 0 0 0 785,412.8105 L785,397.5 L775,387.5 L541,387.5 A0,0 0 0 0 541,387.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M775,387.5 L775,397.5 L785,397.5 L775,387.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="223" x="547" y="405.0684">POST /user/:user/activation {email}</text></g><g id="elem_get user key"><ellipse cx="396.183" cy="187.1366" fill="#90EE90" rx="66.183" ry="15.6366" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="83" x="351.683" y="191.1542">get user key</text></g><g id="elem_GMN24"><path d="M316,237.5 L316,278.1211 A0,0 0 0 0 316,278.1211 L476,278.1211 A0,0 0 0 0 476,278.1211 L476,247.5 L466,237.5 L400,237.5 L396,202.77 L392,237.5 L316,237.5 A0,0 0 0 0 316,237.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M466,237.5 L466,247.5 L476,247.5 L466,237.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="124" x="322" y="255.0684">must use activation</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="139" x="322" y="270.3789">for self-service create</text></g><g id="elem_GMN27"><path d="M591,191.5 L591,201.3 L457.46,192.7 L591,209.3 L591,232.1211 A0,0 0 0 0 591,232.1211 L735,232.1211 A0,0 0 0 0 735,232.1211 L735,201.5 L725,191.5 L591,191.5 A0,0 0 0 0 591,191.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M725,191.5 L725,201.5 L735,201.5 L725,191.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="123" x="597" y="209.0684">create user account</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="76" x="597" y="224.3789">if not exists</text></g><g id="elem_GMN30"><path d="M584,131.5 L584,156.8105 A0,0 0 0 0 584,156.8105 L584,156.8105 L450.63,178.3 L592,156.8105 L742,156.8105 A0,0 0 0 0 742,156.8105 L742,141.5 L732,131.5 L584,131.5 A0,0 0 0 0 584,131.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M732,131.5 L732,141.5 L742,141.5 L732,131.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="137" x="590" y="149.0684">POST /user/:user/key</text></g><g id="elem_delete user"><ellipse cx="395.7687" cy="329.1537" fill="#F1F1F1" rx="63.7687" ry="15.1537" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="76" x="354.7687" y="333.1713">delete user</text></g><g id="elem_GMN37"><path d="M602.5,267.5 L602.5,284.8105 L446.84,319.78 L602.5,292.8105 L602.5,292.8105 A0,0 0 0 0 602.5,292.8105 L723.5,292.8105 A0,0 0 0 0 723.5,292.8105 L723.5,277.5 L713.5,267.5 L602.5,267.5 A0,0 0 0 0 602.5,267.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M713.5,267.5 L713.5,277.5 L723.5,277.5 L713.5,267.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="100" x="608.5" y="285.0684">DEL /user/:user</text></g><g id="elem_create org"><ellipse cx="396.1033" cy="526.7838" fill="#F1F1F1" rx="61.6033" ry="14.7838" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70" x="358.1033" y="530.8013">create org</text></g><g id="elem_delete org"><ellipse cx="396.1033" cy="591.7838" fill="#F1F1F1" rx="61.6033" ry="14.7838" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70" x="358.1033" y="595.8013">delete org</text></g><g id="elem_change admins"><ellipse cx="396.1558" cy="659.2312" fill="#F1F1F1" rx="74.1558" ry="17.2312" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104" x="344.1558" y="662.5222">change admins</text></g><!--MD5=[8fc3522a43f8c7199df5e09e5bb0188e]
+entity user--><g id="elem_user"><ellipse cx="21" cy="376.5" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M21,384.5 L21,411.5 M8,392.5 L34,392.5 M21,411.5 L8,426.5 M21,411.5 L34,426.5 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="30" x="6" y="441.5352">user</text></g><!--MD5=[eab4eb7d0ef44c19c3b4c8ba4c3c2b5b]
+entity root--><g id="elem_root"><ellipse cx="160.5" cy="242.5" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M160.5,250.5 L160.5,277.5 M147.5,258.5 L173.5,258.5 M160.5,277.5 L147.5,292.5 M160.5,277.5 L173.5,292.5 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="29" x="146" y="307.5352">root</text></g><!--MD5=[8ff070b7d5e1a986f05c16843ab1fd88]
+reverse link user to root--><g id="link_user_root"><path d="M46.74,360.55 C52.47,351.92 58.97,343.31 66,336 C90.41,310.62 126.4,289.44 145.84,279 " fill="none" id="user-backto-root" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="52.54,364.48,36.14,377.89,40.6,357.18,52.54,364.48" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="22" x="67" y="312.5684">is a</text></g><!--MD5=[722a9aede05dd7d2bf67bbb37c8d1163]
+link user to change details--><g id="link_user_change details"><path d="M22.95,367.98 C26.79,307.93 44.23,193.15 120,146 C182.77,106.95 269.61,105.13 328.81,109.86 " fill="none" id="user-to-change details" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="334.09,110.31,325.4533,105.5764,329.1073,109.8948,324.7889,113.5488,334.09,110.31" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="23" x="149" y="112.5684">self</text></g><!--MD5=[a7789b36d431fa9680f962050bef2010]
+link user to get activation--><g id="link_user_get activation"><path d="M36.39,406.12 C66.79,406.33 139.8,406.59 201,405 C241.32,403.95 286.31,401.92 322.81,400.05 " fill="none" id="user-to-get activation" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="328.14,399.78,318.9459,396.2489,323.1466,400.0375,319.358,404.2383,328.14,399.78" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[4de52e652fbd80b46890bad88a937d65]
+link user to get user key--><g id="link_user_get user key"><path d="M29.48,367.71 C40.58,322.51 66.18,249.28 120,216 C184.41,176.18 273.85,174.42 333.03,178.94 " fill="none" id="user-to-get user key" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="338.3,179.36,329.6621,174.6285,333.3172,178.946,328.9997,182.601,338.3,179.36" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="79" x="121" y="167.5684">self; can use</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="62" x="129.5" y="182.8789">activation</text></g><!--MD5=[07eb85929d55c4855944589c1806d026]
+link root to get user key--><g id="link_root_get user key"><path d="M175.1,266.22 C198.69,256.27 248.85,235.49 292,220 C310.74,213.27 331.62,206.46 349.66,200.78 " fill="none" id="root-to-get user key" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="354.67,199.21,344.8847,198.0932,349.9001,200.7095,347.2839,205.725,354.67,199.21" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="53" x="232" y="219.5684">any user</text></g><!--MD5=[e836c631b5f4a1440268b2a16e72ec84]
+link user to delete user--><g id="link_user_delete user"><path d="M36.2,397.54 C44.6,392.88 55.6,387.38 66,384 C154.82,355.09 262.33,340.78 329.71,334.14 " fill="none" id="user-to-delete user" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="334.89,333.64,325.5534,330.505,329.9122,334.1107,326.3065,338.4695,334.89,333.64" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="23" x="149" y="348.5684">self</text></g><!--MD5=[c00fc3cfefeaffe3d5181513acb6c5ee]
+link root to delete user--><g id="link_root_delete user"><path d="M175.06,275.31 C207.59,283.25 291.37,303.7 345.63,316.95 " fill="none" id="root-to-delete user" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="350.79,318.21,342.9954,312.1897,345.9326,317.0242,341.0981,319.9615,350.79,318.21" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="53" x="232" y="286.5684">any user</text></g><!--MD5=[e138f41cfc033fb56ca524cf61022e00]
+link user to create org--><g id="link_user_create org"><path d="M36.17,410.6 C88.29,427.5 270.68,486.67 353.51,513.54 " fill="none" id="user-to-create org" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="358.34,515.11,351.013,508.5286,353.5839,513.5675,348.545,516.1383,358.34,515.11" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[39bc0949ac0ffd93a1c914e2e13fb9b6]
+link user to delete org--><g id="link_user_delete org"><path d="M36.21,415.81 C44.8,421.71 55.99,429.35 66,436 C161.23,499.31 186.29,515.37 292,559 C310.56,566.66 331.59,573.68 349.79,579.26 " fill="none" id="user-to-delete org" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="354.84,580.79,347.3831,574.3562,350.054,579.3427,345.0675,582.0137,354.84,580.79" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[a6eb305b566ee560ea8591bd08043967]
+link user to change admins--><g id="link_user_change admins"><path d="M36.17,428.21 C53.58,454.22 85.11,497.51 120,527 C188.65,585.03 287.15,624.13 345.74,643.9 " fill="none" id="user-to-change admins" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="350.59,645.52,343.3228,638.8726,345.848,643.9346,340.7861,646.4598,350.59,645.52" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[5ccac8a24c1088c45622cae7abe6ea94]
+@startuml
+'https://plantuml.com/use-case-diagram
+left to right direction
+
+:user:
+:root:
+user <|- - root : is a
+
+package "User End-Point" {
+  user - -> (change details) : self
+  note right: PATCH /user/:user {emails, keyids}
+  note bottom of "change details": including revoke key
+  (get activation) #lightgreen
+  user - -> (get activation)
+  note right of "get activation": sends code by email
+  note right of "get activation": POST /user/:user/activation {email}
+  (get user key) #lightgreen
+  user - -> (get user key) : self; can use\nactivation
+  note top of "get user key": must use activation\nfor self-service create
+  note right of "get user key": create user account\nif not exists
+  note right of "get user key": POST /user/:user/key
+  root - -> (get user key) : any user
+  user - -> (delete user) : self
+  root - -> (delete user) : any user
+  note right: DEL /user/:user
+}
+
+package "Organisation End-Point" {
+  user - - -> (create org)
+  user - -> (delete org)
+  user - -> (change admins)
+}
+
+@enduml
+
+@startuml
+left to right direction
+
+:user:
+:root:
+user <|- - root : is a
+
+package "User End-Point" {
+  user - -> (change details) : self
+  note right: PATCH /user/:user {emails, keyids}
+  note bottom of "change details": including revoke key
+  (get activation) #lightgreen
+  user - -> (get activation)
+  note right of "get activation": sends code by email
+  note right of "get activation": POST /user/:user/activation {email}
+  (get user key) #lightgreen
+  user - -> (get user key) : self; can use\nactivation
+  note top of "get user key": must use activation\nfor self-service create
+  note right of "get user key": create user account\nif not exists
+  note right of "get user key": POST /user/:user/key
+  root - -> (get user key) : any user
+  user - -> (delete user) : self
+  root - -> (delete user) : any user
+  note right: DEL /user/:user
+}
+
+package "Organisation End-Point" {
+  user - - -> (create org)
+  user - -> (delete org)
+  user - -> (change admins)
+}
+
+@enduml
+
+PlantUML version 1.2022.8(Sun Sep 25 10:00:33 BST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

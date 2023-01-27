@@ -1,4 +1,4 @@
-import { Gateway, GatewayEnv } from './server/index.js';
+import { Gateway, GatewayEnv, Notifier } from './server/index.js';
 import LOG from 'loglevel';
 import { GatewayHttp } from './http/index.js';
 import gracefulShutdown from 'http-graceful-shutdown';
@@ -23,7 +23,8 @@ import type { AblyGatewayConfig } from './ably/index';
   }
 
   const gateway = new Gateway(env, config, cloneFactory, keyStore);
-  const http = new GatewayHttp(gateway);
+  const http = new GatewayHttp(gateway,
+    config.smtp != null ? new Notifier(config) : undefined);
 
   if (setupType === 'io') {
     const { IoService } = await import('./socket.io/index.js');

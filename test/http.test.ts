@@ -8,7 +8,7 @@ import { join } from 'path';
 import { clone as meldClone, Describe, MeldClone } from '@m-ld/m-ld';
 import { MemoryLevel } from 'memory-level';
 import { DeadRemotes, parseNdJson } from './fixtures.js';
-import { Account, Gateway } from '../src/server/index.js';
+import { Account, Gateway, Notifier } from '../src/server/index.js';
 import { GatewayHttp } from '../src/http/index.js';
 import request from 'supertest';
 import { mock, MockProxy } from 'jest-mock-extended';
@@ -17,6 +17,7 @@ import { Server } from 'restify';
 describe('Gateway REST API', () => {
   let tmpDir: DirResult;
   let gateway: Gateway;
+  let notifier: MockProxy<Notifier>;
   let clone: MeldClone;
   let app: Server;
 
@@ -38,7 +39,8 @@ describe('Gateway REST API', () => {
       ...machineKey.toConfig(authKey)
     }, cloneFactory, new DomainKeyStore('app'));
     await gateway.initialise();
-    app = new GatewayHttp(gateway).server;
+    notifier = mock<Notifier>();
+    app = new GatewayHttp(gateway, notifier).server;
   });
 
   afterEach(async () => {
@@ -58,17 +60,41 @@ describe('Gateway REST API', () => {
     });
   });
 
-  test('puts a new account', async () => {
+  test('root create new account with a key', async () => {
     const res = await request(app)
-      .put('/api/v1/account/test')
+      .post('/api/v1/user/test/key')
       .auth('app', 'app.rootid:secret')
       .accept('application/json');
-    expect(res.status).toBe(201);
-    expect(res.headers['location']).toMatch(/account\/test$/);
+    expect(res.status).toBe(200);
     expect(res.body).toMatchObject({
       auth: { key: expect.stringMatching(/app\..{6}:.{20,}/) },
       key: { private: expect.any(String), public: expect.any(String) }
     });
+    await expect(gateway.account('test')).resolves.toBeDefined();
+  });
+
+  test('create account with activation code', async () => {
+    const activationRes = await request(app)
+      .post('/api/v1/user/test/activation')
+      .accept('application/json')
+      .send({ email: 'test@ex.org' });
+    expect(activationRes.status).toBe(200);
+    expect(activationRes.body).toMatchObject({ jwe: expect.any(String) });
+    const { jwe } = activationRes.body;
+    expect(notifier.sendActivationCode).toBeCalledWith(
+      'test@ex.org', expect.stringMatching(/\d{6}/));
+    const [, code] = notifier.sendActivationCode.mock.lastCall!;
+    const res = await request(app)
+      .post('/api/v1/user/test/key')
+      .auth(jwe, { type: 'bearer' })
+      .set('X-Activation-Code', code)
+      .accept('application/json');
+    expect(res.status).toBe(200);
+    expect(res.body).toMatchObject({
+      auth: { key: expect.stringMatching(/app\..{6}:.{20,}/) },
+      key: { private: expect.any(String), public: expect.any(String) }
+    });
+    await expect(gateway.account('test')).resolves.toBeDefined();
   });
 
   describe('with user account', () => {
@@ -87,7 +113,7 @@ describe('Gateway REST API', () => {
 
     test('generates a new key', async () => {
       const res = await request(app)
-        .post('/api/v1/account/test/key')
+        .post('/api/v1/user/test/key')
         .auth('test', 'app.keyid:secret')
         .accept('application/json');
       expect(res.status).toBe(200);

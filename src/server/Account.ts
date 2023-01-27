@@ -1,10 +1,11 @@
-import { GraphSubject, MeldReadState, propertyValue, Reference } from '@m-ld/m-ld';
-import { AccountOwnedId, AuthKey, AuthKeyConfig, idSet } from '../lib/index.js';
+import { GraphSubject, MeldClone, MeldReadState, propertyValue, Reference } from '@m-ld/m-ld';
+import {
+  AccountOwnedId, AuthKey, AuthKeyConfig, AuthKeyStore, GatewayPrincipal, idSet
+} from '../lib/index.js';
 import { UserKey } from '../data/index.js';
 import {
   BadRequestError, ForbiddenError, InternalServerError, UnauthorizedError
 } from '../http/errors.js';
-import { Gateway } from './Gateway.js';
 import { AccessRequest } from './Authorization.js';
 import { userIsAdmin } from './statements.js';
 
@@ -17,12 +18,21 @@ type AccountSpec = {
   subdomains?: Reference[]
 };
 
+export interface AccountContext {
+  readonly me: GatewayPrincipal;
+  readonly domain: MeldClone;
+  readonly domainName: string;
+  readonly keyStore: AuthKeyStore;
+  readonly usingUserKeys: boolean;
+  readonly rootAccountName: string;
+}
+
 /**
  * Javascript representation of an Account subject in the Gateway domain.
  * Instances are ephemeral, instantiated dynamically on demand.
  */
 export class Account {
-  static fromJSON(gateway: Gateway, src: GraphSubject) {
+  static fromJSON(gateway: AccountContext, src: GraphSubject) {
     // noinspection JSCheckFunctionSignatures
     return new Account(gateway, {
       name: src['@id'],
@@ -36,13 +46,13 @@ export class Account {
   /** plain account name */
   readonly name: string;
   /** verifiable account identities */
-  private readonly emails: Set<string>;
+  readonly emails: Set<string>;
   /** per-device keys */
-  private readonly keyids: Set<string>;
+  readonly keyids: Set<string>;
   /** admin (primary accountable) IRIs */
-  private readonly admins: Set<string>;
+  readonly admins: Set<string>;
   /** directly-owned entity IRIs */
-  private readonly subdomains: Reference[];
+  readonly subdomains: Reference[];
   /**
    * Cache of owned entities, including indirectly via org account
    * @see loadAllOwned
@@ -50,7 +60,7 @@ export class Account {
   private readonly allOwned: { [type: string]: Set<string> };
 
   constructor(
-    private readonly gateway: Gateway,
+    private readonly gateway: AccountContext,
     {
       name,
       emails = [],
@@ -73,7 +83,7 @@ export class Account {
    * Activation of a gateway account with a user email.
    * @returns key config for the account
    */
-  async generateKey() {
+  async generateKey(email?: string) {
     // Every activation creates a new key (assumes new device)
     const keyDetails = await this.gateway.keyStore
       .mintKey(`${this.name}@${this.gateway.domainName}`);
@@ -89,8 +99,12 @@ export class Account {
     }
     // Store the keyid and the email
     this.keyids.add(keyDetails.key.keyid);
-    // Write the changed details, including the new key
-    await this.gateway.domain.write({ '@id': this.name, key });
+    if (email)
+      this.emails.add(email);
+    // Patch the changed details, including the new key
+    await this.gateway.domain.write({
+      '@id': this.name, key, email
+    });
     return config;
   }
 
