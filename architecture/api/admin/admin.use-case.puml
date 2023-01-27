@@ -1,0 +1,34 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+left to right direction
+
+:user:
+:root:
+user <|-- root : is a
+
+package "User End-Point" {
+  user --> (change details) : self
+  note right: PATCH /user/:user {emails, keyids}
+  note bottom of "change details": including revoke key
+  (get activation) #lightgreen
+  user --> (get activation)
+  note right of "get activation": sends code by email
+  note right of "get activation": POST /user/:user/activation {email}
+  (get user key) #lightgreen
+  user --> (get user key) : self; can use\nactivation
+  note top of "get user key": must use activation\nfor self-service create
+  note right of "get user key": create user account\nif not exists
+  note right of "get user key": POST /user/:user/key
+  root --> (get user key) : any user
+  user --> (delete user) : self
+  root --> (delete user) : any user
+  note right: DEL /user/:user
+}
+
+package "Organisation End-Point" {
+  user ---> (create org)
+  user --> (delete org)
+  user --> (change admins)
+}
+
+@enduml

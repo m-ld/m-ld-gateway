@@ -1,5 +1,6 @@
 import { BaseGatewayConfig } from '../lib/index.js';
 import type { ListenOptions } from 'net';
+import type { SmtpOptions } from './Notifier';
 
 /**
  * @typedef {object} process.env required for Gateway node startup
@@ -21,8 +22,12 @@ export interface GatewayConfig extends BaseGatewayConfig {
   gateway: string | URL;
   /** Server address bind options */
   address?: ListenOptions;
+  /** Activation code notifier options */
+  smtp?: SmtpOptions;
 }
 
 export { GatewayEnv } from './GatewayEnv.js';
-export { Gateway } from './Gateway.js';
+export { Gateway, Who } from './Gateway.js';
+export { Authorization } from './Authorization.js';
 export { Account } from './Account.js';
+export { Notifier } from './Notifier.js';
