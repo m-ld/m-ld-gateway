@@ -1,8 +1,8 @@
-import { EndPoint, HasContext } from './EndPoint';
-import { GatewayEndPoint, GatewayRequest } from './GatewayEndPoint';
-import { ForbiddenError, NotFoundError, UnauthorizedError } from './errors';
+import { EndPoint, HasContext } from './EndPoint.js';
+import { GatewayEndPoint, GatewayRequest } from './GatewayEndPoint.js';
+import { ForbiddenError, NotFoundError, UnauthorizedError } from './errors.js';
 import { Authorization, Notifier } from '../server/index.js';
-import { AccountOwnedId } from '../lib/index';
+import { AccountOwnedId } from '../lib/index.js';
 
 export type UserRequest = GatewayRequest & HasContext<'user', string>;
 

@@ -1,11 +1,11 @@
-import { EndPoint, HasContext, sendChunked } from './EndPoint';
-import { GatewayEndPoint, GatewayRequest } from './GatewayEndPoint';
+import { EndPoint, HasContext, sendChunked } from './EndPoint.js';
+import { GatewayEndPoint, GatewayRequest } from './GatewayEndPoint.js';
 import { Authorization, Gateway, Who } from '../server/index.js';
-import { AccountOwnedId } from '../lib/index';
-import { BadRequestError } from './errors';
+import { AccountOwnedId } from '../lib/index.js';
+import { BadRequestError } from './errors.js';
 import { consume } from 'rx-flowable/consume';
 import { Readable } from 'stream';
-import { SubdomainClone } from '../server/SubdomainClone';
+import { SubdomainClone } from '../server/SubdomainClone.js';
 
 export type SubdomainRequest = GatewayRequest &
   HasContext<'id', AccountOwnedId> &

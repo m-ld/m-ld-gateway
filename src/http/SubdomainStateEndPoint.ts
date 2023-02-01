@@ -1,7 +1,7 @@
-import { EndPoint, HasContext, sendChunked } from './EndPoint';
-import { SubdomainEndPoint, SubdomainRequest } from './SubdomainEndPoint';
-import { SubdomainClone } from '../server/SubdomainClone';
-import { MethodNotAllowedError, NotFoundError, PreconditionFailedError } from './errors';
+import { EndPoint, HasContext, sendChunked } from './EndPoint.js';
+import { SubdomainEndPoint, SubdomainRequest } from './SubdomainEndPoint.js';
+import { SubdomainClone } from '../server/SubdomainClone.js';
+import { MethodNotAllowedError, NotFoundError, PreconditionFailedError } from './errors.js';
 
 type SubdomainStateRequest = SubdomainRequest &
   HasContext<'subdomain', SubdomainClone>;

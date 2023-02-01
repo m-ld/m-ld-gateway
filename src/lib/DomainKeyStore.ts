@@ -10,7 +10,9 @@ export class DomainKeyStore implements AuthKeyStore {
   ) {}
 
   async mintKey(name: string) {
-    const material = randomBytes(40).toString('base64');
+    const material = randomBytes(40).toString('hex')
+      .replace(/\d/g, c =>
+        String.fromCharCode('g'.charCodeAt(0) + Number(c)));
     return {
       key: new AuthKey({
         appId: this.appId,

@@ -1,6 +1,6 @@
 import { Formatter, Request, RequestHandlerType, Response, Server as RestServer } from 'restify';
-import { StringFormat, StringReadable } from '../lib/index';
-import { toHttpError } from './errors';
+import { StringFormat, StringReadable } from '../lib/index.js';
+import { toHttpError } from './errors.js';
 import { pipeline } from 'stream/promises';
 import { Consumable } from 'rx-flowable';
 

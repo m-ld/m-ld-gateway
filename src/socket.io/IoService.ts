@@ -1,5 +1,5 @@
 import { Server as SocketIoServer } from 'socket.io';
-import { IoRemotesService } from '@m-ld/m-ld/ext/socket.io/server';
+import { IoRemotesService } from '@m-ld/m-ld/ext/socket.io-server';
 import { BasicAuthorization } from '../server/Authorization.js';
 import { AccountOwnedId } from '../lib/index.js';
 import { ForbiddenError } from '../http/errors.js';

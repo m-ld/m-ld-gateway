@@ -13,7 +13,7 @@ import { GatewayConfig } from './index.js';
 import { Bite, Consumable } from 'rx-flowable';
 import { Account, AccountContext } from './Account.js';
 import { accountHasSubdomain } from './statements.js';
-import { SubdomainClone } from './SubdomainClone';
+import { SubdomainClone } from './SubdomainClone.js';
 import { randomInt } from 'crypto';
 import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
 import Cryptr from 'cryptr';
