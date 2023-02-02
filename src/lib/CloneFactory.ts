@@ -46,7 +46,7 @@ export abstract class CloneFactory {
    * @returns the subset of configuration that can be re-used by other engines
    * cloning the same domains
    */
-  reusableConfig(config: BaseGatewayConfig): Partial<BaseGatewayConfig> {
+  async reusableConfig(config: BaseGatewayConfig): Promise<Partial<BaseGatewayConfig>> {
     const { networkTimeout, maxOperationSize, logLevel } = config;
     return { networkTimeout, maxOperationSize, logLevel };
   }

@@ -13,7 +13,7 @@ export interface BaseGatewayConfig extends MeldConfig, AuthKeyConfig {
    * Gateway identifier, may be a domain name or a URL
    * @see resolveGateway
    */
-  gateway: string | URL | false;
+  gateway: string | URL;
   /** The user; undefined if this is a service */
   user?: string;
   /** Allow any other keys for config */
