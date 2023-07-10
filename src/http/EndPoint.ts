@@ -55,7 +55,7 @@ export interface HasContext<K extends string, V> {
   set(key: K, value: V): void;
 }
 
-export class EndPoint<P extends Routable> implements Routable {
+export class EndPoint<Outer extends Routable> implements Routable {
   del: RestServer['del'];
   get: RestServer['get'];
   put: RestServer['put'];
@@ -65,7 +65,7 @@ export class EndPoint<P extends Routable> implements Routable {
   private useForHandlers: { [v in Verb]?: RequestHandlerType[] } = {};
 
   constructor(
-    readonly outer: P,
+    readonly outer: Outer,
     stem: string
   ) {
     EndPoint.checkRoute(stem);

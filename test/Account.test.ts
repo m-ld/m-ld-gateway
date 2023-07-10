@@ -80,14 +80,8 @@ describe('Gateway account', () => {
     await expect(gateway.domain.get('.keyid')).resolves.toEqual({
       '@id': '.keyid',
       '@type': 'UserKey',
-      public: {
-        '@type': 'http://www.w3.org/2001/XMLSchema#base64Binary',
-        '@value': keyConfig.key.public
-      },
-      private: {
-        '@type': 'http://www.w3.org/2001/XMLSchema#base64Binary',
-        '@value': keyConfig.key.private
-      },
+      public: Buffer.from(keyConfig.key.public, 'base64'),
+      private: Buffer.from(keyConfig.key.private!, 'base64'),
       revoked: false
     });
   });

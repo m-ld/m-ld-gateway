@@ -18,14 +18,8 @@ describe('User key', () => {
     const userKey = UserKey.generate('app.keyid1:secret');
     let src = userKey.toJSON();
     expect(src['@id']).toBe('.keyid1');
-    expect(src['public']).toMatchObject({
-      '@type': 'http://www.w3.org/2001/XMLSchema#base64Binary',
-      '@value': expect.any(String)
-    });
-    expect(src['private']).toMatchObject({
-      '@type': 'http://www.w3.org/2001/XMLSchema#base64Binary',
-      '@value': expect.any(String)
-    });
+    expect(src['public']).toBeInstanceOf(Buffer);
+    expect(src['private']).toBeInstanceOf(Buffer);
     expect(UserKey.fromJSON(src)).toMatchObject(userKey);
   });
 

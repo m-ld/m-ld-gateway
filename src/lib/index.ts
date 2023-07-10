@@ -6,5 +6,4 @@ export * from './DomainKeyStore.js';
 export * from './StringReadable.js';
 export * from './Env.js';
 export * from './jtd.js';
-export * from './jwt.js';
 export * from './util.js';

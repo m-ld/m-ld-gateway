@@ -1,3 +1,9 @@
+# clone API
+
+The "clone API" allows the Gateway to act as a pseudo-local clone on platforms for which a clone engine does not exist, or for an app that does not want to embed the clone in-process. In this capacity, the Gateway is providing a "synchronous" API to one or more of its managed clones, which in other circumstances are only used for domain backup.
+
+This usage pattern may require close collaboration between the app service tier and the Gateway, with the former able to hold open clone state, in the same way that a clone engine can normally do.
+
 ## requirements
 
 ### app simplicity

@@ -64,12 +64,13 @@ export class Gateway extends BaseGateway implements AccountContext {
     await this.domain.write(
       new Account(this, {
         name: this.rootAccountName, keyids: [this.me.authKey.keyid]
-      }).toJSON());
+      }).toJSON()
+    );
     // Enliven all subdomains and connectors already in the domain
     await new Promise(resolve => {
-      this.subs.add(this.domain.read(state =>
-          this.initDomain(state).then(resolve),
-        (update, state) => this.onUpdateDomain(update, state)
+      this.subs.add(this.domain.read(
+        state => this.initDomain(state).then(resolve),
+        (update, state) => this.onUpdateDomain(update, state).then()
       ));
     });
     return this;
@@ -125,7 +126,7 @@ export class Gateway extends BaseGateway implements AccountContext {
     _id: AccountOwnedId,
     _update: MeldUpdate,
     _state: MeldReadState
-  ): Promise<unknown> {
+  ): Promise<void> {
     return Promise.resolve();
   }
 

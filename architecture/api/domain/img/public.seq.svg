@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentStyleType="text/css" height="377px" preserveAspectRatio="none"
+     style="width:757px;height:377px;background:#FFFFFF;" version="1.1" viewBox="0 0 757 377"
+     width="757px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="26.4883" id="_title" style="stroke:none;stroke-width:1.0;" width="449" x="155" y="10"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="439" x="160" y="28.5352">App with anonymous users using Gateway public messaging</text><rect fill="#FFFFFF" height="123.2422" style="stroke:#181818;stroke-width:1.0;" width="10" x="322" y="238.2617"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="326.5" x2="326.5" y1="73.9766" y2="370.5039"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="552.5" x2="552.5" y1="73.9766" y2="370.5039"/><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="49" x="302.5" y="42.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="35" x="309.5" y="63.0234">anon</text><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="71" x="517.5" y="42.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="524.5" y="63.0234">Gateway</text><rect fill="#FFFFFF" height="123.2422" style="stroke:#181818;stroke-width:1.0;" width="10" x="322" y="238.2617"/><polygon fill="#181818" points="541,101.2871,551,105.2871,541,109.2871,545,105.2871" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="327" x2="547" y1="105.2871" y2="105.2871"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="153" x="334" y="100.5449">POST /domain/public ☆</text><polygon fill="#181818" points="338,196.9512,328,200.9512,338,204.9512,334,200.9512" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="332" x2="552" y1="200.9512" y2="200.9512"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="136" x="344" y="196.209">config for new clones</text><path d="M5,118.2871 L5,203.2871 L322,203.2871 L322,128.2871 L312,118.2871 L5,118.2871 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M312,118.2871 L312,128.2871 L322,128.2871 L312,118.2871 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="8" x="11" y="135.354">{</text><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="280" x="27" y="150.4868">@domain:"«uuid».public.«hostname»",</text><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="104" x="27" y="165.6196">genesis:true,</text><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="16" x="27" y="180.7524">io</text><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="8" x="11" y="195.8853">}</text><path d="M558,148.4639 L558,173.4639 L750,173.4639 L750,158.4639 L740,148.4639 L558,148.4639 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M740,148.4639 L740,158.4639 L750,158.4639 L740,148.4639 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="171" x="564" y="166.0322">no backup clone created ☆</text><line style="stroke:#181818;stroke-width:1.0;" x1="327" x2="374" y1="225.2617" y2="225.2617"/><line style="stroke:#181818;stroke-width:1.0;" x1="374" x2="374" y1="225.2617" y2="238.2617"/><line style="stroke:#181818;stroke-width:1.0;" x1="333" x2="374" y1="238.2617" y2="238.2617"/><polygon fill="#181818" points="343,234.2617,333,238.2617,343,242.2617,339,238.2617" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="130" x="339" y="220.5195">Create genesis clone</text><polygon fill="#181818" points="11,268.5723,1,272.5723,11,276.5723,7,272.5723" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="5" x2="321" y1="272.5723" y2="272.5723"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="151" x="17" y="267.8301">Tell other app instances</text><polygon fill="#181818" points="343,297.8828,333,301.8828,343,305.8828,339,301.8828" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="541,297.8828,551,301.8828,541,305.8828,545,301.8828" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="337" x2="547" y1="301.8828" y2="301.8828"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="197" x="349" y="297.1406">socket.io remotes (rate limited)</text><path d="M422,314.8828 L422,354.8828 L684,354.8828 L684,324.8828 L674,314.8828 L422,314.8828 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M674,314.8828 L674,324.8828 L684,324.8828 L674,314.8828 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="235" x="428" y="332.4512">The Gateway does no management of</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="241" x="428" y="347.7617">clone genesis beyond providing an ID.</text><!--MD5=[a66f04376ac0c1d312e2f62861a51585]
+@startuml
+'https://plantuml.com/sequence-diagram
+hide footbox
+
+title App with anonymous users using Gateway public messaging
+
+anon -> Gateway: POST /domain/public ☆
+return config for new clones
+note left
+<code>
+{
+  @domain:"<<uuid>>.public.<<hostname>>",
+  genesis:true,
+  io
+}
+</code>
+end note
+note right: no backup clone created ☆
+anon -> anon ++: Create genesis clone
+<- - anon: Tell other app instances
+anon <- -> Gateway: socket.io remotes (rate limited)
+
+note over Gateway
+The Gateway does no management of
+clone genesis beyond providing an ID.
+end note
+
+@enduml
+
+@startuml
+hide footbox
+
+title App with anonymous users using Gateway public messaging
+
+anon -> Gateway: POST /domain/public ☆
+return config for new clones
+note left
+<code>
+{
+  @domain:"<<uuid>>.public.<<hostname>>",
+  genesis:true,
+  io
+}
+</code>
+end note
+note right: no backup clone created ☆
+anon -> anon ++: Create genesis clone
+<- - anon: Tell other app instances
+anon <- -> Gateway: socket.io remotes (rate limited)
+
+note over Gateway
+The Gateway does no management of
+clone genesis beyond providing an ID.
+end note
+
+@enduml
+
+PlantUML version 1.2022.8(Sun Sep 25 10:00:33 BST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

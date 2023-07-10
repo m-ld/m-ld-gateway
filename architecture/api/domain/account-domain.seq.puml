@@ -1,0 +1,32 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+hide footbox
+
+title App with Gateway account
+
+participant "App\nClient" as client
+participant "App Service\nor lambda" as service
+
+service -> Gateway: PUT /domain/<<account>>/<<name>> ""{authKey}""
+return config for new clones
+note left
+<code>
+{
+  @domain:"<<name>>.<<account>>.<<hostname>>",
+  genesis:true,
+  io
+}
+</code>
+end note
+note right
+if backup clone
+or domain exists,
+genesis is false
+end note
+client <--> service: Authenticate user (or anon)
+service -> service: Create client JWT,\nsign with authKey
+service -> client: ""{config, jwt}""
+client -> client ++: Create clone
+client <--> Gateway: socket.io remotes ""{jwt}""
+
+@enduml

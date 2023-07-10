@@ -1,10 +1,11 @@
-import { AccountOwnedId, AuthKey, verifyJwt } from '../lib/index.js';
+import { AccountOwnedId, AuthKey } from '../lib/index.js';
 import { UserKey } from '../data/index.js';
 import { UnauthorizedError } from '../http/errors.js';
 import type { Request } from 'restify';
 import { Gateway, Who } from './Gateway.js';
 import { decode } from 'jsonwebtoken';
 import { Account } from './Account';
+import { verifyJwt } from '@m-ld/io-web-runtime/dist/server/jwt';
 
 export interface AccessRequest {
   /** An ID for which access is requested */

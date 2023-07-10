@@ -1,12 +1,11 @@
-import { GraphSubject, normaliseValue, Optional, propertyValue, Reference } from '@m-ld/m-ld';
+import { GraphSubject, Optional, propertyValue, Reference } from '@m-ld/m-ld';
 import {
   createPrivateKey, createPublicKey, generateKeyPairSync, KeyObject, PrivateKeyInput,
   PublicKeyInput, RSAKeyPairOptions, sign, verify
 } from 'crypto';
-import {
-  AuthKey, AuthKeyConfig, domainRelativeIri, Key, signJwt, verifyJwt
-} from '../lib/index.js';
+import { AuthKey, AuthKeyConfig, domainRelativeIri, Key } from '../lib/index.js';
 import { JwtHeader, Secret, SignOptions } from 'jsonwebtoken';
+import { signJwt, verifyJwt } from '@m-ld/io-web-runtime/dist/server/jwt';
 
 export interface UserKeyConfig extends AuthKeyConfig {
   key: {
@@ -199,8 +198,8 @@ export class UserKey implements Key {
       ...UserKey.refFromKeyid(this.keyid),
       '@type': 'UserKey',
       name: this.name,
-      public: normaliseValue(this.publicKey),
-      private: excludePrivate ? undefined : normaliseValue(this.privateKey),
+      public: this.publicKey,
+      private: excludePrivate ? undefined : this.privateKey,
       revoked: this.revoked
     };
   }
