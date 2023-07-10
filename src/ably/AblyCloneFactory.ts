@@ -30,7 +30,7 @@ export class AblyCloneFactory extends CloneFactory {
       return ablyModule.AblyRemotes;
   }
 
-  reusableConfig(config: AblyGatewayConfig): BaseGatewayConfig {
+  async reusableConfig(config: AblyGatewayConfig): Promise<BaseGatewayConfig> {
     const { ably } = config;
     return Env.mergeConfig(super.reusableConfig(config), { ably }, {
       ably: { key: false, apiKey: false } // Remove Ably secrets

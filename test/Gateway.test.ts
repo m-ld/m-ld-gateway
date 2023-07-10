@@ -26,7 +26,7 @@ describe('Gateway', () => {
       const clone = await meldClone(backend, DeadRemotes, config);
       return [clone, backend];
     });
-    cloneFactory.reusableConfig.mockImplementation(config => {
+    cloneFactory.reusableConfig.mockImplementation(async config => {
       // Random key for testing of reusable config
       const { networkTimeout, maxOperationSize, logLevel, tls } = config;
       return { networkTimeout, maxOperationSize, logLevel, tls };

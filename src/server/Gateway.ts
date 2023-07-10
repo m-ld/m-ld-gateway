@@ -270,7 +270,7 @@ export class Gateway extends BaseGateway implements AccountContext {
     // Return the config required for a new clone, using some of our config
     return Object.assign({
       '@domain': tsDomain, genesis: false // Definitely not genesis
-    }, this.cloneFactory.reusableConfig(this.config));
+    }, await this.cloneFactory.reusableConfig(this.config));
   }
 
   async isGenesis(state: MeldReadState, id: AccountOwnedId) {
