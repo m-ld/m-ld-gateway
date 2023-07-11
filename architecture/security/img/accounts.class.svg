@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentStyleType="text/css" height="645px" preserveAspectRatio="none"
+     style="width:1139px;height:645px;background:#FFFFFF;" version="1.1" viewBox="0 0 1139 645"
+     width="1139px" zoomAndPan="magnify"><defs/><g><!--MD5=[6de492f04047ff8a778df2bea690e363]
+class Gateway--><g id="elem_Gateway"><rect codeLine="6" fill="#F1F1F1" height="103.7305" id="Gateway" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="196" x="189.5" y="159.5"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="55" x="260" y="176.1016">«domain»</text><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="52" x="261.5" y="190.2344">«service»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="259" y="206.3008">Gateway</text><line style="stroke:#181818;stroke-width:0.5;" x1="190.5" x2="384.5" y1="214.2539" y2="214.2539"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="184" x="195.5" y="231.7891">rootAccount : UserAccount</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="122" x="195.5" y="248.2773">rootKey : AuthKey</text><line style="stroke:#181818;stroke-width:0.5;" x1="190.5" x2="384.5" y1="255.2305" y2="255.2305"/></g><!--MD5=[f9a29335b499db729be669fd1bd54958]
+class Account--><g id="elem_Account"><rect codeLine="13" fill="#F1F1F1" height="103.7305" id="Account" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="200" x="166.5" y="354.5"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="59" x="237" y="371.1016">«abstract»</text><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="54" x="239.5" y="385.2344">«subject»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="56" x="238.5" y="401.3008">Account</text><line style="stroke:#181818;stroke-width:0.5;" x1="167.5" x2="365.5" y1="409.2539" y2="409.2539"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="188" x="172.5" y="426.7891">subdomain : Subdomain [*]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="175" x="172.5" y="443.2773">naming : any | uuid = any</text><line style="stroke:#181818;stroke-width:0.5;" x1="167.5" x2="365.5" y1="450.2305" y2="450.2305"/></g><path d="M402,325.5 L402,341.8105 L360.5,421.498 L402,349.8105 L402,366.1211 A0,0 0 0 0 402,366.1211 L621,366.1211 A0,0 0 0 0 621,366.1211 L621,335.5 L611,325.5 L402,325.5 A0,0 0 0 0 402,325.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M611,325.5 L611,335.5 L621,335.5 L611,325.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="193" x="408" y="343.0684">inverse injection: a Subdomain</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="198" x="408" y="358.3789">can only appear in one Account</text><path d="M402,376.1211 L402,423.0527 L347.5,437.9863 L402,431.0527 L402,477.9844 A0,0 0 0 0 402,477.9844 L617,477.9844 A0,0 0 0 0 617,477.9844 L617,386.1211 L607,376.1211 L402,376.1211 A0,0 0 0 0 402,376.1211 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M607,376.1211 L607,386.1211 L617,386.1211 L607,376.1211 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" font-style="italic" lengthAdjust="spacing" textLength="22" x="408" y="393.6895">any</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="148" x="434" y="393.6895">naming requires an app</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="172" x="408" y="409">to PUT (sub)domain names.</text><text fill="#000000" font-family="sans-serif" font-size="13" font-style="italic" lengthAdjust="spacing" textLength="28" x="408" y="424.3105">uuid</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="117" x="440" y="424.3105">naming allows any</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="191" x="408" y="439.6211">(sub)domain name with length</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="194" x="408" y="454.9316">and entropy, or gen with POST.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="182" x="408" y="470.2422">Other options may be added.</text><!--MD5=[48c89f8a025853fc7772f4a7999a1407]
+class Subdomain--><g id="elem_Subdomain"><rect codeLine="55" fill="#F1F1F1" height="90.2422" id="Subdomain" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="141" x="196" y="548.5"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="55" x="239" y="565.1016">«domain»</text><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="54" x="239.5" y="579.2344">«subject»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="78" x="227.5" y="595.3008">Subdomain</text><line style="stroke:#181818;stroke-width:0.5;" x1="197" x2="336" y1="603.2539" y2="603.2539"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="54" x="202" y="620.7891">account</text><text fill="#000000" font-family="sans-serif" font-size="11" font-style="italic" lengthAdjust="spacing" textLength="7" x="256" y="624.4219">p</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="64" x="267" y="620.7891">: Account</text><line style="stroke:#181818;stroke-width:0.5;" x1="197" x2="336" y1="630.7422" y2="630.7422"/></g><!--MD5=[fee662a292a0353a69bd162820bae93b]
+entity User--><g id="elem_User"><ellipse cx="766.5" cy="14" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M766.5,22 L766.5,49 M753.5,30 L779.5,30 M766.5,49 L753.5,64 M766.5,49 L779.5,64 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31" x="751" y="79.0352">User</text></g><!--MD5=[873670755c6433d3512a8b316aa6820d]
+class UserAccount--><g id="elem_UserAccount"><rect codeLine="34" fill="#F1F1F1" height="89.5977" id="UserAccount" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="139" x="619" y="166.5"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="54" x="661.5" y="183.1016">«subject»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="87" x="645" y="199.168">UserAccount</text><line style="stroke:#181818;stroke-width:0.5;" x1="620" x2="757" y1="207.1211" y2="207.1211"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="127" x="625" y="224.6563">email : string [1..*]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111" x="625" y="241.1445">key : UserKey [*]</text><line style="stroke:#181818;stroke-width:0.5;" x1="620" x2="757" y1="248.0977" y2="248.0977"/></g><path d="M421,186 L421,226.6211 A0,0 0 0 0 421,226.6211 L584,226.6211 A0,0 0 0 0 584,226.6211 L584,210.3105 L623,219.3652 L584,202.3105 L584,196 L574,186 L421,186 A0,0 0 0 0 421,186 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M574,186 L574,196 L584,196 L574,186 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="142" x="427" y="203.5684">Registered email, used</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="138" x="427" y="218.8789">for account activation</text><!--MD5=[169298fcae047c920cb45c646344fdd7]
+class AuthKey--><g id="elem_AuthKey"><rect codeLine="93" fill="#F1F1F1" height="106.0859" id="AuthKey" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="105" x="793" y="158.5"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="47" x="822" y="175.1016">«secret»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="817" y="191.168">AuthKey</text><line style="stroke:#181818;stroke-width:0.5;" x1="794" x2="897" y1="199.1211" y2="199.1211"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="88" x="799" y="216.6563">keyid : string</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="91" x="799" y="233.1445">appid : string</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="93" x="799" y="249.6328">secret : string</text><line style="stroke:#181818;stroke-width:0.5;" x1="794" x2="897" y1="256.5859" y2="256.5859"/></g><!--MD5=[f5f68a7b4d1daa3f868d0f655b773560]
+class OrganisationAccount--><g id="elem_OrganisationAccount"><rect codeLine="46" fill="#F1F1F1" height="73.1094" id="OrganisationAccount" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="303" x="109" y="7"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="54" x="233.5" y="23.6016">«subject»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="145" x="188" y="39.668">OrganisationAccount</text><line style="stroke:#181818;stroke-width:0.5;" x1="110" x2="411" y1="47.6211" y2="47.6211"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="291" x="115" y="65.1563">vf:primaryAccountable : UserAccount [1..*]</text><line style="stroke:#181818;stroke-width:0.5;" x1="110" x2="411" y1="72.1094" y2="72.1094"/></g><path d="M447.5,26 L447.5,34.6553 L406,59.8652 L447.5,42.6553 L447.5,51.3105 A0,0 0 0 0 447.5,51.3105 L605.5,51.3105 A0,0 0 0 0 605.5,51.3105 L605.5,36 L595.5,26 L447.5,26 A0,0 0 0 0 447.5,26 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M595.5,26 L595.5,36 L605.5,36 L595.5,26 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="137" x="453.5" y="43.5684">The account "admins"</text><g id="elem_GMN22"><path d="M6,558 L6,629.2422 A0,0 0 0 0 6,629.2422 L161,629.2422 A0,0 0 0 0 161,629.2422 L161,597.5 L195.66,593.5 L161,589.5 L161,568 L151,558 L6,558 A0,0 0 0 0 6,558 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M151,558 L151,568 L161,568 L151,558 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="97" x="12" y="575.5684">a subject in the</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="107" x="12" y="590.8789">Gateway domain;</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="134" x="12" y="606.1895">also a domain shared</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="130" x="12" y="621.5">to authorised clients</text></g><path d="M372,568 L372,584.3105 L331,616.998 L372,592.3105 L372,608.6211 A0,0 0 0 0 372,608.6211 L519,608.6211 A0,0 0 0 0 519,608.6211 L519,578 L509,568 L372,568 A0,0 0 0 0 372,568 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M509,568 L509,578 L519,578 L509,568 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="84" x="378" y="585.5684">entailed from</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="126" x="378" y="600.8789">Account.subdomain</text><!--MD5=[033b72a131f47407b9f0b55998f42021]
+class UserKey--><g id="elem_UserKey"><rect codeLine="71" fill="#F1F1F1" height="139.0625" id="UserKey" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="187" x="656" y="337"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="54" x="722.5" y="353.6016">«subject»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="722" y="369.668">UserKey</text><line style="stroke:#181818;stroke-width:0.5;" x1="657" x2="842" y1="377.6211" y2="377.6211"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="40" x="662" y="395.1563">@id =</text><text fill="#000000" font-family="monospace" font-size="14" lengthAdjust="spacing" textLength="88" x="706" y="394.8076">".${keyid}"</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96" x="662" y="411.6445">name? : string</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="170" x="662" y="428.1328">publicKey : base64Binary</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="175" x="662" y="444.6211">privateKey : base64Binary</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="129" x="662" y="461.1094">revoked? : boolean</text><line style="stroke:#181818;stroke-width:0.5;" x1="657" x2="842" y1="468.0625" y2="468.0625"/></g><path d="M878,329 L878,346.8105 L758,406.3535 L878,354.8105 L878,372.6211 A0,0 0 0 0 878,372.6211 L1036,372.6211 A0,0 0 0 0 1036,372.6211 L1036,339 L1026,329 L878,329 A0,0 0 0 0 878,329 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M1026,329 L1026,339 L1036,339 L1026,329 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="50" x="884" y="346.5684">account</text><text fill="#000000" font-family="sans-serif" font-size="10" lengthAdjust="spacing" textLength="6" x="934" y="350.2012">u</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="81" x="940" y="346.5684">@≪gateway≫</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="134" x="884" y="364.8789">Not present in config</text><path d="M878,382.6211 L878,391.2764 L837,439.3301 L878,399.2764 L878,407.9316 A0,0 0 0 0 878,407.9316 L1048,407.9316 A0,0 0 0 0 1048,407.9316 L1048,392.6211 L1038,382.6211 L878,382.6211 A0,0 0 0 0 878,382.6211 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M1038,382.6211 L1038,392.6211 L1048,392.6211 L1038,382.6211 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="149" x="884" y="400.1895">Encrypted with AuthKey</text><path d="M878,417.9316 L878,441.8975 L791,455.8184 L878,449.8975 L878,473.8633 A0,0 0 0 0 878,473.8633 L1053,473.8633 A0,0 0 0 0 1053,473.8633 L1053,427.9316 L1043,417.9316 L878,417.9316 A0,0 0 0 0 878,417.9316 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M1043,417.9316 L1043,427.9316 L1053,427.9316 L1043,417.9316 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="121" x="884" y="435.5">possibly redundant</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="140" x="884" y="450.8105">with external keystore</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="58" x="884" y="466.1211">Assumed</text><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="32" x="946" y="465.7974">true</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="56" x="982" y="466.1211">in config</text><g id="elem_GMN31"><path d="M933,191 L933,207.5 L898.09,211.5 L933,215.5 L933,231.6211 A0,0 0 0 0 933,231.6211 L1132,231.6211 A0,0 0 0 0 1132,231.6211 L1132,201 L1122,191 L933,191 A0,0 0 0 0 933,191 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M1122,191 L1122,201 L1132,201 L1122,191 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="165" x="939" y="208.5684">String-serialised "API key"</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="178" x="939" y="223.8789">Usable with Basic HTTP auth</text></g><!--MD5=[194d4a8dfc1f1dbb24ee205902653cbe]
+reverse link Gateway to Account--><g id="link_Gateway_Account"><path codeLine="11" d="M280.49,276.94 C277.75,302.14 274.65,330.63 272.06,354.38 " fill="none" id="Gateway-backto-Account" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="281.93,263.71,277.3066,269.2439,280.6367,275.6401,285.26,270.1062,281.93,263.71" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="6" x="266.42" y="343.6051">*</text></g><!--MD5=[25992f23a227de57e085562c6ccaa08b]
+reverse link Account to Subdomain--><g id="link_Account_Subdomain"><path codeLine="30" d="M266.5,471.8 C266.5,497.03 266.5,525.36 266.5,548.23 " fill="none" id="Account-backto-Subdomain" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="266.5,458.54,262.5,464.54,266.5,470.54,270.5,464.54,266.5,458.54" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="6" x="260.0406" y="537.7232">*</text></g><!--MD5=[008ba0f0b6901373239fc7803ec7bfb5]
+link UserAccount to Account--><g id="link_UserAccount_Account"><path codeLine="42" d="M618.58,256.41 C612.89,259.32 607.16,262.07 601.5,264.5 C509.48,304.1 475.36,283.29 384.5,325.5 C373.23,330.74 361.84,336.99 350.82,343.67 " fill="none" id="UserAccount-to-Account" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="354.5,349.63,333.86,354.43,347,337.81,354.5,349.63" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[378c3c1b132e255188f7374dad2a45ac]
+link User to UserAccount--><g id="link_User_UserAccount"><path codeLine="43" d="M750.9,77.69 C739.6,101.75 724.13,134.67 711.42,161.72 " fill="none" id="User-to-UserAccount" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="709.25,166.35,716.6985,159.9064,711.3769,161.8249,709.4584,156.5033,709.25,166.35" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="22" x="734.5" y="125.0684">has</text></g><!--MD5=[c7ffa2fa11327cf2ce82e85887dc3256]
+link User to AuthKey--><g id="link_User_AuthKey"><path codeLine="44" d="M782.11,77.3 C792.48,99.09 806.37,128.28 818.51,153.78 " fill="none" id="User-to-AuthKey" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="820.75,158.49,820.5041,148.6442,818.6059,153.9731,813.277,152.0748,820.75,158.49" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="22" x="806.5" y="125.0684">has</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="6" x="811.0211" y="147.9424">*</text></g><!--MD5=[3bd2f785ce7fba86ff840f78f2677824]
+link OrganisationAccount to Account--><g id="link_OrganisationAccount_Account"><path codeLine="52" d="M222.46,80.19 C203.17,100.95 181.71,128.82 171.5,158.5 C156.17,203.05 157.74,219.44 171.5,264.5 C179.47,290.59 194.07,316.23 209.47,338.33 " fill="none" id="OrganisationAccount-to-Account" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="215.14,334.22,221.31,354.5,203.85,342.5,215.14,334.22" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[3e3ddf26659482ebc6db1edb96e472ec]
+reverse link OrganisationAccount to UserAccount--><g id="link_OrganisationAccount_UserAccount"><path codeLine="53" d="M401.28,84.05 C463.8,103.51 537.56,129.12 601.5,158.5 C607.26,161.14 613.11,164.07 618.93,167.16 " fill="none" id="OrganisationAccount-backto-UserAccount" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="388.52,80.11,393.0688,85.7054,399.9833,83.6585,395.4345,78.0631,388.52,80.11" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="22" x="588.9989" y="159.6604">1..*</text></g><!--MD5=[da11c875fea71f40e71ed49095cfc482]
+reverse link UserAccount to UserKey--><g id="link_UserAccount_UserKey"><path codeLine="91" d="M706.42,269.19 C713.11,290.38 720.79,314.68 727.8,336.83 " fill="none" id="UserAccount-backto-UserKey" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="702.49,256.78,700.4817,263.7058,706.1023,268.2234,708.1106,261.2976,702.49,256.78" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="695.8948" y="276.8207">1</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="6" x="719.2528" y="326.453">*</text></g><!--MD5=[4c7513e45a6684bbc36f9cc8baad7566]
+@startuml
+'https://plantuml.com/class-diagram
+
+hide circle
+allowmixing
+
+class Gateway <<domain>> <<service>> {
+  rootAccount : UserAccount
+  rootKey : AuthKey
+}
+
+Gateway *- - "*" Account
+
+class Account <<abstract>> <<subject>> {
+  subdomain : Subdomain [*]
+  naming : any | uuid = any
+}
+note right of Account::subdomain
+  inverse injection: a Subdomain
+  can only appear in one Account
+end note
+note right of Account::naming
+ //any// naming requires an app
+ to PUT (sub)domain names.
+ //uuid// naming allows any
+ (sub)domain name with length
+ and entropy, or gen with POST.
+ Other options may be added.
+end note
+
+Account *- - "*" Subdomain
+
+actor User
+
+class UserAccount <<subject>> {
+  email : string [1..*]
+  key : UserKey [*]
+}
+note left of UserAccount::email
+  Registered email, used
+  for account activation
+end note
+UserAccount - -|> Account
+User ..> UserAccount: has
+User ..> "*" AuthKey: has
+
+class OrganisationAccount <<subject>> {
+  vf:primaryAccountable : UserAccount [1..*]
+}
+note right of OrganisationAccount::vf:primaryAccountable
+  The account "admins"
+end note
+OrganisationAccount - -|> Account
+OrganisationAccount o- - "1..*" UserAccount
+
+class Subdomain <<domain>> <<subject>> {
+  //account<sub>p</sub> : Account//
+
+}
+note left of Subdomain
+  a subject in the
+  Gateway domain;
+  also a domain shared
+  to authorised clients
+end note
+note right of Subdomain::account
+  entailed from
+  Account.subdomain
+end note
+
+
+class UserKey <<subject>> {
+  @id = """.${keyid}" ""
+  name? : string
+  publicKey : base64Binary
+  privateKey : base64Binary
+  revoked? : boolean
+}
+note right of UserKey::name
+  account<sub>u</sub>@≪gateway≫
+  Not present in config
+end note
+note right of UserKey::privateKey
+  Encrypted with AuthKey
+end note
+note right of UserKey::revoked
+  possibly redundant
+  with external keystore
+  Assumed ""true"" in config
+end note
+
+UserAccount "1" *- - "*" UserKey
+
+class AuthKey <<secret>> {
+  keyid : string
+  appid : string
+  secret : string
+}
+note right of AuthKey
+  String-serialised "API key"
+  Usable with Basic HTTP auth
+end note
+
+@enduml
+
+@startuml
+
+hide circle
+allowmixing
+
+class Gateway <<domain>> <<service>> {
+  rootAccount : UserAccount
+  rootKey : AuthKey
+}
+
+Gateway *- - "*" Account
+
+class Account <<abstract>> <<subject>> {
+  subdomain : Subdomain [*]
+  naming : any | uuid = any
+}
+note right of Account::subdomain
+  inverse injection: a Subdomain
+  can only appear in one Account
+end note
+note right of Account::naming
+ //any// naming requires an app
+ to PUT (sub)domain names.
+ //uuid// naming allows any
+ (sub)domain name with length
+ and entropy, or gen with POST.
+ Other options may be added.
+end note
+
+Account *- - "*" Subdomain
+
+actor User
+
+class UserAccount <<subject>> {
+  email : string [1..*]
+  key : UserKey [*]
+}
+note left of UserAccount::email
+  Registered email, used
+  for account activation
+end note
+UserAccount - -|> Account
+User ..> UserAccount: has
+User ..> "*" AuthKey: has
+
+class OrganisationAccount <<subject>> {
+  vf:primaryAccountable : UserAccount [1..*]
+}
+note right of OrganisationAccount::vf:primaryAccountable
+  The account "admins"
+end note
+OrganisationAccount - -|> Account
+OrganisationAccount o- - "1..*" UserAccount
+
+class Subdomain <<domain>> <<subject>> {
+  //account<sub>p</sub> : Account//
+
+}
+note left of Subdomain
+  a subject in the
+  Gateway domain;
+  also a domain shared
+  to authorised clients
+end note
+note right of Subdomain::account
+  entailed from
+  Account.subdomain
+end note
+
+
+class UserKey <<subject>> {
+  @id = """.${keyid}" ""
+  name? : string
+  publicKey : base64Binary
+  privateKey : base64Binary
+  revoked? : boolean
+}
+note right of UserKey::name
+  account<sub>u</sub>@≪gateway≫
+  Not present in config
+end note
+note right of UserKey::privateKey
+  Encrypted with AuthKey
+end note
+note right of UserKey::revoked
+  possibly redundant
+  with external keystore
+  Assumed ""true"" in config
+end note
+
+UserAccount "1" *- - "*" UserKey
+
+class AuthKey <<secret>> {
+  keyid : string
+  appid : string
+  secret : string
+}
+note right of AuthKey
+  String-serialised "API key"
+  Usable with Basic HTTP auth
+end note
+
+@enduml
+
+PlantUML version 1.2022.8(Sun Sep 25 10:00:33 BST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

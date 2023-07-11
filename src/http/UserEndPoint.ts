@@ -1,59 +1,81 @@
-import { EndPoint, HasContext } from './EndPoint.js';
-import { GatewayEndPoint, GatewayRequest } from './GatewayEndPoint.js';
+import { EndPoint, HasContext, patch, post, use } from './EndPoint.js';
+import { GatewayEndPoint } from './GatewayEndPoint.js';
 import { ForbiddenError, NotFoundError, UnauthorizedError } from './errors.js';
 import { Authorization, Notifier } from '../server/index.js';
 import { AccountOwnedId } from '../lib/index.js';
+import { Request, Response } from 'restify';
+import { Joi } from '../lib/validate';
 
-export type UserRequest = GatewayRequest & HasContext<'user', string>;
+export type UserRequest = Request & HasContext<'user', string>;
 
 export class UserEndPoint extends EndPoint<GatewayEndPoint> {
-  constructor(outer: GatewayEndPoint, notifier?: Notifier) {
+  constructor(outer: GatewayEndPoint, private notifier: Notifier) {
     super(outer, '/user/:user');
+  }
 
-    this.use((req: UserRequest) => {
-      const { user } = req.params;
-      if (!AccountOwnedId.isComponentId(user))
-        throw new NotFoundError();
-      req.set('user', user);
-    });
+  get gateway() {
+    return this.outer.gateway;
+  }
 
-    /**
-     * Root can create an account with a key.
-     * User can get a new key for themselves.
-     */
-    this.post('/key', async (req: UserRequest, res) => {
-      // A key request could be using an activation code
-      const code = req.header('x-activation-code');
-      if (code) {
-        if (req.authorization) {
-          const { user, email } =
-            outer.gateway.verifyActivation(code, req.authorization.credentials);
-          if (user !== req.get('user'))
-            throw new UnauthorizedError('User does not match activation');
-          const acc = await outer.gateway.account(user, true);
-          res.json(200, await acc.generateKey(email));
-        } else {
-          throw new UnauthorizedError('Missing bearer token');
-        }
+  @use
+  bindUser(req: UserRequest) {
+    const { user } = req.params;
+    if (!AccountOwnedId.isComponentId(user))
+      throw new NotFoundError();
+    req.set('user', user);
+  }
+
+  /**
+   * Root can create an account with a key.
+   * User can get a new key for themselves.
+   */
+  @post('/key')
+  async getKey(req: UserRequest, res: Response) {
+    // A key request could be using an activation code
+    const code = req.header('x-activation-code');
+    if (code) {
+      if (req.authorization) {
+        const { user, email } =
+          this.gateway.verifyActivation(code, req.authorization.credentials);
+        if (user !== req.get('user'))
+          throw new UnauthorizedError('User does not match activation');
+        const acc = await this.gateway.account(user, true);
+        res.json(200, await acc.generateKey(email));
       } else {
-        const who = await Authorization.fromRequest(req).verifyUser(outer.gateway);
-        const acc = who.acc.name === req.get('user') ? who.acc :
-          who.acc.name === outer.gateway.rootAccountName ?
-            await outer.gateway.account(req.get('user'), true) : null;
-        if (acc == null)
-          throw new ForbiddenError('Only the account owner can create keys');
-        res.json(200, await acc.generateKey());
+        throw new UnauthorizedError('Missing bearer token');
       }
-    });
-
-    if (notifier != null) {
-      // TODO: This needs to be secured against denial-of-service
-      this.post('/activation', async (req: UserRequest, res) => {
-        const { email } = req.body;
-        const { jwe, code } = await outer.gateway.activation(req.get('user'), email);
-        await notifier.sendActivationCode(email, code);
-        res.json(200, { jwe });
-      });
+    } else {
+      const acc = await this.getAuthorisedAccount(req);
+      res.json(200, await acc.generateKey());
     }
+  }
+
+  // TODO: This needs to be secured against denial-of-service
+  @post('/activation')
+  async getActivation(req: UserRequest, res: Response) {
+    const { email } = Joi.attempt(req.body, Joi.object({
+      email: Joi.string().email().required()
+    }));
+    const { jwe, code } = await this.gateway.activation(req.get('user'), email);
+    await this.notifier.sendActivationCode(email, code);
+    res.json(200, { jwe });
+  }
+
+  @patch
+  async updateDetails(req: UserRequest, res: Response) {
+    const acc = await this.getAuthorisedAccount(req);
+    await acc.update(req.body);
+    res.send(204);
+  }
+
+  private async getAuthorisedAccount(req: UserRequest) {
+    const who = await Authorization.fromRequest(req).verifyUser(this.gateway);
+    const acc = who.acc.name === req.get('user') ? who.acc :
+      // The root account is allowed to create new user accounts & keys
+      who.acc.name === this.gateway.rootAccountName ?
+        await this.gateway.account(req.get('user'), true) : null;
+    if (acc == null)
+      throw new ForbiddenError();
+    return acc;
   }
 }

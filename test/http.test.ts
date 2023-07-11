@@ -50,7 +50,7 @@ describe('Gateway REST API', () => {
   });
 
   test('gets context', async () => {
-    const res = await request(new GatewayHttp(gateway).server)
+    const res = await request(app)
       .get('/api/v1/context')
       .accept('application/json');
     expect(res.status).toBe(200);
@@ -110,6 +110,15 @@ describe('Gateway REST API', () => {
     });
 
     test.todo('account security');
+
+    test('updates account naming', async () => {
+      const res = await request(app)
+        .patch('/api/v1/user/test')
+        .auth('test', 'app.keyid:secret')
+        .accept('application/json')
+        .send({ '@update': { naming: 'uuid' } });
+      expect(res.status).toBe(204);
+    });
 
     test('generates a new key', async () => {
       const res = await request(app)

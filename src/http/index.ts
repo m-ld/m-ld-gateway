@@ -10,7 +10,7 @@ import { UserEndPoint } from './UserEndPoint.js';
 export class GatewayHttp {
   readonly server: RestServer;
 
-  constructor(gateway: Gateway, notifier?: Notifier) {
+  constructor(gateway: Gateway, notifier: Notifier) {
     this.server = createServer({
       formatters: {
         'application/ld+json': formatter(JSON_LD_FORMAT),

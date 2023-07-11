@@ -1,4 +1,6 @@
-import { GraphSubject, MeldClone, MeldReadState, propertyValue, Reference } from '@m-ld/m-ld';
+import {
+  GraphSubject, MeldClone, MeldReadState, propertyValue, Reference, Update
+} from '@m-ld/m-ld';
 import {
   AccountOwnedId, AuthKey, AuthKeyConfig, AuthKeyStore, GatewayPrincipal, idSet
 } from '../lib/index.js';
@@ -8,6 +10,7 @@ import {
 } from '../http/errors.js';
 import { AccessRequest } from './Authorization.js';
 import { userIsAdmin } from './statements.js';
+import { Joi } from '../lib/validate';
 
 /** Abstract account */
 type AccountSpec = {
@@ -40,7 +43,7 @@ export class Account {
       keyids: propertyValue(src, 'key', Array, Reference).map(UserKey.keyidFromRef),
       admins: idSet(propertyValue(src, 'vf:primaryAccountable', Array, Reference)),
       subdomains: propertyValue(src, 'subdomain', Array, Reference)
-    }, false);
+    });
   }
 
   /** plain account name */
@@ -67,8 +70,7 @@ export class Account {
       keyids = [],
       admins = [],
       subdomains = []
-    }: AccountSpec,
-    readonly isNew = true
+    }: AccountSpec
   ) {
     this.gateway = gateway;
     this.name = name;
@@ -77,6 +79,16 @@ export class Account {
     this.admins = new Set([...admins ?? []]);
     this.subdomains = subdomains ?? [];
     this.allOwned = {}; // See allOwned
+  }
+
+  update(patch: Update) {
+    const myId = Joi.equal(this.name).default(this.name);
+    const update = Joi.attempt(patch, Joi.object({
+      '@delete': { '@id': myId, email: Joi.string().required() },
+      '@insert': { '@id': myId, email: Joi.string().email().required() },
+      '@update': { '@id': myId, naming: Joi.string().valid('any', 'uuid') }
+    }));
+    return this.gateway.domain.write(update);
   }
 
   /**

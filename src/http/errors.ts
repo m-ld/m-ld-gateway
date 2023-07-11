@@ -1,8 +1,10 @@
 import errors from 'restify-errors';
+import { Joi } from '../lib/validate';
 
 export function toHttpError(e: any) {
-  return e instanceof errors.HttpError ?
-    e : new InternalServerError(e);
+  return e instanceof errors.HttpError ? e :
+    Joi.isError(e) ? new BadRequestError(e) :
+      new InternalServerError(e);
 }
 
 export const UnauthorizedError = errors.UnauthorizedError;

@@ -1,9 +1,10 @@
-import { Gateway, GatewayEnv, Notifier } from './server/index.js';
+import { Gateway, GatewayEnv } from './server/index.js';
 import LOG from 'loglevel';
 import { GatewayHttp } from './http/index.js';
 import gracefulShutdown from 'http-graceful-shutdown';
 import { AuthKey, AuthKeyStore, CloneFactory, DomainKeyStore } from './lib/index.js';
 import type { AblyGatewayConfig } from './ably/index';
+import { logNotifier, SmtpNotifier } from './server/Notifier';
 
 (async function () {
   const env = new GatewayEnv();
@@ -24,7 +25,7 @@ import type { AblyGatewayConfig } from './ably/index';
 
   const gateway = new Gateway(env, config, cloneFactory, keyStore);
   const http = new GatewayHttp(gateway,
-    config.smtp != null ? new Notifier(config) : undefined);
+    config.smtp != null ? new SmtpNotifier(config) : logNotifier);
 
   if (setupType === 'io') {
     const { IoService } = await import('./socket.io/index.js');

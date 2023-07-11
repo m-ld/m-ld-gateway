@@ -1,0 +1,104 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide circle
+allowmixing
+
+class Gateway <<domain>> <<service>> {
+  rootAccount : UserAccount
+  rootKey : AuthKey
+}
+
+Gateway *-- "*" Account
+
+class Account <<abstract>> <<subject>> {
+  subdomain : Subdomain [*]
+  naming : any | uuid = any
+}
+note right of Account::subdomain
+  inverse injection: a Subdomain
+  can only appear in one Account
+end note
+note right of Account::naming
+ //any// naming requires an app
+ to PUT (sub)domain names.
+ //uuid// naming allows any
+ (sub)domain name with length
+ and entropy, or gen with POST.
+ Other options may be added.
+end note
+
+Account *-- "*" Subdomain
+
+actor User
+
+class UserAccount <<subject>> {
+  email : string [1..*]
+  key : UserKey [*]
+}
+note left of UserAccount::email
+  Registered email, used
+  for account activation
+end note
+UserAccount --|> Account
+User ..> UserAccount: has
+User ..> "*" AuthKey: has
+
+class OrganisationAccount <<subject>> {
+  vf:primaryAccountable : UserAccount [1..*]
+}
+note right of OrganisationAccount::vf:primaryAccountable
+  The account "admins"
+end note
+OrganisationAccount --|> Account
+OrganisationAccount o-- "1..*" UserAccount
+
+class Subdomain <<domain>> <<subject>> {
+  //account<sub>p</sub> : Account//
+
+}
+note left of Subdomain
+  a subject in the
+  Gateway domain;
+  also a domain shared
+  to authorised clients
+end note
+note right of Subdomain::account
+  entailed from
+  Account.subdomain
+end note
+
+
+class UserKey <<subject>> {
+  @id = """.${keyid}" ""
+  name? : string
+  publicKey : base64Binary
+  privateKey : base64Binary
+  revoked? : boolean
+}
+note right of UserKey::name
+  account<sub>u</sub>@≪gateway≫
+  Not present in config
+end note
+note right of UserKey::privateKey
+  Encrypted with AuthKey
+end note
+note right of UserKey::revoked
+  possibly redundant
+  with external keystore
+  Assumed ""true"" in config
+end note
+
+UserAccount "1" *-- "*" UserKey
+
+class AuthKey <<secret>> {
+  keyid : string
+  appid : string
+  secret : string
+}
+note right of AuthKey
+  String-serialised "API key"
+  Usable with Basic HTTP auth
+end note
+
+@enduml

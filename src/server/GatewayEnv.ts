@@ -1,8 +1,7 @@
 import { Env } from '../lib/Env.js';
 import LOG from 'loglevel';
-import isFQDN from 'validator/lib/isFQDN.js';
 import { GatewayConfig } from './index.js';
-import { AuthKeyConfig } from '../lib/index';
+import { AuthKeyConfig, isFQDN } from '../lib/index';
 
 export type LoadedConfig =
   AuthKeyConfig & { '@domain': string } & Partial<GatewayConfig>;
