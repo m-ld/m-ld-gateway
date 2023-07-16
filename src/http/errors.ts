@@ -1,9 +1,9 @@
 import errors from 'restify-errors';
-import { Joi } from '../lib/validate';
+import { as } from '../lib/validate';
 
 export function toHttpError(e: any) {
   return e instanceof errors.HttpError ? e :
-    Joi.isError(e) ? new BadRequestError(e) :
+    as.isError(e) ? new BadRequestError(e) :
       new InternalServerError(e);
 }
 

@@ -13,9 +13,9 @@ describe('Subdomain clone', () => {
   beforeEach(async () => {
     const backend = new MemoryLevel;
     clone = await meldClone(backend, DeadRemotes, {
-      '@id': 'test', '@domain': 'ex.org', genesis: true
+      '@id': 'test', '@domain': 'test.acc.ex.org', genesis: true
     });
-    sdc = new SubdomainClone(clone, backend);
+    sdc = new SubdomainClone({ account: 'acc', name: 'test' }, clone, backend);
   });
 
   test('initialises unlocked', () => {

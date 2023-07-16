@@ -2,8 +2,7 @@ import { Gateway, GatewayEnv } from './server/index.js';
 import LOG from 'loglevel';
 import { GatewayHttp } from './http/index.js';
 import gracefulShutdown from 'http-graceful-shutdown';
-import { AuthKey, AuthKeyStore, CloneFactory, DomainKeyStore } from './lib/index.js';
-import type { AblyGatewayConfig } from './ably/index';
+import { AuthKey, CloneFactory, DomainKeyStore, KeyStore } from './lib/index.js';
 import { logNotifier, SmtpNotifier } from './server/Notifier';
 
 (async function () {
@@ -12,10 +11,10 @@ import { logNotifier, SmtpNotifier } from './server/Notifier';
 
   // TODO: Tidy up with dependency injection
   const setupType = 'ably' in config ? 'ably' : 'io';
-  let keyStore: AuthKeyStore, cloneFactory: CloneFactory;
+  let keyStore: KeyStore, cloneFactory: CloneFactory;
   if (setupType === 'ably') {
     const { AblyCloneFactory, AblyKeyStore } = await import('./ably/index.js');
-    keyStore = new AblyKeyStore(<AblyGatewayConfig>config);
+    keyStore = new AblyKeyStore(config);
     cloneFactory = new AblyCloneFactory();
   } else {
     const { IoCloneFactory } = await import('./socket.io/index.js');
@@ -24,8 +23,8 @@ import { logNotifier, SmtpNotifier } from './server/Notifier';
   }
 
   const gateway = new Gateway(env, config, cloneFactory, keyStore);
-  const http = new GatewayHttp(gateway,
-    config.smtp != null ? new SmtpNotifier(config) : logNotifier);
+  const notifier = config.smtp != null ? new SmtpNotifier(config) : logNotifier;
+  const http = new GatewayHttp(gateway, notifier);
 
   if (setupType === 'io') {
     const { IoService } = await import('./socket.io/index.js');

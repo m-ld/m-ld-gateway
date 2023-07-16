@@ -6,11 +6,11 @@ import { AuthKeyConfig } from './AuthKey.js';
 import { isFQDN } from './validate';
 
 /**
- * The basic config used by both CLI and gateway
+ * The basic config used by both clients (using this lib) and servers
  */
 export interface BaseGatewayConfig extends MeldConfig, AuthKeyConfig {
   /**
-   * Gateway identifier, may be a domain name or a URL
+   * Public Gateway address, may be a domain name or a URL
    * @see resolveGateway
    */
   gateway: string | URL;
@@ -34,7 +34,7 @@ export class BaseGateway {
     return AccountOwnedId.fromReference(tsRef, this.domainName);
   }
 
-  ownedId(account: string, name: string) {
+  ownedId({ account, name }: { account: string, name: string }) {
     return new AccountOwnedId({
       gateway: this.domainName, account, name
     });

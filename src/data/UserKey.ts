@@ -206,13 +206,10 @@ export class UserKey implements Key {
 
   /**
    * Note this is only a partial inverse of {@link fromConfig}:
-   * - the auth key is only included if provided
    * - the user and domain are not included
    */
-  toConfig(): Partial<UserKeyConfig>;
-  toConfig(authKey: AuthKey): UserKeyConfig;
-  toConfig(authKey?: AuthKey): Partial<UserKeyConfig> {
-    return Object.assign(authKey ? authKey.toConfig() : {}, {
+  toConfig(authKey: AuthKey): UserKeyConfig {
+    return Object.assign(authKey.toConfig(), {
       key: {
         type: 'rsa' as 'rsa', // Typescript weirdness
         public: this.publicKey.toString('base64'),

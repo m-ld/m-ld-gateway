@@ -3,7 +3,6 @@ import { plugins, Request, Response, Server as RestServer } from 'restify';
 import { Gateway } from '../server/index.js';
 import { domainRelativeIri } from '../lib/index.js';
 import { gatewayContext } from '../data/index.js';
-import { NotFoundError } from './errors.js';
 
 export class GatewayEndPoint extends EndPoint<RestServer> {
   constructor(readonly gateway: Gateway, server: RestServer) {
@@ -24,8 +23,6 @@ export class GatewayEndPoint extends EndPoint<RestServer> {
 
   @get('/publicKey')
   async getPublicKey(req: Request, res: Response) {
-    if (!this.gateway.usingUserKeys)
-      throw new NotFoundError();
     res.contentType = 'text';
     res.send(this.gateway.me.userKey!.getCryptoPublicKey().export({
       format: 'pem', type: 'spki'

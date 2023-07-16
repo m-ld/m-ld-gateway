@@ -1,10 +1,11 @@
 import { Env } from '../lib/Env.js';
 import LOG from 'loglevel';
 import { GatewayConfig } from './index.js';
-import { AuthKeyConfig, isFQDN } from '../lib/index';
+import { isFQDN } from '../lib/index';
+import { UserKeyConfig } from '../data/UserKey';
 
 export type LoadedConfig =
-  AuthKeyConfig & { '@domain': string } & Partial<GatewayConfig>;
+  UserKeyConfig & { '@domain': string } & Partial<GatewayConfig>;
 
 export class GatewayEnv extends Env {
   constructor() {
@@ -20,8 +21,9 @@ export class GatewayEnv extends Env {
   async loadConfig(): Promise<LoadedConfig> {
     // Parse command line, environment variables & configuration
     const argv = <Partial<GatewayConfig>>(await this.yargs())
-      .demandOption(['gateway', 'auth'])
+      .demandOption(['gateway', 'auth.key', 'key.public', 'key.private'])
       .default('genesis', false)
+      .default('key.type', 'rsa')
       .option('address.port', { default: '8080', type: 'number' })
       .parse();
     LOG.setLevel(argv.logLevel || 'INFO');

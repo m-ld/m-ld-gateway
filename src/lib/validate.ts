@@ -13,4 +13,6 @@ export function isFQDN(address: string) {
   return !Joi.string().domain().validate(address).error;
 }
 
-export { Joi };
+export const validate = Joi.attempt;
+
+export { Joi as as };

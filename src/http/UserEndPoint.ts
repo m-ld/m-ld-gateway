@@ -2,9 +2,8 @@ import { EndPoint, HasContext, patch, post, use } from './EndPoint.js';
 import { GatewayEndPoint } from './GatewayEndPoint.js';
 import { ForbiddenError, NotFoundError, UnauthorizedError } from './errors.js';
 import { Authorization, Notifier } from '../server/index.js';
-import { AccountOwnedId } from '../lib/index.js';
+import { AccountOwnedId, as, validate } from '../lib/index.js';
 import { Request, Response } from 'restify';
-import { Joi } from '../lib/validate';
 
 export type UserRequest = Request & HasContext<'user', string>;
 
@@ -21,7 +20,7 @@ export class UserEndPoint extends EndPoint<GatewayEndPoint> {
   bindUser(req: UserRequest) {
     const { user } = req.params;
     if (!AccountOwnedId.isComponentId(user))
-      throw new NotFoundError();
+      throw new NotFoundError;
     req.set('user', user);
   }
 
@@ -31,6 +30,8 @@ export class UserEndPoint extends EndPoint<GatewayEndPoint> {
    */
   @post('/key')
   async getKey(req: UserRequest, res: Response) {
+    const { type } = req.params;
+    validate(type, as.equal('rsa').optional());
     // A key request could be using an activation code
     const code = req.header('x-activation-code');
     if (code) {
@@ -40,21 +41,21 @@ export class UserEndPoint extends EndPoint<GatewayEndPoint> {
         if (user !== req.get('user'))
           throw new UnauthorizedError('User does not match activation');
         const acc = await this.gateway.account(user, true);
-        res.json(200, await acc.generateKey(email));
+        res.json(200, await acc.generateKey({ email, type }));
       } else {
         throw new UnauthorizedError('Missing bearer token');
       }
     } else {
-      const acc = await this.getAuthorisedAccount(req);
-      res.json(200, await acc.generateKey());
+      const acc = await this.getAuthorisedAccount(req, true);
+      res.json(200, await acc.generateKey({ type }));
     }
   }
 
   // TODO: This needs to be secured against denial-of-service
   @post('/activation')
   async getActivation(req: UserRequest, res: Response) {
-    const { email } = Joi.attempt(req.body, Joi.object({
-      email: Joi.string().email().required()
+    const { email } = validate(req.body ?? {}, as.object({
+      email: as.string().email().required()
     }));
     const { jwe, code } = await this.gateway.activation(req.get('user'), email);
     await this.notifier.sendActivationCode(email, code);
@@ -63,19 +64,19 @@ export class UserEndPoint extends EndPoint<GatewayEndPoint> {
 
   @patch
   async updateDetails(req: UserRequest, res: Response) {
-    const acc = await this.getAuthorisedAccount(req);
+    const acc = await this.getAuthorisedAccount(req, false);
     await acc.update(req.body);
     res.send(204);
   }
 
-  private async getAuthorisedAccount(req: UserRequest) {
+  private async getAuthorisedAccount(req: UserRequest, orCreate: boolean) {
     const who = await Authorization.fromRequest(req).verifyUser(this.gateway);
     const acc = who.acc.name === req.get('user') ? who.acc :
-      // The root account is allowed to create new user accounts & keys
+      // The root account is allowed to access user accounts
       who.acc.name === this.gateway.rootAccountName ?
-        await this.gateway.account(req.get('user'), true) : null;
+        await this.gateway.account(req.get('user'), orCreate) : null;
     if (acc == null)
-      throw new ForbiddenError();
+      throw new ForbiddenError;
     return acc;
   }
 }

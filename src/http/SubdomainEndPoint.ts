@@ -1,12 +1,13 @@
 import { EndPoint, HasContext, post, put, sendChunked, use } from './EndPoint.js';
 import { GatewayEndPoint } from './GatewayEndPoint.js';
 import { Authorization, Who } from '../server/index.js';
-import { AccountOwnedId } from '../lib/index.js';
-import { BadRequestError } from './errors.js';
+import { AccountOwnedId, validate } from '../lib/index.js';
+import { BadRequestError, NotFoundError } from './errors.js';
 import { consume } from 'rx-flowable/consume';
 import { Readable } from 'stream';
 import { SubdomainClone } from '../server/SubdomainClone.js';
 import { Request, Response } from 'restify';
+import { as } from '../lib/validate';
 
 export type SubdomainRequest = Request &
   HasContext<'id', AccountOwnedId> &
@@ -23,12 +24,11 @@ export class SubdomainEndPoint extends EndPoint<GatewayEndPoint> {
 
   @use
   bindSubdomainId(req: SubdomainRequest) {
-    const { account, name }: { account: string, name: string } = req.params;
     try {
-      req.set('id', this.gateway.ownedId(account, name).validate());
+      req.set('id', this.gateway.ownedId(req.params).validate());
     } catch (e) {
       // ownedId throws strings
-      throw new BadRequestError('Bad domain %s/%s', account, name);
+      throw new BadRequestError('Bad domain %s', req.params);
     }
   }
 
@@ -36,19 +36,26 @@ export class SubdomainEndPoint extends EndPoint<GatewayEndPoint> {
   async bindAuthorisedWho(req: SubdomainRequest) {
     const auth = Authorization.fromRequest(req);
     req.set('who', await auth.verifyUser(this.gateway, {
-      id: req.get('id'),
-      forWrite: req.isUpload() ? 'Subdomain' : undefined
+      id: req.get('id'), forWrite: req.isUpload() ? 'Subdomain' : undefined
     }));
   }
 
   @put
   async putSubdomain(req: SubdomainRequest, res: Response) {
-    res.json(await this.gateway.subdomainConfig(req.get('id'), req.get('who')));
+    const { useSignatures } = validate(req.body ?? {}, as.object({
+      useSignatures: as.boolean().optional()
+    }));
+    const { account, name } = req.get('id');
+    res.json(await this.gateway.subdomainConfig({
+      useSignatures, account, name
+    }, req.get('who')));
   }
 
   @post('/poll')
   async pollUpdates(req: SubdomainRequest, res: Response) {
     const sd = await this.gateway.getSubdomain(req.get('id'));
+    if (sd == null)
+      throw new NotFoundError;
     res.setHeader('ETag', this.etag(sd));
     res.setHeader('Location', this.lockUrl(req));
     await sendChunked(res, consume(Readable.from(sd.poll())), 201);

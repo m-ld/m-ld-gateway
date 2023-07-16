@@ -14,7 +14,10 @@ export class SubdomainStateEndPoint extends EndPoint<SubdomainEndPoint> {
 
   @use
   async bindSubdomain(req: SubdomainStateRequest) {
-    req.set('subdomain', await this.outer.gateway.getSubdomain(req.get('id')));
+    const sdc = await this.outer.gateway.getSubdomain(req.get('id'));
+    if (sdc == null)
+      throw new NotFoundError;
+    req.set('subdomain', sdc);
   }
 
   @use
@@ -38,7 +41,7 @@ export class SubdomainStateEndPoint extends EndPoint<SubdomainEndPoint> {
     } else if ('lock' in req.params) {
       res.send(sd.locked);
     } else {
-      throw new MethodNotAllowedError();
+      throw new MethodNotAllowedError;
     }
   }
 
@@ -67,10 +70,10 @@ export class SubdomainStateEndPoint extends EndPoint<SubdomainEndPoint> {
         await sd.unlock();
         res.send(200);
       } else {
-        throw new NotFoundError();
+        throw new NotFoundError;
       }
     } else {
-      throw new MethodNotAllowedError();
+      throw new MethodNotAllowedError;
     }
   }
 }

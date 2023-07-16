@@ -16,15 +16,15 @@ class Account <<abstract>> <<subject>> {
   naming : any | uuid = any
 }
 note right of Account::subdomain
-  inverse injection: a Subdomain
-  can only appear in one Account
+  a Subdomain can only
+  appear in one Account
 end note
 note right of Account::naming
  //any// naming requires an app
  to PUT (sub)domain names.
- //uuid// naming allows any
- (sub)domain name with length
- and entropy, or gen with POST.
+ //uuid// naming allows any UUID
+ (sub)domain name, or gen
+ with POST.
  Other options may be added.
 end note
 

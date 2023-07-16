@@ -1,10 +1,10 @@
 import { fetchJson as defaultFetchJson } from '@m-ld/io-web-runtime/dist/server/fetch';
-import {
-  AccountOwnedId, AuthKey, AuthKeyDetail, AuthKeyStore, BaseGatewayConfig, GetAuthorisedTsIds
-} from '../lib/index.js';
+import { AccountOwnedId, AuthKey, GetAuthorisedTsIds, KeyDetail, KeyStore } from '../lib/index.js';
+import { as, validate } from '../lib/validate';
+import { LoadedConfig } from '../server/GatewayEnv';
 
 /** Auth key contains appid */
-export interface AblyGatewayConfig extends BaseGatewayConfig {
+export interface AblyGatewayConfig extends LoadedConfig {
   /**
    * Control API access token
    * @see https://ably.com/docs/api/control-api#section/Authentication/bearer_auth
@@ -12,11 +12,14 @@ export interface AblyGatewayConfig extends BaseGatewayConfig {
   ably: { apiKey: string };
 }
 
-export class AblyKeyStore implements AuthKeyStore {
+export class AblyKeyStore implements KeyStore {
   private readonly fetchJson: typeof defaultFetchJson;
   private readonly domainName: string;
 
-  constructor(config: AblyGatewayConfig, fetchJson = defaultFetchJson) {
+  constructor(cfg: LoadedConfig, fetchJson = defaultFetchJson) {
+    const config: AblyGatewayConfig = validate(cfg, as.object({
+      ably: as.object({ apiKey: as.string().required() }).required()
+    }).unknown());
     const [appId] = config.auth.key.split('.');
     this.fetchJson = ((path, params, options) => fetchJson(
       `https://control.ably.net/v1/apps/${appId}/${path}`, params, {
@@ -50,7 +53,7 @@ export class AblyKeyStore implements AuthKeyStore {
 
   ablyToAuthDetail({ key, name, status }: {
     key: string, name: string, status: 0 | 1
-  }): AuthKeyDetail {
+  }): KeyDetail<AuthKey> {
     return { key: AuthKey.fromString(key), name, revoked: status === 1 };
   }
 

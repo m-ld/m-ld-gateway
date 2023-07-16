@@ -2,24 +2,22 @@ import { clone as meldClone, MeldClone } from '@m-ld/m-ld';
 import { MemoryLevel } from 'memory-level';
 import { Account, Gateway, GatewayConfig } from '../src/server/index.js';
 import {
-  AuthKey, AuthKeyStore, BackendLevel, CloneFactory, Env, gatewayContext, UserKey
+  AuthKey, BackendLevel, CloneFactory, gatewayContext, KeyStore, UserKey
 } from '../src/index.js';
-import { DirResult, dirSync } from 'tmp';
 import { join } from 'path';
-import { DeadRemotes } from './fixtures.js';
+import { DeadRemotes, TestEnv } from './fixtures.js';
 import { existsSync } from 'fs';
 import { mock, MockProxy } from 'jest-mock-extended';
+import { Subdomain } from '../src/data/Subdomain';
 
 describe('Gateway', () => {
-  let env: Env;
+  let env: TestEnv;
   let cloneFactory: MockProxy<CloneFactory>;
-  let tmpDir: DirResult;
-  let keyStore: AuthKeyStore;
+  let keyStore: KeyStore;
   let config: Partial<GatewayConfig>;
 
   beforeEach(() => {
-    tmpDir = dirSync({ unsafeCleanup: true });
-    env = new Env('app', { data: join(tmpDir.name, 'data') });
+    env = new TestEnv;
     cloneFactory = mock<CloneFactory>();
     cloneFactory.clone.mockImplementation(async (config): Promise<[MeldClone, BackendLevel]> => {
       const backend = new MemoryLevel();
@@ -31,10 +29,9 @@ describe('Gateway', () => {
       const { networkTimeout, maxOperationSize, logLevel, tls } = config;
       return { networkTimeout, maxOperationSize, logLevel, tls };
     });
-    keyStore = mock<AuthKeyStore>();
+    keyStore = mock<KeyStore>();
     const authKey = AuthKey.fromString('app.id:secret');
     config = {
-      '@id': '1',
       '@domain': 'ex.org',
       genesis: true,
       gateway: 'ex.org',
@@ -43,8 +40,7 @@ describe('Gateway', () => {
   });
 
   afterEach(async () => {
-    // noinspection JSUnresolvedFunction
-    tmpDir.removeCallback();
+    env.tearDown();
   });
 
   test('throws if no auth config', async () => {
@@ -82,7 +78,7 @@ describe('Gateway', () => {
 
     test('has expected properties', () => {
       expect(gateway.domainName).toBe('ex.org');
-      expect(gateway.ownedId('test', 'sd1')).toMatchObject({
+      expect(gateway.ownedId({ account: 'test', name: 'sd1' })).toMatchObject({
         gateway: 'ex.org', account: 'test', name: 'sd1'
       });
       expect(gateway.ownedRefAsId({ '@id': 'test/sd1' })).toMatchObject({
@@ -99,7 +95,7 @@ describe('Gateway', () => {
           genesis: true, // has to be true because dead remotes
           auth: { key: 'app.id:secret' }
         },
-        join(tmpDir.name, 'data', 'gw')
+        join(env.tmpDir.name, 'data', 'gw')
       ]]);
     });
 
@@ -127,9 +123,9 @@ describe('Gateway', () => {
       });
 
       test('gets subdomain config', async () => {
-        const sdId = gateway.ownedId('test', 'sd1');
+        const sd = new Subdomain({ account: 'test', name: 'sd1', useSignatures: true });
         const sdConfig = await gateway.subdomainConfig(
-          sdId, { acc, keyid: 'keyid' }) as any;
+          sd, { acc, keyid: 'keyid' }) as any;
         expect(sdConfig).toEqual({
           '@domain': 'sd1.test.ex.org',
           genesis: false,
@@ -148,24 +144,29 @@ describe('Gateway', () => {
             auth: { key: 'app.id:secret' },
             tls: true
           },
-          join(tmpDir.name, 'data', 'domain', 'test', 'sd1'),
+          join(env.tmpDir.name, 'data', 'domain', 'test', 'sd1'),
           { '@id': 'http://ex.org/' }
         ]);
         await expect(gateway.domain.get('test')).resolves.toMatchObject({
           '@id': 'test',
           subdomain: { '@id': 'test/sd1' }
         });
-        expect(existsSync(join(tmpDir.name, 'data', 'domain', 'test', 'sd1')));
+        expect(existsSync(join(env.tmpDir.name, 'data', 'domain', 'test', 'sd1')));
         // Expect subdomain clone to contain user principal for signing
-        const sd = await gateway.getSubdomain(sdId);
-        await expect(sd.state.get('http://ex.org/test')).resolves.toEqual({
+        const sdc = (await gateway.getSubdomain(gateway.ownedId(sd)))!;
+        await expect(sdc.state.get('http://ex.org/test')).resolves.toEqual({
           '@id': 'http://ex.org/test', '@type': 'Account', key: { '@id': '.keyid' }
         });
       });
 
-      test('clones a new subdomain', async () => {
+      test('clones a new subdomain, with signatures', async () => {
         await gateway.domain.write({
-          '@id': 'test', subdomain: { '@id': 'test/sd1', '@type': 'Subdomain' }
+          '@id': 'test',
+          subdomain: {
+            '@id': 'test/sd1',
+            '@type': 'Subdomain',
+            useSignatures: true
+          }
         });
         // Doing another write awaits all follow handlers
         await gateway.domain.write({});
@@ -179,23 +180,23 @@ describe('Gateway', () => {
             auth: { key: 'app.id:secret' },
             tls: true
           },
-          join(tmpDir.name, 'data', 'domain', 'test', 'sd1'),
+          join(env.tmpDir.name, 'data', 'domain', 'test', 'sd1'),
           { '@id': 'http://ex.org/' }
         ]);
       });
 
       test('removes a subdomain', async () => {
-        const sdId = gateway.ownedId('test', 'sd1');
-        await gateway.subdomainConfig(sdId, { acc, keyid: 'keyid' });
+        const sd = new Subdomain({ account: 'test', name: 'sd1' });
+        await gateway.subdomainConfig(sd, { acc, keyid: 'keyid' });
         await gateway.domain.write({
-          '@delete': { '@id': 'test', subdomain: { '@id': 'test/sd1', '@type': 'Subdomain' } }
+          '@delete': { '@id': 'test', subdomain: { '@id': 'test/sd1', '?': '?' } }
         });
         // Doing another write awaits all follow handlers
         await gateway.domain.write({});
-        expect(!existsSync(join(tmpDir.name, 'data', 'domain', 'test', 'sd1')));
-        expect(gateway.hasClonedSubdomain(sdId)).toBe(false);
+        expect(!existsSync(join(env.tmpDir.name, 'data', 'domain', 'test', 'sd1')));
+        expect(gateway.hasClonedSubdomain(gateway.ownedId(sd))).toBe(false);
         // Cannot re-use a subdomain name
-        await expect(gateway.subdomainConfig(sdId, { acc, keyid: 'keyid' }))
+        await expect(gateway.subdomainConfig(sd, { acc, keyid: 'keyid' }))
           .rejects.toThrowError();
       });
     });

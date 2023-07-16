@@ -38,19 +38,13 @@ export class IoCloneFactory extends CloneFactory {
     // Reusable config always doles out public gateway address
     const uri = !reusable && this.address ? this.address :
       (await resolveGateway(config.gateway.toString()).root).toString();
+    const key = reusable ? '' : config.auth.key;
+    // The user may be undefined, if this is a Gateway
+    const user = reusable ? '' : config.user;
     return {
       // When using Socket.io, the authorisation key is sent to the server
       // See https://socket.io/docs/v4/middlewares/#sending-credentials
-      io: {
-        uri: uri,
-        opts: {
-          auth: {
-            key: reusable ? '' : config.auth.key,
-            // The user may be undefined, if this is a Gateway
-            user: reusable ? '' : config.user
-          }
-        }
-      }
+      io: { uri, opts: { auth: { key, user } } }
     };
   }
 }

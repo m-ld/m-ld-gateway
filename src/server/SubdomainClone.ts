@@ -2,6 +2,7 @@ import type { MeldClone, MeldReadState, MeldState, MeldUpdate, Write } from '@m-
 import type { BackendLevel } from '../lib/index';
 import { AbstractSublevel } from 'abstract-level';
 import { EventEmitter, once } from 'events';
+import { Subdomain, SubdomainSpec } from '../data/Subdomain';
 
 type JsonMeldUpdate = Omit<MeldUpdate, 'trace'>;
 
@@ -33,27 +34,29 @@ type CloneState =
 /**
  * Mediates access to the given clone.
  *
- * Updates may be emitted by the `update` event, {@link poll} and {@link write},
+ * Updates may be emitted by the `update` event, {@link #poll} and {@link #write},
  * which emit disjoint sets of updates under normal operation.
  */
-export class SubdomainClone extends EventEmitter {
+export class SubdomainClone extends Subdomain {
   private readonly queueStore: AbstractSublevel<BackendLevel, unknown, string, any>;
   private _state: CloneState;
+  private events = new EventEmitter;
 
   constructor(
+    spec: SubdomainSpec,
     private readonly _clone: MeldClone,
     backend: BackendLevel
   ) {
-    super();
+    super(spec);
     this.queueStore = backend.sublevel('_gw:', { valueEncoding: 'json' });
     // Follow the clone to enqueue updates
     _clone.follow(async (update, state) => {
-      if (this.listenerCount('echo') > 0) {
-        this.emit('echo', await this.enqueue(update));
-      } else if (this.listenerCount('update') > 0) {
+      if (this.events.listenerCount('echo') > 0) {
+        this.events.emit('echo', await this.enqueue(update));
+      } else if (this.events.listenerCount('update') > 0) {
         // LOCKS the state if anyone is subscribed
         await this.doAndStayLocked({ state }, async () => {
-          this.emit('update', await this.enqueue(update));
+          this.events.emit('update', await this.enqueue(update));
         });
       } else {
         // Nobody is listening, will hopefully poll
@@ -61,6 +64,20 @@ export class SubdomainClone extends EventEmitter {
       }
     });
     this._state = { state: _clone };
+  }
+
+  on(eventName: 'echo', listener: (sdu: SubdomainUpdate) => void): this;
+  on(eventName: 'update', listener: (sdu: SubdomainUpdate) => void): this;
+  on(eventName: 'lockRelease', listener: () => void): this;
+  on(eventName: string, listener: (...args: any[]) => void) {
+    this.events.on(eventName, listener);
+    return this;
+  }
+
+  // noinspection JSUnusedGlobalSymbols - implements _NodeEventTarget
+  once(eventName: string, listener: (...args: any[]) => void) {
+    this.events.once(eventName, listener);
+    return this;
   }
 
   /** Getter omits state, which is managed by this class */
@@ -84,7 +101,7 @@ export class SubdomainClone extends EventEmitter {
   private async doAndStayLocked(state: CloneState, proc: () => Promise<unknown> | unknown) {
     this._state = { lock: 'read', ...state };
     // Start waiting for the lock before the proc
-    const lockReleased = once(this, 'lockRelease'); // TODO timeout
+    const lockReleased = once(this.events, 'lockRelease'); // TODO timeout
     await proc();
     await lockReleased;
     this._state = { state: this._clone };
@@ -117,7 +134,7 @@ export class SubdomainClone extends EventEmitter {
         if (request != null) {
           // Every write should produce one echo update or none.
           const beforeTick = this.tick;
-          this.on('echo', resolve);
+          this.events.on('echo', resolve);
           try {
             this._state.state = await state.write(request);
             if (beforeTick === this.tick)
@@ -125,7 +142,7 @@ export class SubdomainClone extends EventEmitter {
           } finally {
             // If clone tick not changed after write, cancel the expectation.
             if (beforeTick === this.tick)
-              this.off('echo', resolve);
+              this.events.off('echo', resolve);
           }
         } else {
           resolve(null);
@@ -146,7 +163,7 @@ export class SubdomainClone extends EventEmitter {
 
   async unlock() {
     await this.queueStore.clear();
-    this.emit('lockRelease');
+    this.events.emit('lockRelease');
   }
 
   close() {
