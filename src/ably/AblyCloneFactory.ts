@@ -1,6 +1,7 @@
 import * as ablyModule from '@m-ld/m-ld/ext/ably';
 import { BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal } from '../lib/index.js';
 import * as xirsys from '@m-ld/io-web-runtime/dist/server/xirsys';
+import { Who } from '../server/index';
 
 type AblyGatewayConfig = BaseGatewayConfig & ablyModule.MeldAblyConfig;
 
@@ -30,9 +31,12 @@ export class AblyCloneFactory extends CloneFactory {
       return ablyModule.AblyRemotes;
   }
 
-  async reusableConfig(config: AblyGatewayConfig): Promise<BaseGatewayConfig> {
+  async reusableConfig(
+    config: BaseGatewayConfig,
+    who?: Who
+  ): Promise<Partial<BaseGatewayConfig>> {
     const { ably } = config;
-    return Env.mergeConfig(super.reusableConfig(config), { ably }, {
+    return Env.mergeConfig(super.reusableConfig(config, who), { ably }, {
       ably: { key: false, apiKey: false } // Remove Ably secrets
     });
   }

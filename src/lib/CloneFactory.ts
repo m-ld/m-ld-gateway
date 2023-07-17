@@ -10,6 +10,7 @@ import { SignOptions } from 'jsonwebtoken';
 import { KeyObject } from 'crypto';
 import { BaseGatewayConfig } from './BaseGateway.js';
 import { AbstractLevel } from 'abstract-level';
+import { Who } from '../server/index';
 
 export type BackendLevel = AbstractLevel<unknown, string, unknown>;
 
@@ -46,7 +47,10 @@ export abstract class CloneFactory {
    * @returns the subset of configuration that can be re-used by other engines
    * cloning the same domains
    */
-  async reusableConfig(config: BaseGatewayConfig): Promise<Partial<BaseGatewayConfig>> {
+  async reusableConfig(
+    config: BaseGatewayConfig,
+    who?: Who
+  ): Promise<Partial<BaseGatewayConfig>> {
     const { networkTimeout, maxOperationSize, logLevel } = config;
     return { networkTimeout, maxOperationSize, logLevel };
   }

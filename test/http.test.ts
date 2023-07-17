@@ -99,15 +99,6 @@ describe('Gateway REST API', () => {
 
     test.todo('account security');
 
-    test('updates account naming', async () => {
-      const res = await request(app)
-        .patch('/api/v1/user/test')
-        .auth('test', 'app.keyid:secret')
-        .accept('application/json')
-        .send({ '@update': { naming: 'uuid' } });
-      expect(res.status).toBe(204);
-    });
-
     test('generates a new key', async () => {
       const res = await request(app)
         .post('/api/v1/user/test/key?type=rsa')
@@ -117,6 +108,30 @@ describe('Gateway REST API', () => {
       expect(res.body).toMatchObject({
         auth: { key: expect.stringMatching(/app\..{6}:.{20,}/) },
         key: { private: expect.any(String), public: expect.any(String) }
+      });
+    });
+
+    describe('with uuid subdomains', () => {
+      beforeEach(async () => {
+        const res = await request(app)
+          .patch('/api/v1/user/test')
+          .auth('test', 'app.keyid:secret')
+          .accept('application/json')
+          .send({ '@update': { naming: 'uuid' } });
+        expect(res.status).toBe(204);
+      });
+
+      test('can retrieve subdomain config', async () => {
+        cloneFactory.reusableConfig.mockResolvedValueOnce({ reusable: true });
+        const res = await request(app)
+          .post('/api/v1/domain/test')
+          .accept('application/json');
+        expect(res.status).toBe(200);
+        expect(res.body).toEqual({
+          '@domain': expect.stringMatching(/^c[a-z0-9]{24}\.test\.ex\.org/),
+          genesis: true,
+          reusable: true
+        });
       });
     });
 

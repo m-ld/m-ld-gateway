@@ -6,6 +6,7 @@ import { GatewayEndPoint } from './GatewayEndPoint.js';
 import { SubdomainEndPoint } from './SubdomainEndPoint.js';
 import { SubdomainStateEndPoint } from './SubdomainStateEndPoint.js';
 import { UserEndPoint } from './UserEndPoint.js';
+import { DomainEndPoint } from './DomainEndPoint';
 
 export class GatewayHttp {
   readonly server: RestServer;
@@ -35,6 +36,7 @@ export class GatewayHttp {
     // Set up endpoints
     const gatewayEndPoint = new GatewayEndPoint(gateway, this.server);
     new UserEndPoint(gatewayEndPoint, notifier);
+    new DomainEndPoint(gatewayEndPoint);
     const subdomainEndPoint = new SubdomainEndPoint(gatewayEndPoint);
     new SubdomainStateEndPoint(subdomainEndPoint);
   }

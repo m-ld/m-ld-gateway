@@ -34,7 +34,7 @@ export class IoService extends IoRemotesService {
         const ownedId = AccountOwnedId.fromDomain(domainName).validate();
         const access = { id: ownedId, forWrite: 'Subdomain' };
         if (!user && !key) {
-          if (!await Account.hasAnonymousAccess(gateway, access))
+          if (!await Account.hasAnonymousAccess(gateway, access.id))
             return next(new ForbiddenError('Anonymous messaging not available'));
         } else if (user) {
           await new BasicAuthorization(user, key).verifyUser(gateway, access);

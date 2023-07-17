@@ -1,8 +1,9 @@
 import {
   BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal, resolveGateway
 } from '../index.js';
-import { IoRemotes } from '@m-ld/m-ld/ext/socket.io';
+import { IoRemotes, MeldIoConfig } from '@m-ld/m-ld/ext/socket.io';
 import LOG from 'loglevel';
+import { Who } from '../server/index';
 
 export class IoCloneFactory extends CloneFactory {
   /**
@@ -29,22 +30,27 @@ export class IoCloneFactory extends CloneFactory {
     return IoRemotes;
   }
 
-  async reusableConfig(config: BaseGatewayConfig): Promise<Partial<BaseGatewayConfig>> {
-    return Env.mergeConfig(super.reusableConfig(config),
-      await this.ioConfig(config, true));
+  async reusableConfig(
+    config: BaseGatewayConfig,
+    who?: Who
+  ): Promise<Partial<BaseGatewayConfig>> {
+    return Env.mergeConfig(super.reusableConfig(config, who),
+      await this.ioConfig(config, true, who));
   }
 
-  private async ioConfig(config: BaseGatewayConfig, reusable = false) {
+  private async ioConfig(config: BaseGatewayConfig, reusable = false, who?: Who) {
     // Reusable config always doles out public gateway address
     const uri = !reusable && this.address ? this.address :
       (await resolveGateway(config.gateway.toString()).root).toString();
-    const key = reusable ? '' : config.auth.key;
-    // The user may be undefined, if this is a Gateway
-    const user = reusable ? '' : config.user;
-    return {
+    const io: MeldIoConfig['io'] = { uri };
+    if (!reusable || who != null) { // If who is null, this is anonymous access
       // When using Socket.io, the authorisation key is sent to the server
       // See https://socket.io/docs/v4/middlewares/#sending-credentials
-      io: { uri, opts: { auth: { key, user } } }
-    };
+      const key = reusable ? '≪your-auth-key≫' : config.auth.key;
+      // The user may be undefined, if this is a Gateway
+      const user = reusable ? who?.acc.name ?? '≪your-account-name≫' : config.user;
+      io.opts = { auth: { key, user } };
+    }
+    return { io };
   }
 }

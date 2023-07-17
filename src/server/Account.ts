@@ -46,15 +46,17 @@ export class Account {
 
   static hasAnonymousAccess(
     gateway: AccountContext,
-    access: AccessRequest
+    { account, name }: { account: string, name?: string }
   ): Promise<boolean> {
-    // A UUID subdomain name can be accessed anonymously. First check the
-    // UUID-ness because that's cheaper than loading up the account.
-    const isUuid = asUuid.validate(access.id.name);
-    if (isUuid.error)
-      return Promise.reject(isUuid.error);
+    if (name != null) {
+      // A UUID subdomain name can be accessed anonymously. First check the
+      // UUID-ness because that's cheaper than loading up the account.
+      const isUuid = asUuid.validate(name);
+      if (isUuid.error)
+        return Promise.reject(isUuid.error);
+    }
     return gateway.domain.ask({
-      '@where': { '@id': access.id.account, naming: 'uuid' }
+      '@where': { '@id': account, naming: 'uuid' }
     });
   }
 

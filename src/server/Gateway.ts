@@ -255,36 +255,38 @@ export class Gateway extends BaseGateway implements AccountContext {
    *
    * The caller must have already checked user access to the subdomain.
    */
-  async subdomainConfig(spec: SubdomainSpec, who: Who): Promise<Partial<MeldConfig>> {
+  async subdomainConfig(spec: SubdomainSpec, who?: Who): Promise<Partial<MeldConfig>> {
     const id = this.ownedId(spec);
     const sdDomain = id.toDomain();
-    // Use m-ld write locking to guard against API race conditions
-    await this.domain.write(async state => {
-      // Do we already have a clone of this subdomain?
-      let sdc = this.subdomains[sdDomain];
-      if (sdc == null) {
-        // Check that this subdomain has not existed before
-        if (await this.tsTombstoneExists(id))
-          throw new ConflictError('Cannot re-use domain name');
-        sdc = await this.cloneSubdomain(spec, true);
-        // Ensure that the clone is online to avoid race with the client
-        await sdc.clone.status.becomes({ online: true });
-        // Ensure the subdomain is in the domain
-        state = await state.write(accountHasSubdomain(sdc));
-        if (sdc.useSignatures) {
-          // Ensure that the user account is in the subdomain for signing
-          const userKey = await who.acc.key(state, who.keyid);
-          await this.writePrincipalToSubdomain(
-            sdc, who.acc.name, 'Account', userKey);
+    if (who != null) {
+      // Use m-ld write locking to guard against API race conditions
+      await this.domain.write(async state => {
+        // Do we already have a clone of this subdomain?
+        let sdc = this.subdomains[sdDomain];
+        if (sdc == null) {
+          // Check that this subdomain has not existed before
+          if (await this.tsTombstoneExists(id))
+            throw new ConflictError('Cannot re-use domain name');
+          sdc = await this.cloneSubdomain(spec, true);
+          // Ensure that the clone is online to avoid race with the client
+          await sdc.clone.status.becomes({ online: true });
+          // Ensure the subdomain is in the domain
+          state = await state.write(accountHasSubdomain(sdc));
+          if (sdc.useSignatures) {
+            // Ensure that the user account is in the subdomain for signing
+            const userKey = await who.acc.key(state, who.keyid);
+            await this.writePrincipalToSubdomain(
+              sdc, who.acc.name, 'Account', userKey);
+          }
+        } else if (spec.useSignatures != null && sdc.useSignatures !== spec.useSignatures) {
+          throw new ConflictError('Cannot change use of signatures after creation');
         }
-      } else if (spec.useSignatures != null && sdc.useSignatures !== spec.useSignatures) {
-        throw new ConflictError('Cannot change use of signatures after creation');
-      }
-    });
+      });
+    }
     // Return the config required for a new clone, using some of our config
     return Object.assign({
-      '@domain': sdDomain, genesis: false // Definitely not genesis
-    }, await this.cloneFactory.reusableConfig(this.config));
+      '@domain': sdDomain, genesis: who == null
+    }, await this.cloneFactory.reusableConfig(this.config, who));
   }
 
   async getSubdomain(id: AccountOwnedId) {
