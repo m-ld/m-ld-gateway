@@ -12,7 +12,7 @@ import { finalize, Subscription } from 'rxjs';
 import { ConflictError, UnauthorizedError } from '../http/errors.js';
 import { GatewayConfig } from './index.js';
 import { Bite, Consumable } from 'rx-flowable';
-import { Account, AccountContext } from './Account.js';
+import { Account, AccountContext, RemotesAuthType, SubdomainNaming } from './Account.js';
 import { accountHasSubdomain } from './statements.js';
 import { SubdomainClone } from './SubdomainClone.js';
 import { randomInt } from 'crypto';
@@ -254,11 +254,20 @@ export class Gateway extends BaseGateway implements AccountContext {
    * create the subdomain if it does not already exist.
    *
    * The caller must have already checked user access to the subdomain.
+   *
+   * @param spec the subdomain identity
+   * @param naming if `'any'`, a named subdomain will be created
+   * @param who?? the user who is asking
    */
-  async subdomainConfig(spec: SubdomainSpec, who?: Who): Promise<Partial<MeldConfig>> {
+  async subdomainConfig(
+    spec: SubdomainSpec,
+    naming: SubdomainNaming,
+    who?: Who
+  ): Promise<Partial<MeldConfig>> {
     const id = this.ownedId(spec);
     const sdDomain = id.toDomain();
-    if (who != null) {
+    const remotesAuth: RemotesAuthType[] = [];
+    if (naming === 'any') {
       // Use m-ld write locking to guard against API race conditions
       await this.domain.write(async state => {
         // Do we already have a clone of this subdomain?
@@ -272,21 +281,26 @@ export class Gateway extends BaseGateway implements AccountContext {
           await sdc.clone.status.becomes({ online: true });
           // Ensure the subdomain is in the domain
           state = await state.write(accountHasSubdomain(sdc));
-          if (sdc.useSignatures) {
+          if (sdc.useSignatures && who != null) {
             // Ensure that the user account is in the subdomain for signing
             const userKey = await who.acc.key(state, who.keyid);
             await this.writePrincipalToSubdomain(
               sdc, who.acc.name, 'Account', userKey);
           }
+          remotesAuth.push(...await Account.getDetails(
+            state, spec.account, 'remotesAuth'));
         } else if (spec.useSignatures != null && sdc.useSignatures !== spec.useSignatures) {
           throw new ConflictError('Cannot change use of signatures after creation');
         }
       });
+    } else {
+      remotesAuth.push(...await Account.getDetails(
+        this.domain, spec.account, 'remotesAuth'));
     }
     // Return the config required for a new clone, using some of our config
     return Object.assign({
-      '@domain': sdDomain, genesis: who == null
-    }, await this.cloneFactory.reusableConfig(this.config, who));
+      '@domain': sdDomain, genesis: naming !== 'any'
+    }, await this.cloneFactory.reusableConfig(this.config, remotesAuth, who));
   }
 
   async getSubdomain(id: AccountOwnedId) {

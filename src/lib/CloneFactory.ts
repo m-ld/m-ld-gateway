@@ -11,6 +11,7 @@ import { KeyObject } from 'crypto';
 import { BaseGatewayConfig } from './BaseGateway.js';
 import { AbstractLevel } from 'abstract-level';
 import { Who } from '../server/index';
+import { RemotesAuthType } from '../server/Account';
 
 export type BackendLevel = AbstractLevel<unknown, string, unknown>;
 
@@ -49,6 +50,7 @@ export abstract class CloneFactory {
    */
   async reusableConfig(
     config: BaseGatewayConfig,
+    remotesAuth: RemotesAuthType[],
     who?: Who
   ): Promise<Partial<BaseGatewayConfig>> {
     const { networkTimeout, maxOperationSize, logLevel } = config;

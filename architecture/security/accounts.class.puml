@@ -13,19 +13,27 @@ Gateway *-- "*" Account
 
 class Account <<abstract>> <<subject>> {
   subdomain : Subdomain [*]
-  naming : any | uuid = any
+  naming : any | uuid [*] = any
+  remotesAuth : anon | key | jwt [*] = key
 }
 note right of Account::subdomain
-  a Subdomain can only
+  A Subdomain can only
   appear in one Account
 end note
 note right of Account::naming
  //any// naming requires an app
  to PUT (sub)domain names.
  //uuid// naming allows any UUID
- (sub)domain name, or gen
- with POST.
+ (sub)domain name, or
+ generate with POST.
  Other options may be added.
+end note
+note right of Account::remotesAuth
+  Allowed remote
+  authentication methods
+  for subdomain clones.
+  Named subdomains may
+  override (in future).
 end note
 
 Account *-- "*" Subdomain

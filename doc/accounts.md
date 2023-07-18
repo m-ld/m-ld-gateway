@@ -36,16 +36,35 @@ Accept: application/json
 
 The body of the response will be of the form `{ "auth": { "key": "≪my-key≫" } }`, where `≪my-key≫` is the new account's authorisation key.
 
-## creating an account with the root
+## creating an account with the root key
 
 The Gateway root account can be used to create any user account directly.
 
 ```http request
 POST http://my-gateway/api/v1/user/my-account/key
-Authorization: Basic ≪root-key≫
+Authorization: Basic root-account root-key
 Accept: application/json
 
 // Empty body
 ```
 
 The body of the response will be of the form `{ "auth": { "key": "≪my-key≫" } }`, where `≪my-key≫` is the new account's authorisation key.
+
+## setting remotes authentication options
+
+When [connecting to subdomains](clone-subdomain.md), clients may need to provide authentication. The following options are available:
+- `anon` allows the client not to include any authentication
+- `key` requires the client to know and provide the account key (the default)
+- `jwt` requires the client to provide a JWT signed by the account key
+
+The required option can be set as follows.
+
+```http request
+PATCH http://my-gateway/api/v1/domain/my-account
+Authorization: Basic my-account my-key
+Accept: application/json
+
+{ "@insert": { "remotesAuth": "≪option≫" } }
+```
+
+You can also remove a previously-set option by including a delete clause, for example: `{ "@delete": { "remotesAuth": "jwt" } }`.

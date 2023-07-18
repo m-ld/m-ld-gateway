@@ -72,7 +72,7 @@ describe('Socket.io service', () => {
     const { keyid } = AuthKey.fromString(key);
     const subdomain = { account: user, name: 'flintstones' };
     const clientConfig = Env.mergeConfig<MeldConfig>(
-      await gateway.subdomainConfig(subdomain, { acc, keyid }),
+      await gateway.subdomainConfig(subdomain, 'any', { acc, keyid }),
       { '@id': uuid(), io: { opts: false } } // Remove auth placeholders
     );
     await expect(clone(new MemoryLevel, IoRemotes, clientConfig)).rejects.toThrow();
@@ -84,7 +84,7 @@ describe('Socket.io service', () => {
     const { auth: { key } } = await acc.generateKey({});
     const { keyid } = AuthKey.fromString(key);
     const subdomain = { account: user, name: 'flintstones' };
-    const config = await gateway.subdomainConfig(subdomain, { acc, keyid });
+    const config = await gateway.subdomainConfig(subdomain, 'any', { acc, keyid });
     const gwClone = (await gateway.getSubdomain(gateway.ownedId(subdomain)))!;
     await gwClone.write({ '@id': 'fred', name: 'Fred' });
     await gwClone.unlock();
@@ -101,7 +101,7 @@ describe('Socket.io service', () => {
 
   test('can connect to unknown UUID subdomain anonymously', async () => {
     const acc = await gateway.account('hanna-barbera', true);
-    await acc.update({ '@update': { naming: 'uuid' } });
+    await acc.update({ '@insert': { remotesAuth: 'anon' } });
     const config: MeldIoConfig = {
       '@id': uuid(), '@domain': `${uuid()}.hanna-barbera.ex.org`,
       genesis: true, io: { uri: serverUrl }

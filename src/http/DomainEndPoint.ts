@@ -17,8 +17,9 @@ export class DomainEndPoint extends EndPoint<GatewayEndPoint> {
   @post
   async postSubdomain(req: Request, res: Response) {
     const { account } = req.params;
-    if (!(await Account.hasAnonymousAccess(this.gateway, { account })))
+    const naming = await Account.getDetails(this.gateway.domain, account, 'naming');
+    if (!naming.includes('uuid'))
       throw new MethodNotAllowedError('Unable to generate name; use PUT');
-    res.send(await this.gateway.subdomainConfig({ account, name: uuid() }));
+    res.send(await this.gateway.subdomainConfig({ account, name: uuid() }, 'uuid'))
   }
 }

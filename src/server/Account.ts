@@ -26,7 +26,20 @@ export interface AccountContext {
   readonly rootAccountName: string;
 }
 
-const asUuid = as.string().regex(/^c[a-z0-9]{24}$/);
+export type SubdomainNaming = 'any' | 'uuid';
+export type RemotesAuthType = 'anon' | 'key' | 'jwt';
+
+export interface AccountDetails {
+  emails: string[],
+  naming: SubdomainNaming[],
+  remotesAuth: RemotesAuthType[]
+}
+
+const asAccountUpdate = as.object({
+  email: as.string().email(),
+  naming: as.valid('any', 'uuid'),
+  remotesAuth: as.valid('anon', 'key', 'jwt')
+}).or('email', 'naming', 'remotesAuth');
 
 /**
  * Javascript representation of an Account subject in the Gateway domain.
@@ -44,20 +57,13 @@ export class Account {
     });
   }
 
-  static hasAnonymousAccess(
-    gateway: AccountContext,
-    { account, name }: { account: string, name?: string }
-  ): Promise<boolean> {
-    if (name != null) {
-      // A UUID subdomain name can be accessed anonymously. First check the
-      // UUID-ness because that's cheaper than loading up the account.
-      const isUuid = asUuid.validate(name);
-      if (isUuid.error)
-        return Promise.reject(isUuid.error);
-    }
-    return gateway.domain.ask({
-      '@where': { '@id': account, naming: 'uuid' }
-    });
+  static async getDetails<K extends keyof AccountDetails>(
+    state: MeldReadState,
+    account: string,
+    detail: K
+  ): Promise<AccountDetails[K]> {
+    const acc = await state.get(account, detail);
+    return acc != null ? <AccountDetails[K]>propertyValue(acc, detail, Array, String) : [];
   }
 
   /** plain account name */
@@ -68,7 +74,7 @@ export class Account {
   readonly keyids: Set<string>;
   /** admin (primary accountable) IRIs */
   readonly admins: Set<string>;
-  /** directly-owned entity IRIs */
+  /** directly-owned subdomain IRIs */
   readonly subdomains: Reference[];
   /**
    * Cache of owned entities, including indirectly via org account
@@ -96,12 +102,13 @@ export class Account {
   }
 
   update(patch: Update) {
-    const myId = as.equal(this.name).default(this.name);
+    const asMyUpdate = asAccountUpdate.append({
+      '@id': as.equal(this.name).default(this.name)
+    });
     const update = validate(patch, as.object({
-      '@delete': { '@id': myId, email: as.string().required() },
-      '@insert': { '@id': myId, email: as.string().email().required() },
-      '@update': { '@id': myId, naming: as.string().valid('any', 'uuid') }
-    }));
+      '@delete': asMyUpdate,
+      '@insert': asMyUpdate
+    }).or('@delete', '@insert'));
     return this.gateway.domain.write(update);
   }
 

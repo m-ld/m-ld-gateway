@@ -7,7 +7,8 @@ export const $vocab = 'http://gw.m-ld.org/#';
 
 export const gatewayContext = {
   '@vocab': $vocab,
-  naming: { '@type': '@vocab' }
+  naming: { '@type': '@vocab' },
+  remotesAuth: { '@type': '@vocab' }
 };
 
 /**

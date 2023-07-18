@@ -48,7 +48,7 @@ export class SubdomainEndPoint extends EndPoint<GatewayEndPoint> {
     const { account, name } = req.get('id');
     res.json(await this.gateway.subdomainConfig({
       useSignatures, account, name
-    }, req.get('who')));
+    }, 'any', req.get('who')));
   }
 
   @post('/poll')

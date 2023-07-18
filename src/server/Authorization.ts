@@ -22,10 +22,10 @@ export abstract class Authorization {
       throw new UnauthorizedError;
     switch (req.authorization.scheme) {
       case 'Bearer':
-        return new BearerAuthorization(req.authorization.credentials);
+        return new JwtAuthorization(req.authorization.credentials);
       case 'Basic':
         const { username, password } = req.authorization.basic!;
-        return new BasicAuthorization(username, password);
+        return new KeyAuthorization(username, password);
       default:
         throw new UnauthorizedError('Unrecognised authorization');
     }
@@ -51,7 +51,7 @@ export abstract class Authorization {
   }
 }
 
-export class BasicAuthorization extends Authorization {
+export class KeyAuthorization extends Authorization {
   /**
    * @param user
    * @param key an authorisation key associated with this Account
@@ -73,7 +73,7 @@ export class BasicAuthorization extends Authorization {
   }
 }
 
-export class BearerAuthorization extends Authorization {
+export class JwtAuthorization extends Authorization {
   /** @param jwt a JWT containing a keyid associated with this Account */
   constructor(
     private readonly jwt: string

@@ -117,7 +117,7 @@ describe('Gateway REST API', () => {
           .patch('/api/v1/user/test')
           .auth('test', 'app.keyid:secret')
           .accept('application/json')
-          .send({ '@update': { naming: 'uuid' } });
+          .send({ '@insert': { naming: 'uuid' } });
         expect(res.status).toBe(204);
       });
 
@@ -154,7 +154,7 @@ describe('Gateway REST API', () => {
 
       beforeEach(async () => {
         sdId = gateway.ownedId({ account: 'test', name: 'sd1' });
-        await gateway.subdomainConfig(sdId, { acc, keyid: 'keyid' });
+        await gateway.subdomainConfig(sdId, 'any', { acc, keyid: 'keyid' });
         clone = cloneFactory.clones[sdId.toDomain()];
       });
 
