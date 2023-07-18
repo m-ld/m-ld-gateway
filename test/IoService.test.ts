@@ -38,7 +38,8 @@ describe('Socket.io service', () => {
 
   afterEach(async () => {
     await gateway.close();
-    await once(server.close(), 'close');
+    server.close();
+    await once(server, 'close');
     env.tearDown();
   });
 
