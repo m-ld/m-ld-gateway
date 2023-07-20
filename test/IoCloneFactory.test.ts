@@ -1,5 +1,5 @@
 import { IoCloneFactory } from '../src/index.js';
-import { Account } from '../src/server/index';
+import { Account } from '../src/server/index.js';
 import { mock } from 'jest-mock-extended';
 
 describe('Socket.io clone factory', () => {

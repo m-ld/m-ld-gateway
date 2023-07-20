@@ -1,3 +1,5 @@
+[//]: # (cURLs in this file are generated from the .http file using http-client.env.json)
+
 # Accounts
 
 Accounts have two purposes in the **m-ld** Gateway.
@@ -6,17 +8,17 @@ Accounts have two purposes in the **m-ld** Gateway.
 
 To create an account you can use an activation code, or (if the Gateway is self-hosted) the root account.
 
-Account names (`my-account` in the below) must be composed only of **lowercase** letters, numbers, hyphens `-` and underscores `_`.
+Account names (`≪account≫` in the below) must be composed only of **lowercase** letters, numbers, hyphens `-` and underscores `_`.
 
 ## creating an account with an activation code
 
 First, request an activation code with an email address.
 
-```http request
-POST http://my-gateway/api/v1/user/my-account/activation
-Accept: application/json
-
-{ "email": "my-email@ex.org" }
+```curl
+curl -X POST --location "https://≪gateway≫/api/v1/user/≪account≫/activation" \
+    -H "Accept: application/json" \
+    -H "Content-Type: application/json" \
+    -d "{ \"email\": \"≪email≫\" }"
 ```
 
 The body of the response will have the form `{ "jwe": "≪base64Binary≫" }"`. The value of the `jwe` key will be used in the next step.
@@ -25,13 +27,11 @@ An email will be sent to the given address, containing a six-digit activation co
 
 The account can then be created with another HTTP request:
 
-```http request
-POST http://my-gateway/api/v1/user/my-account/key
-Authorization: Bearer ≪jwe≫
-X-Activation-Code: ≪emailed activation code≫
-Accept: application/json
-
-// Empty body
+```curl
+curl -X POST --location "https://≪gateway≫/api/v1/user/≪account≫/key" \
+    -H "Authorization: Bearer ≪jwe≫" \
+    -H "X-Activation-Code: ≪emailed activation code≫" \
+    -H "Accept: application/json"
 ```
 
 The body of the response will be of the form `{ "auth": { "key": "≪my-key≫" } }`, where `≪my-key≫` is the new account's authorisation key.
@@ -40,12 +40,10 @@ The body of the response will be of the form `{ "auth": { "key": "≪my-key≫" 
 
 The Gateway root account can be used to create any user account directly.
 
-```http request
-POST http://my-gateway/api/v1/user/my-account/key
-Authorization: Basic root-account root-key
-Accept: application/json
-
-// Empty body
+```curl
+curl -X POST --location "https://≪gateway≫/api/v1/user/≪account name≫/key" \
+    -H "Accept: application/json" \
+    --basic --user ≪root≫:≪root key≫
 ```
 
 The body of the response will be of the form `{ "auth": { "key": "≪my-key≫" } }`, where `≪my-key≫` is the new account's authorisation key.
@@ -59,12 +57,12 @@ When [connecting to subdomains](clone-subdomain.md), clients may need to provide
 
 The required option can be set as follows.
 
-```http request
-PATCH http://my-gateway/api/v1/domain/my-account
-Authorization: Basic my-account my-key
-Accept: application/json
-
-{ "@insert": { "remotesAuth": "≪option≫" } }
+```curl
+curl -X PATCH --location "https://≪gateway≫/api/v1/user/≪account name≫" \
+    -H "Accept: application/json" \
+    -H "Content-Type: application/json" \
+    -d "{ \"@insert\": { \"remotesAuth\": \"≪remotes auth option≫\" } }" \
+    --basic --user ≪account name≫:≪account key≫
 ```
 
 You can also remove a previously-set option by including a delete clause, for example: `{ "@delete": { "remotesAuth": "jwt" } }`.

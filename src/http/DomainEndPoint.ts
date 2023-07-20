@@ -1,8 +1,8 @@
-import { EndPoint, post } from './EndPoint';
-import { GatewayEndPoint } from './GatewayEndPoint';
+import { EndPoint, post } from './EndPoint.js';
+import { GatewayEndPoint } from './GatewayEndPoint.js';
 import { Request, Response } from 'restify';
-import { MethodNotAllowedError } from './errors';
-import { Account } from '../server/index';
+import { MethodNotAllowedError } from './errors.js';
+import { Account } from '../server/index.js';
 import { uuid } from '@m-ld/m-ld';
 
 export class DomainEndPoint extends EndPoint<GatewayEndPoint> {

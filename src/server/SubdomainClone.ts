@@ -1,8 +1,8 @@
 import type { MeldClone, MeldReadState, MeldState, MeldUpdate, Write } from '@m-ld/m-ld';
-import type { BackendLevel } from '../lib/index';
+import type { BackendLevel } from '../lib/index.js';
 import { AbstractSublevel } from 'abstract-level';
 import { EventEmitter, once } from 'events';
-import { Subdomain, SubdomainSpec } from '../data/Subdomain';
+import { Subdomain, SubdomainSpec } from '../data/Subdomain.js';
 
 type JsonMeldUpdate = Omit<MeldUpdate, 'trace'>;
 

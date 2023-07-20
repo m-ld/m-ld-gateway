@@ -1,10 +1,10 @@
 import { fetchJson as defaultFetchJson } from '@m-ld/io-web-runtime/dist/server/fetch';
 import { AccountOwnedId, AuthKey, GetAuthorisedTsIds, KeyDetail, KeyStore } from '../lib/index.js';
-import { as, validate } from '../lib/validate';
-import { LoadedConfig } from '../server/GatewayEnv';
+import { as, validate } from '../lib/validate.js';
+import { GatewayConfig } from '../server/index.js';
 
 /** Auth key contains appid */
-export interface AblyGatewayConfig extends LoadedConfig {
+export interface AblyGatewayConfig extends GatewayConfig {
   /**
    * Control API access token
    * @see https://ably.com/docs/api/control-api#section/Authentication/bearer_auth
@@ -16,7 +16,7 @@ export class AblyKeyStore implements KeyStore {
   private readonly fetchJson: typeof defaultFetchJson;
   private readonly domainName: string;
 
-  constructor(cfg: LoadedConfig, fetchJson = defaultFetchJson) {
+  constructor(cfg: GatewayConfig, fetchJson = defaultFetchJson) {
     const config: AblyGatewayConfig = validate(cfg, as.object({
       ably: as.object({ apiKey: as.string().required() }).required()
     }).unknown());

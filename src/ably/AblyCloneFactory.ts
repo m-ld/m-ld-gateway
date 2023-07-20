@@ -1,8 +1,8 @@
 import * as ablyModule from '@m-ld/m-ld/ext/ably';
 import { BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal } from '../lib/index.js';
 import * as xirsys from '@m-ld/io-web-runtime/dist/server/xirsys';
-import { Who } from '../server/index';
-import { RemotesAuthType } from '../server/Account';
+import { Who } from '../server/index.js';
+import { RemotesAuthType } from '../server/Account.js';
 
 type AblyGatewayConfig = BaseGatewayConfig & ablyModule.MeldAblyConfig;
 

@@ -1,6 +1,6 @@
 import { domainRelativeIri } from './util.js';
 import { Reference } from '@m-ld/m-ld';
-import { as } from './validate';
+import { as } from '../lib/validate.js';
 
 /**
  * Combination of gateway, account and timesheet/project. Representations:

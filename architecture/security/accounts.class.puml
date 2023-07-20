@@ -21,19 +21,20 @@ note right of Account::subdomain
   appear in one Account
 end note
 note right of Account::naming
- //any// naming requires an app
+ ""any"" naming requires an app
  to PUT (sub)domain names.
- //uuid// naming allows any UUID
+ ""uuid"" naming allows any UUID
  (sub)domain name, or
  generate with POST.
- Other options may be added.
 end note
 note right of Account::remotesAuth
   Allowed remote
   authentication methods
   for subdomain clones.
-  Named subdomains may
-  override (in future).
+end note
+note left of Account::remotesAuth
+  ""anon"" auth requires
+  ""uuid"" subdomains
 end note
 
 Account *-- "*" Subdomain
@@ -63,7 +64,7 @@ OrganisationAccount o-- "1..*" UserAccount
 
 class Subdomain <<domain>> <<subject>> {
   //account<sub>p</sub> : Account//
-
+  useSignatures : boolean
 }
 note left of Subdomain
   a subject in the
@@ -75,7 +76,11 @@ note right of Subdomain::account
   entailed from
   Account.subdomain
 end note
-
+note right of Subdomain::useSignatures
+  If true, transport security
+  is activated and all clones
+  must initialise with it
+end note
 
 class UserKey <<subject>> {
   @id = """.${keyid}" ""

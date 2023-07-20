@@ -15,6 +15,15 @@ export function isFQDN(address: string) {
   return !Joi.string().domain().validate(address).error;
 }
 
+export const asLogLevel = Joi.valid(
+  'TRACE', 'trace', 0,
+  'DEBUG', 'debug', 1,
+  'INFO', 'info', 2,
+  'WARN', 'warn', 3,
+  'ERROR', 'error', 4,
+  'SILENT', 'silent', 5
+);
+
 export const validate = Joi.attempt;
 
 export { Joi as as };

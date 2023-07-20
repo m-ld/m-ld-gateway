@@ -3,7 +3,7 @@ import { domainRelativeIri } from './util.js';
 import { MeldConfig, Reference } from '@m-ld/m-ld';
 import * as dns from 'dns/promises';
 import { AuthKeyConfig } from './AuthKey.js';
-import { isFQDN } from './validate';
+import { isFQDN } from './validate.js';
 
 /**
  * The basic config used by both clients (using this lib) and servers
@@ -19,7 +19,6 @@ export interface BaseGatewayConfig extends MeldConfig, AuthKeyConfig {
   /** Allow any other keys for config */
   [key: string]: any;
 }
-
 
 /**
  * Utility base class for things that represent a Gateway, may be a client proxy
@@ -68,4 +67,9 @@ export function resolveGateway(
       return { root: url, domainName };
     }
   }
+}
+
+export function resolveDomain(gateway: BaseGatewayConfig['gateway']) {
+  return typeof gateway == 'string' && isFQDN(gateway) ?
+    gateway : new URL(gateway).hostname;
 }

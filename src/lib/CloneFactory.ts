@@ -10,8 +10,8 @@ import { SignOptions } from 'jsonwebtoken';
 import { KeyObject } from 'crypto';
 import { BaseGatewayConfig } from './BaseGateway.js';
 import { AbstractLevel } from 'abstract-level';
-import { Who } from '../server/index';
-import { RemotesAuthType } from '../server/Account';
+import { Who } from '../server/index.js';
+import { RemotesAuthType } from '../server/Account.js';
 
 export type BackendLevel = AbstractLevel<unknown, string, unknown>;
 

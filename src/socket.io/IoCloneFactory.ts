@@ -3,8 +3,8 @@ import {
 } from '../index.js';
 import { IoRemotes, MeldIoConfig } from '@m-ld/m-ld/ext/socket.io';
 import LOG from 'loglevel';
-import { Who } from '../server/index';
-import { RemotesAuthType } from '../server/Account';
+import { Who } from '../server/index.js';
+import { RemotesAuthType } from '../server/Account.js';
 
 export class IoCloneFactory extends CloneFactory {
   /**

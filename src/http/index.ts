@@ -6,7 +6,7 @@ import { GatewayEndPoint } from './GatewayEndPoint.js';
 import { SubdomainEndPoint } from './SubdomainEndPoint.js';
 import { SubdomainStateEndPoint } from './SubdomainStateEndPoint.js';
 import { UserEndPoint } from './UserEndPoint.js';
-import { DomainEndPoint } from './DomainEndPoint';
+import { DomainEndPoint } from './DomainEndPoint.js';
 
 export class GatewayHttp {
   readonly server: RestServer;

@@ -15,6 +15,7 @@ describe('Ably as a key store', () => {
       capability: {} // ignored
     }));
     keyStore = new AblyKeyStore({
+      '@id': 'test',
       '@domain': 'ex.org',
       auth: { key: 'appid.topId.topSecret' },
       key: { type: 'rsa', public: '', private: '' }, // unused

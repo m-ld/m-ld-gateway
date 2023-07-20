@@ -1,7 +1,7 @@
-import { AuthKey, DomainKeyStore, Env, IoCloneFactory, IoService, UserKey } from '../src/index';
-import { Gateway } from '../src/server/index';
+import { AuthKey, DomainKeyStore, Env, IoCloneFactory, IoService, UserKey } from '../src/index.js';
+import { Gateway } from '../src/server/index.js';
 import { createServer, Server } from 'http';
-import { TestEnv } from './fixtures';
+import { TestEnv } from './fixtures.js';
 import { clone, MeldConfig, uuid } from '@m-ld/m-ld';
 import { MemoryLevel } from 'memory-level';
 import { IoRemotes, MeldIoConfig } from '@m-ld/m-ld/ext/socket.io';
@@ -25,6 +25,7 @@ describe('Socket.io service', () => {
     const rootKey = AuthKey.fromString('app.rootid:secret');
     const machineKey = UserKey.generate(rootKey);
     gateway = new Gateway(env, {
+      '@id': 'test',
       '@domain': 'ex.org',
       genesis: true,
       gateway: serverUrl,

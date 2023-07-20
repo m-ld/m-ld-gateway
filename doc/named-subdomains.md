@@ -1,3 +1,5 @@
+[//]: # (cURLs in this file are generated from the .http file using http-client.env.json)
+
 # Using Named Subdomains
 
 Named subdomains are _cloned_ in the Gateway, and are thereby backed-up.
@@ -8,13 +10,13 @@ To use named subdomains, you first need [an account](accounts.md). (If your Gate
 
 A new domain can be created with:
 
-```http request
-PUT http://my-gateway/api/v1/domain/my-account/my-subdomain
-Authorization: Basic my-account my-key
-Accept: application/json
+```curl
+curl -X PUT --location "https://≪gateway≫/api/v1/domain/≪account name≫/≪subdomain≫" \
+    -H "Accept: application/json" \
+    --basic --user ≪account name≫:≪account key≫
 ```
 
-This creates the domain `my-subdomain` in `my-account`. Domain names must be composed only of **lowercase** letters, numbers, hyphens `-` and underscores `_`.
+This creates the domain `≪subdomain≫` in the account. Domain names must be composed only of **lowercase** letters, numbers, hyphens `-` and underscores `_`.
 
 The body of the response will contain the configuration to be used in a new **m-ld** clone to connect to the domain, with placeholders for required secrets.
 

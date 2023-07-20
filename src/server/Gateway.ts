@@ -2,8 +2,7 @@ import {
   GraphSubject, MeldClone, MeldConfig, MeldReadState, MeldUpdate, propertyValue, Reference, uuid
 } from '@m-ld/m-ld';
 import {
-  AccountOwnedId, BaseGateway, BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal, KeyStore,
-  validate
+  AccountOwnedId, BaseGateway, BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal, KeyStore
 } from '../lib/index.js';
 import { gatewayContext, Iri, UserKey } from '../data/index.js';
 import LOG from 'loglevel';
@@ -18,24 +17,9 @@ import { SubdomainClone } from './SubdomainClone.js';
 import { randomInt } from 'crypto';
 import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
 import Cryptr from 'cryptr';
-import { as } from '../lib/validate';
-import { Subdomain, SubdomainSpec } from '../data/Subdomain';
+import { Subdomain, SubdomainSpec } from '../data/Subdomain.js';
 
 export type Who = { acc: Account, keyid: string };
-
-const asInitialConfig = as.object({
-  '@domain': as.string().domain().required(), // domain specified for Gateway
-  auth: as.object({ // auth key specified for Gateway
-    key: as.string().required()
-  }).required(),
-  key: as.object({ // key pair specified for Gateway
-    type: as.equal('rsa').optional(),
-    public: as.string().base64().required(),
-    private: as.string().base64().required()
-  }),
-  gateway: as.string().required(), // address specified for Gateway
-  genesis: as.boolean().optional()
-}).unknown();
 
 export class Gateway extends BaseGateway implements AccountContext {
   readonly me: GatewayPrincipal;
@@ -49,21 +33,13 @@ export class Gateway extends BaseGateway implements AccountContext {
   // noinspection JSUnusedGlobalSymbols keyStore is in account context
   constructor(
     private readonly env: Env,
-    config: Partial<GatewayConfig>,
+    config: GatewayConfig,
     private readonly cloneFactory: CloneFactory,
     readonly keyStore: KeyStore
   ) {
-    validate(config, asInitialConfig);
     super(config['@domain']!);
     LOG.debug('Gateway domain is', this.domainName);
-    const id = uuid();
-    LOG.info('Gateway ID is', id);
-    this.config = {
-      // Overridable by config
-      '@context': gatewayContext, genesis: false,
-      ...config,
-      '@id': id // Not overrideable
-    } as GatewayConfig;
+    this.config = { ...config, '@context': gatewayContext };
     this.me = new GatewayPrincipal(this.absoluteId('/'), this.config);
   }
 

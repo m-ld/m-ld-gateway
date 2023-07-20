@@ -1,6 +1,6 @@
 import nodemailer, { Transporter } from 'nodemailer';
-import type SMTPTransport from 'nodemailer/lib/smtp-transport/index';
-import type Mail from 'nodemailer/lib/mailer/index';
+import type SMTPTransport from 'nodemailer/lib/smtp-transport';
+import type Mail from 'nodemailer/lib/mailer';
 import LOG from 'loglevel';
 
 export type SmtpOptions = SMTPTransport.Options;

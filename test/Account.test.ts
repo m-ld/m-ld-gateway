@@ -1,11 +1,11 @@
 import { clone as meldClone, uuid } from '@m-ld/m-ld';
 import { MemoryLevel } from 'memory-level';
 import { DeadRemotes } from './fixtures.js';
-import { AccountOwnedId, AuthKey, gatewayContext, KeyStore, UserKey } from '../src';
+import { AccountOwnedId, AuthKey, gatewayContext, KeyStore, UserKey } from '../src/index.js';
 import { Account } from '../src/server/index.js';
 import { mock, MockProxy } from 'jest-mock-extended';
-import { UserKeyConfig } from '../src/data/UserKey';
-import { AccountContext } from '../src/server/Account';
+import { UserKeyConfig } from '../src/data/UserKey.js';
+import { AccountContext } from '../src/server/Account.js';
 
 describe('Gateway account', () => {
   let gateway: MockProxy<AccountContext>;

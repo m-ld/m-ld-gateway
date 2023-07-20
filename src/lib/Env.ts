@@ -9,7 +9,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 /** General configuration */
-interface Config {[key: Exclude<string, '_' | '$0'>]: unknown;}
+export interface Config {[key: Exclude<string, '_' | '$0'>]: unknown;}
 
 /** paths for local data, config, logs etc. */
 type EnvPaths = Paths & {
@@ -46,17 +46,6 @@ export class Env {
       .toUpperCase();
   }
 
-  /**
-   * Loads environment variables from any .env file up to three directories up
-   */
-  static initScript() {
-    for (let i = 0; i < 3; i++) {
-      if (!dotenv.config({
-        path: join(process.cwd(), ...new Array(i).fill('..'), '.env')
-      }).error) break;
-    }
-  }
-
   get envPrefix() {
     return this.envPaths.env ? `${this.envPaths.env}_` : '';
   }
@@ -78,7 +67,7 @@ export class Env {
     prefix = this.envPrefix
   ) {
     for (let [key, value] of Object.entries(config)) {
-      if (value != null && (filter.length === 0 || filter.includes(key))) {
+      if (value != null && value !== '' && (filter.length === 0 || filter.includes(key))) {
         const envVar = `${prefix}${Env.toEnvVar(key)}`;
         if (typeof value == 'object')
           this.asEnv(<Config>value, [], env, `${envVar}__`);
@@ -226,6 +215,7 @@ export class Env {
     }
   }
 
+  // noinspection JSUnusedGlobalSymbols
   async delEnvFile(key: keyof Paths, path: string[]) {
     // Delete the given path, and then any empty parent folders
     await rm(join(this.envPaths[key], ...path));

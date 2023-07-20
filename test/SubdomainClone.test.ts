@@ -1,10 +1,10 @@
 import { clone as meldClone, Describe, MeldClone } from '@m-ld/m-ld';
 import { MemoryLevel } from 'memory-level';
 import { firstValueFrom } from 'rxjs';
-import { SubdomainClone, SubdomainUpdate } from '../src/server/SubdomainClone';
+import { SubdomainClone, SubdomainUpdate } from '../src/server/SubdomainClone.js';
 import { setTimeout } from 'timers/promises';
 import { once } from 'events';
-import { DeadRemotes } from './fixtures';
+import { DeadRemotes } from './fixtures.js';
 
 describe('Subdomain clone', () => {
   let clone: MeldClone;

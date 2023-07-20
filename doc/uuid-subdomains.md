@@ -1,3 +1,5 @@
+[//]: # (cURLs in this file are generated from the .http file using http-client.env.json)
+
 # Using UUID Subdomains
 
 UUID subdomains are _unmanaged_ by the Gateway, and are not backed-up. The Gateway provides a message relay to allow clones on the subdomain to communicate.
@@ -11,12 +13,11 @@ To use UUID subdomains, you first need [an account](accounts.md).
 
 By default, a Gateway account only allows [named subdomains](named-subdomains.md). To enable UUID subdomains for an account:
 
-```http request
-PATCH http://my-gateway/api/v1/domain/my-account
-Authorization: Basic my-account my-key
-Accept: application/json
-
-{ "@insert": { "naming": "uuid" } }
+```curl
+curl -X PATCH --location "https://≪gateway≫/api/v1/user/≪account name≫" \
+    -H "Content-Type: application/json" \
+    -d "{ \"@insert\": { \"naming\": \"uuid\" } }" \
+    --basic --user ≪account name≫:≪account key≫
 ```
 
 ## creating a UUID domain
@@ -27,9 +28,9 @@ The domain name must take the form `≪uuid≫.my-account.my-gateway`, where `�
 
 For convenience, you can request suitable configuration for a new UUID subdomain from the Gateway, as follows. Note that this does not create anything new on the Gateway, but it will generate a compliant UUID for the domain name.
 
-```http request
-POST http://my-gateway/api/v1/domain/my-account
-Accept: application/json
+```curl
+curl -X POST --location "https://≪gateway≫/api/v1/domain/≪account name≫" \
+    -H "Accept: application/json"
 ```
 
 With the resultant configuration (or one you have created from scratch) you can [clone the subdomain](clone-subdomain.md).

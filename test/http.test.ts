@@ -22,6 +22,7 @@ describe('Gateway REST API', () => {
     const authKey = AuthKey.fromString('app.rootid:secret');
     const machineKey = UserKey.generate(authKey);
     gateway = new Gateway(env, {
+      '@id': 'test',
       '@domain': 'ex.org',
       genesis: true,
       gateway: 'ex.org',

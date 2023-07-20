@@ -1,15 +1,19 @@
 {
-  "name": "m-ld-gateway",
-  "version": "0.0.0",
+  "name": "@m-ld/gateway",
+  "version": "0.1.0",
   "description": "m-ld gateway for services",
   "type": "module",
   "main": "ext/index.js",
   "types": "ext/index.d.ts",
+  "files": [
+    "ext"
+  ],
   "scripts": {
-    "start": "tsc --incremental && node ext/start.js",
+    "start": "node ext/start.js",
     "clean": "rm -rf ext",
-    "build": "npm run clean && tsc && npm run test",
-    "test": "node --experimental-vm-modules node_modules/.bin/jest --silent"
+    "build": "tsc",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest --silent",
+    "predocker": "cp package.json package-lock.json deploy && cd deploy && npm pack .."
   },
   "repository": {
     "type": "git",
@@ -25,6 +29,7 @@
   },
   "homepage": "https://github.com/m-ld/m-ld-gateway#readme",
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.3.3",
     "@types/cryptr": "^4.0.1",
     "@types/jest": "^29.2.4",
     "@types/jsonwebtoken": "^9.0.2",

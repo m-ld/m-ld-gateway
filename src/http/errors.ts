@@ -1,5 +1,5 @@
 import errors from 'restify-errors';
-import { as } from '../lib/validate';
+import { as } from '../lib/validate.js';
 
 export function toHttpError(e: any) {
   return e instanceof errors.HttpError ? e :

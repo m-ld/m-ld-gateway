@@ -1,7 +1,7 @@
 import { clone as meldClone, ConstructRemotes, MeldClone } from '@m-ld/m-ld';
 import { BehaviorSubject } from 'rxjs';
 import { mock, MockProxy } from 'jest-mock-extended';
-import { BackendLevel, CloneFactory, Env } from '../src/index';
+import { BackendLevel, CloneFactory, Env } from '../src/index.js';
 import { MemoryLevel } from 'memory-level';
 import { DirResult, dirSync } from 'tmp';
 import { join } from 'path';

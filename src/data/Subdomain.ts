@@ -1,4 +1,4 @@
-import { AccountOwnedId } from '../lib/index';
+import { AccountOwnedId } from '../lib/index.js';
 import { Optional, propertyValue, Subject } from '@m-ld/m-ld';
 
 export interface SubdomainSpec {

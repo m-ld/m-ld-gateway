@@ -1,4 +1,4 @@
-import { AccountOwnedId } from '../src';
+import { AccountOwnedId } from '../src/index.js';
 
 describe('Timesheet Id', () => {
   test('from full display string', () => {

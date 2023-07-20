@@ -1,7 +1,7 @@
 import { Server as SocketIoServer } from 'socket.io';
 import { IoRemotesService } from '@m-ld/m-ld/ext/socket.io-server';
 import { JwtAuthorization, KeyAuthorization } from '../server/Authorization.js';
-import { AccountOwnedId, as, validate } from '../lib/index.js';
+import { AccountOwnedId, as, asUuid, validate } from '../lib/index.js';
 import {
   BadRequestError, ForbiddenError, InternalServerError, toHttpError
 } from '../http/errors.js';
@@ -38,6 +38,7 @@ export class IoService extends IoRemotesService {
         const remotesAuth = await Account.getDetails(
           gateway.domain, sdId.account, 'remotesAuth');
         if (!user && !key && !jwt) {
+          validate(sdId.name, asUuid); // Anonymous messaging requires UUID subdomain
           if (!remotesAuth.includes('anon'))
             return next(new ForbiddenError('Anonymous messaging unavailable'));
         } else if (user && key) {

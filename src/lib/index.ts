@@ -5,5 +5,5 @@ export * from './CloneFactory.js';
 export * from './DomainKeyStore.js';
 export * from './StringReadable.js';
 export * from './Env.js';
-export * from './validate';
+export * from './validate.js';
 export * from './util.js';

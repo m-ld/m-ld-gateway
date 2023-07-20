@@ -1,5 +1,5 @@
 import type { Subject } from '@m-ld/m-ld';
-import { Subdomain } from '../data/Subdomain';
+import { Subdomain } from '../data/Subdomain.js';
 
 export const accountHasSubdomain = (sd: Subdomain): Subject => ({
   '@id': sd.account, subdomain: sd.toJSON()
