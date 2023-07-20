@@ -20,7 +20,9 @@ const asHandshakeQuery = as.object({
 
 export class IoService extends IoRemotesService {
   constructor(gateway: Gateway, server: Server) {
-    const io = new SocketIoServer(server);
+    const io = new SocketIoServer(server, {
+      cors: { origin: '*', methods: ['GET', 'POST'] }
+    });
     super(io.sockets);
     // Attach authorisation
     io.use(async (socket, next) => {
