@@ -2,7 +2,7 @@
 
 # Using Named Subdomains
 
-Named subdomains are _cloned_ in the Gateway, and are thereby backed-up.
+Named subdomains are _cloned_ in the Gateway, and are thereby backed up.
 
 To use named subdomains, you first need [an account](accounts.md). (If your Gateway is self-hosted, you can get started with the _root_ account, which was created when the Gateway was first deployed.)
 

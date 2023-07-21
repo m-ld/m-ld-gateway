@@ -23,9 +23,9 @@ Note that for UUID subdomains, the `genesis` flag defaults to `true`, as the Gat
 To use this config, you must augment it as follows:
 1. Add an `"@id"` key with a unique clone identifier.
 2. Replace the `"key"` placeholder (if it exists; it's always a placeholder, even if you used the account key to create the subdomain).
-3. For UUID subdomains, correct the `genesis` flag if the domain already exists.
+3. For UUID subdomains, if the domain already exists, set the `genesis` flag to `false`.
 
-For example, using the [Javascript engine](https://js.m-ld-org/):
+For example, using the [JavaScript engine](https://js.m-ld-org/):
 
 ```javascript
 import { uuid, clone } from '@m-ld/m-ld';
