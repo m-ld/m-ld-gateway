@@ -20,6 +20,8 @@ You can use our cloud Gateway to provide messaging and secure backup of your dom
 
 > I'm upgrading a legacy app, with a service tier and database, to offer live document sharing using **m-ld**.
 
-Keeping a database in sync with information in **m-ld** requires a dedicated clone, local to the database, which can offer the kind of serialised updates that conventional databases like. There are a variety of strategies for this, and we'd be very happy for you to [get in touch](http://m-ld.org/hello/) to discuss them!
+Keeping a database in sync with information in **m-ld** requires a dedicated clone, local to the database, which can offer the kind of serialised updates that conventional databases like.
 
 The best deployment approach will be to embed this local clone in your service tier, where it can be animated directly from the application logic. If an engine doesn't exist for your server platform though, you can [deploy a **m-ld** Gateway](self-host.md) in a "sidecar" arrangement with your services. The Gateway [clone API](clone-api.md) can be used to provide serialised state to your app, for synchronisation with the database.
+
+> 🚧 More detail will be available here soon. In the meantime, we'd be very happy for you to [get in touch](http://m-ld.org/hello/) to discuss your use-case!

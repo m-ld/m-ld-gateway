@@ -16,7 +16,11 @@ The server needs at least the following environment variables:
 | M_LD_GATEWAY_GATEWAY      | `my-imac.local`                           | External hostname   |
 | M_LD_GATEWAY_DATA_PATH    | `./local/edge/gw/data`                    | Path for data       |
 
-The root API access key must be of the form `rootacc.keyid:secret`, where `rootacc` and `keyid` are at least 5 characters of lowercase text. The `rootacc` will be the root account name.
+[//]: # (@Petra: suggestion: Let's clarify what should be here. Is this a directory? A file?)
+
+The root API access key must be of the form `rootacc.keyid:secret`, where `rootacc` and `keyid` are at least 5 characters of lowercase text. The `rootacc` will be the root account name. The `keyid` and `secret` should be random UTF-8 text; the `secret` should be at least 22 characters.
+
+(Note the components are never used separately; once created, you always use the whole key.)
 
 The external hostname is used for HTTPS and websocket connections to the Gateway from clients.
 
