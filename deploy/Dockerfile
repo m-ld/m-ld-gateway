@@ -1,5 +1,9 @@
 # syntax = docker/dockerfile:1
 
+################################################################################
+# Requires package.json, package-lock.json and m-ld-gateway-${GW_VERSION}.tgz
+# in the local context. See ../package.json/scripts/predocker
+
 # Adjust NODE_VERSION as desired
 ARG NODE_VERSION=16.19.0
 FROM node:${NODE_VERSION}-slim as base
