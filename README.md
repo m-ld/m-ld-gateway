@@ -21,7 +21,7 @@
 # m-ld Gateway
 
 The Gateway is an open source service that provides secure message delivery
-and durable storage of data, for collaborative web apps using [**m-ld**](https://m-ld.org/).
+and durable storage of data, for collaborative apps using [**m-ld**](https://m-ld.org/).
 
 It can be used as:
 - 📨 A **message relay server**, so apps don't have to deploy a message broker or other pub-sub system.

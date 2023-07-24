@@ -33,6 +33,10 @@ export class GatewayHttp {
         return next();
       });
     }
+    this.server.get('/*', plugins.serveStatic({
+      directory: './_site',
+      default: 'index'
+    }));
     // Set up endpoints
     const gatewayEndPoint = new GatewayEndPoint(gateway, this.server);
     new UserEndPoint(gatewayEndPoint, notifier);

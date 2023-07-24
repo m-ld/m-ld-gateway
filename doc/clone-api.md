@@ -1,8 +1,12 @@
+---
+layout: page.liquid
+title: clone API
+---
 [//]: # (cURLs in this file are generated from the .http file using http-client.env.json)
 
 # Clone API
 
-Let's say we have an account and a named subdomain. Because we're using [named subdomains](named-subdomains.md), the Gateway has a clone of the information in the (sub)domain.
+Let's say we have an account and a named subdomain. Because we're using [named subdomains](named-subdomains), the Gateway has a clone of the information in the (sub)domain.
 
 Normally in an app using **m-ld**, clients _clone_ the domain locally and manipulate its data directly. However there are a number of reasons a client may not want to do this, such as:
 - The client only has occasional need for data;

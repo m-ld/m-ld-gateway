@@ -6,12 +6,13 @@
   "main": "ext/index.js",
   "types": "ext/index.d.ts",
   "files": [
+    "_site",
     "ext"
   ],
   "scripts": {
     "start": "node ext/start.js",
     "clean": "rm -rf ext",
-    "build": "tsc",
+    "build": "tsc && npx @11ty/eleventy",
     "test": "node --experimental-vm-modules node_modules/.bin/jest --silent",
     "predocker": "cp package.json package-lock.json deploy && cd deploy && npm pack .."
   },
@@ -29,7 +30,9 @@
   },
   "homepage": "https://github.com/m-ld/m-ld-gateway#readme",
   "devDependencies": {
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
     "@flydotio/dockerfile": "^0.3.3",
+    "@m-ld/io-web-build": "^0.2.0-0",
     "@types/cryptr": "^4.0.1",
     "@types/jest": "^29.2.4",
     "@types/jsonwebtoken": "^9.0.2",

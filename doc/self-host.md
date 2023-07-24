@@ -1,3 +1,7 @@
+---
+layout: page.liquid
+title: self-hosting setup
+---
 # Hosting a Gateway
 
 ## build

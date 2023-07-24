@@ -1,0 +1,32 @@
+---
+permalink: "{{ page.filePathStem }}"
+---
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>m-ld | {{ doc.title | default: title }}</title>
+  <link rel="stylesheet" href="/main.css">
+  <link href="prism.css" rel="stylesheet" />
+</head>
+
+<body id="{{ doc.id | default: page.fileSlug }}" class="{{ doc.class }}">
+{% include 'navbar' %}
+<div class="container is-fluid">
+  <div class="content columns">
+    <div class="column is-3 has-background-light">
+    {% include 'sidebar' %}
+    </div>
+    <div class="column is-9">
+      <div class="container is-fluid">
+        <div class="content">{{ content }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% include 'footer' %}
+<script src="prism.js"></script>
+</body>
+
+</html>

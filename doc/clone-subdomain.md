@@ -1,3 +1,7 @@
+---
+layout: page.liquid
+title: getting started
+---
 # Cloning a Subdomain
 
 To connect a new clone to a Gateway subdomain, use the configuration provided in the domain creation response. For Socket.io messaging (the default), the configuration will look like this:
@@ -7,7 +11,7 @@ To connect a new clone to a Gateway subdomain, use the configuration provided in
   "@domain": "my-subdomain.my-account.my-gateway",
   "genesis": false,
   "io": {
-    "uri": "http://my-gateway/",
+    "uri": "https://my-gateway/",
     "opts": {
       "auth": {
         "user": "my-account",
@@ -18,14 +22,14 @@ To connect a new clone to a Gateway subdomain, use the configuration provided in
 }
 ```
 
-Note that for UUID subdomains, the `genesis` flag defaults to `true`, as the Gateway does not know whether the subdomain already exists.
+Note that for [UUID subdomains](uuid-subdomains), the `genesis` flag defaults to `true`, as the Gateway does not know whether the subdomain already exists.
 
-To use this config, you must augment it as follows:
+To use this config, augment it as follows:
 1. Add an `"@id"` key with a unique clone identifier.
 2. Replace the `"key"` placeholder (if it exists; it's always a placeholder, even if you used the account key to create the subdomain).
 3. For UUID subdomains, if the domain already exists, set the `genesis` flag to `false`.
 
-For example, using the [JavaScript engine](https://js.m-ld-org/):
+For example, using the [JavaScript engine](https://js.m-ld.org/):
 
 ```javascript
 import { uuid, clone } from '@m-ld/m-ld';
