@@ -1,5 +1,5 @@
 ---
-layout: page.liquid
+layout: doc.liquid
 title: named subdomains
 ---
 [//]: # (cURLs in this file are generated from the .http file using http-client.env.json)
@@ -14,7 +14,7 @@ To use named subdomains, you first need [an account](accounts). (If your Gateway
 
 A new domain can be created with:
 
-```curl
+```bash
 curl -X PUT --location "https://≪gateway≫/api/v1/domain/≪account name≫/≪subdomain≫" \
     -H "Accept: application/json" \
     --basic --user ≪account name≫:≪account key≫

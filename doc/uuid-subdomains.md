@@ -1,5 +1,5 @@
 ---
-layout: page.liquid
+layout: doc.liquid
 title: uuid subdomains
 ---
 
@@ -18,7 +18,7 @@ To use UUID subdomains, you first need [an account](accounts).
 
 By default, a Gateway account only allows [named subdomains](named-subdomains). To enable UUID subdomains for an account:
 
-```curl
+```bash
 curl -X PATCH --location "https://≪gateway≫/api/v1/user/≪account name≫" \
     -H "Content-Type: application/json" \
     -d "{ \"@insert\": { \"naming\": \"uuid\" } }" \
@@ -33,7 +33,7 @@ The domain name must take the form `≪uuid≫.my-account.my-gateway`, where `�
 
 For convenience, you can request suitable configuration for a new UUID subdomain from the Gateway, as follows. Note that this does not create anything new on the Gateway, but it will generate a compliant UUID for the domain name.
 
-```curl
+```bash
 curl -X POST --location "https://≪gateway≫/api/v1/domain/≪account name≫" \
     -H "Accept: application/json"
 ```

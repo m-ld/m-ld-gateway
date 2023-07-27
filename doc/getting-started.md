@@ -1,5 +1,5 @@
 ---
-layout: page.liquid
+layout: doc.liquid
 title: getting started
 ---
 # Getting Started

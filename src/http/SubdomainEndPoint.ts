@@ -1,5 +1,5 @@
 import { EndPoint, HasContext, post, put, sendChunked, use } from './EndPoint.js';
-import { GatewayEndPoint } from './GatewayEndPoint.js';
+import { ApiEndPoint } from './ApiEndPoint.js';
 import { Authorization, Who } from '../server/index.js';
 import { AccountOwnedId, as, validate } from '../lib/index.js';
 import { BadRequestError, NotFoundError } from './errors.js';
@@ -12,8 +12,8 @@ export type SubdomainRequest = Request &
   HasContext<'id', AccountOwnedId> &
   HasContext<'who', Who>;
 
-export class SubdomainEndPoint extends EndPoint<GatewayEndPoint> {
-  constructor(outer: GatewayEndPoint) {
+export class SubdomainEndPoint extends EndPoint<ApiEndPoint> {
+  constructor(outer: ApiEndPoint) {
     super(outer, '/domain/:account/:name');
   }
 

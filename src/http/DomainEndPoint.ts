@@ -1,12 +1,12 @@
 import { EndPoint, post } from './EndPoint.js';
-import { GatewayEndPoint } from './GatewayEndPoint.js';
+import { ApiEndPoint } from './ApiEndPoint.js';
 import { Request, Response } from 'restify';
 import { MethodNotAllowedError } from './errors.js';
 import { Account } from '../server/index.js';
 import { uuid } from '@m-ld/m-ld';
 
-export class DomainEndPoint extends EndPoint<GatewayEndPoint> {
-  constructor(outer: GatewayEndPoint) {
+export class DomainEndPoint extends EndPoint<ApiEndPoint> {
+  constructor(outer: ApiEndPoint) {
     super(outer, '/domain/:account');
   }
 

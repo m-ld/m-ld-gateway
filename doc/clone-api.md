@@ -1,5 +1,5 @@
 ---
-layout: page.liquid
+layout: doc.liquid
 title: clone API
 ---
 [//]: # (cURLs in this file are generated from the .http file using http-client.env.json)
@@ -17,7 +17,7 @@ The 'clone' (noun, not verb) API is provided for such a client to access the dat
 
 Some data can be added to the domain with:
 
-```curl
+```bash
 curl -X POST --location "https://≪gateway≫/api/v1/domain/≪account name≫/≪subdomain≫/state" \
     -H "Content-Type: application/json" \
     -d "{
@@ -29,7 +29,7 @@ curl -X POST --location "https://≪gateway≫/api/v1/domain/≪account name≫/
 
 Data in the domain can be queried with:
 
-```curl
+```bash
 curl -X GET --location "https://≪gateway≫/api/v1/domain/≪account name≫/≪subdomain≫/state?q=%7B%22%40describe%22%3A%22%3Fid%22%2C%22%40where%22%3A%7B%22%40id%22%3A%22%3Fid%22%7D%7D" \
     -H "Accept: application/json" \
     --basic --user ≪account name≫:≪account key≫

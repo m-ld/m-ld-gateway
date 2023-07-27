@@ -1,6 +1,6 @@
 import { Gateway, GatewayConfig } from './server/index.js';
 import LOG from 'loglevel';
-import { GatewayHttp } from './http/index.js';
+import { setupGatewayHttp } from './http/index.js';
 import gracefulShutdown from 'http-graceful-shutdown';
 import {
   as, asLogLevel, AuthKey, CloneFactory, DomainKeyStore, Env, KeyStore, resolveDomain, validate
@@ -69,29 +69,29 @@ import { uuid } from '@m-ld/m-ld';
 
   const gateway = new Gateway(env, config, cloneFactory, keyStore);
   const notifier = config.smtp != null ? new SmtpNotifier(config) : logNotifier;
-  const http = new GatewayHttp(gateway, notifier);
+  const server = setupGatewayHttp(gateway, notifier);
 
   if (setupType === 'io') {
     const { IoService } = await import('./socket.io/index.js');
-    const io = new IoService(gateway, http.server.server);
+    const io = new IoService(gateway, server.server);
     io.on('error', LOG.error);
     io.on('debug', LOG.debug);
   }
 
-  http.server.listen(config.address, async () => {
+  server.listen(config.address, async () => {
     // noinspection JSUnresolvedVariable
-    LOG.info('%s listening at %s', http.server.name, http.server.url);
-    await cloneFactory.initialise(http.server.url);
+    LOG.info('%s listening at %s', server.name, server.url);
+    await cloneFactory.initialise(server.url);
     try {
       await gateway.initialise();
       LOG.info('Gateway initialised');
     } catch (e) {
       LOG.error('Gateway failed to initialise', e);
-      http.server.close();
+      server.close();
     }
   });
 
-  gracefulShutdown(http.server, {
+  gracefulShutdown(server, {
     async onShutdown() {
       LOG.info('Gateway shutting down...');
       await gateway.close();

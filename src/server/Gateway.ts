@@ -8,7 +8,7 @@ import { gatewayContext, Iri, UserKey } from '../data/index.js';
 import LOG from 'loglevel';
 import { access, rm, writeFile } from 'fs/promises';
 import { finalize, Subscription } from 'rxjs';
-import { ConflictError, UnauthorizedError } from '../http/errors.js';
+import { BadRequestError, ConflictError, UnauthorizedError } from '../http/errors.js';
 import { GatewayConfig } from './index.js';
 import { Bite, Consumable } from 'rx-flowable';
 import { Account, AccountContext, RemotesAuthType, SubdomainNaming } from './Account.js';
@@ -142,6 +142,7 @@ export class Gateway extends BaseGateway implements AccountContext {
     if (!(id.toDomain() in this.subdomains)) {
       try {
         const src = await state.get(id.toIri());
+        LOG.debug('Loading declared subdomain', id);
         await this.cloneSubdomain(Subdomain.fromJSON(src));
         LOG.info('Loaded declared subdomain', id);
       } catch (e) {
@@ -218,10 +219,12 @@ export class Gateway extends BaseGateway implements AccountContext {
    * @param code an activation code created by this Gateway
    * @param jwe a corresponding encrypted JWT
    */
-  verifyActivation(code: string, jwe: string) {
+  verifyActivation(code: string, jwe: string): { user: string, email: string } {
     const jwt = new Cryptr(code).decrypt(jwe);
     const { sub, email } =
       jsonwebtoken.verify(jwt, this.me.authKey.secret) as JwtPayload;
+    if (!AccountOwnedId.isComponentId(sub))
+      throw new BadRequestError
     return { user: sub, email };
   }
 
@@ -233,7 +236,7 @@ export class Gateway extends BaseGateway implements AccountContext {
    *
    * @param spec the subdomain identity
    * @param naming if `'any'`, a named subdomain will be created
-   * @param who?? the user who is asking
+   * @param who the user who is asking
    */
   async subdomainConfig(
     spec: SubdomainSpec,

@@ -1,5 +1,5 @@
 ---
-layout: page.liquid
+layout: doc.liquid
 title: accounts
 ---
 [//]: # (cURLs in this file are generated from the .http file using http-client.env.json)
@@ -18,7 +18,7 @@ Account names (`≪account≫` in the below) must be composed only of **lowercas
 
 First, request an activation code with an email address.
 
-```curl
+```bash
 curl -X POST --location "https://≪gateway≫/api/v1/user/≪account≫/activation" \
     -H "Accept: application/json" \
     -H "Content-Type: application/json" \
@@ -31,7 +31,7 @@ An email will be sent to the given address, containing a six-digit activation co
 
 The account can then be created with another HTTP request:
 
-```curl
+```bash
 curl -X POST --location "https://≪gateway≫/api/v1/user/≪account≫/key" \
     -H "Authorization: Bearer ≪jwe≫" \
     -H "X-Activation-Code: ≪emailed activation code≫" \
@@ -44,7 +44,7 @@ The body of the response will be of the form `{ "auth": { "key": "≪my-key≫" 
 
 The Gateway root account can be used to create any user account directly.
 
-```curl
+```bash
 curl -X POST --location "https://≪gateway≫/api/v1/user/≪account name≫/key" \
     -H "Accept: application/json" \
     --basic --user ≪root≫:≪root key≫
@@ -61,7 +61,7 @@ When [connecting to subdomains](clone-subdomain), clients may need to provide au
 
 The required option can be set as follows.
 
-```curl
+```bash
 curl -X PATCH --location "https://≪gateway≫/api/v1/user/≪account name≫" \
     -H "Accept: application/json" \
     -H "Content-Type: application/json" \

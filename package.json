@@ -13,8 +13,10 @@
     "start": "node ext/start.js",
     "clean": "rm -rf ext",
     "build": "tsc && npx @11ty/eleventy",
+    "doc-dev": "npx @11ty/eleventy --serve",
     "test": "node --experimental-vm-modules node_modules/.bin/jest --silent",
-    "predocker": "cp package.json package-lock.json deploy && cd deploy && npm pack .."
+    "predocker": "cp package.json package-lock.json deploy && cd deploy && npm pack ..",
+    "deploy-fly": "npm run predocker && cd deploy && fly deploy"
   },
   "repository": {
     "type": "git",
@@ -51,7 +53,7 @@
   },
   "dependencies": {
     "@m-ld/io-web-runtime": "^0.2.3",
-    "@m-ld/m-ld": "^0.10.0-edge.4",
+    "@m-ld/m-ld": "^0.10.0-edge.5",
     "@types/nodemailer": "^6.4.7",
     "ably": "^1.2.33",
     "abstract-level": "^1.0.3",
@@ -62,6 +64,7 @@
     "http-graceful-shutdown": "^3.1.11",
     "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.1",
+    "liquidjs": "^10.8.4",
     "loglevel": "^1.8.1",
     "nodemailer": "^6.9.0",
     "reflect-metadata": "^0.1.13",

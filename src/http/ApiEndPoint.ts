@@ -4,12 +4,13 @@ import { Gateway } from '../server/index.js';
 import { domainRelativeIri } from '../lib/index.js';
 import { gatewayContext } from '../data/index.js';
 
-export class GatewayEndPoint extends EndPoint<RestServer> {
+export class ApiEndPoint extends EndPoint<RestServer> {
   constructor(readonly gateway: Gateway, server: RestServer) {
-    super(server, '/api/v1');
-    this.useFor('put', plugins.bodyParser());
-    this.useFor('post', plugins.bodyParser());
-    this.useFor('patch', plugins.bodyParser());
+    super(server, '/api/v1', ({ useFor }) => {
+      useFor('put', plugins.bodyParser());
+      useFor('post', plugins.bodyParser());
+      useFor('patch', plugins.bodyParser());
+    });
   }
 
   @get('/context')
@@ -22,7 +23,7 @@ export class GatewayEndPoint extends EndPoint<RestServer> {
   }
 
   @get('/publicKey')
-  async getPublicKey(req: Request, res: Response) {
+  async getPublicKey(_req: Request, res: Response) {
     res.contentType = 'text';
     res.send(this.gateway.me.userKey!.getCryptoPublicKey().export({
       format: 'pem', type: 'spki'

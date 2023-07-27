@@ -4,7 +4,7 @@ import { AccountOwnedId, AuthKey, DomainKeyStore, gatewayContext, UserKey } from
 import { Describe, MeldClone } from '@m-ld/m-ld';
 import { parseNdJson, TestCloneFactory, testCloneFactory, TestEnv } from './fixtures.js';
 import { Account, Gateway, Notifier } from '../src/server/index.js';
-import { GatewayHttp } from '../src/http/index.js';
+import { setupGatewayHttp } from '../src/http/index.js';
 import request from 'supertest';
 import { mock, MockProxy } from 'jest-mock-extended';
 import { Server } from 'restify';
@@ -30,7 +30,7 @@ describe('Gateway REST API', () => {
     }, cloneFactory, new DomainKeyStore('app'));
     await gateway.initialise();
     notifier = mock<Notifier>();
-    app = new GatewayHttp(gateway, notifier).server;
+    app = setupGatewayHttp(gateway, notifier);
   });
 
   afterEach(async () => {

@@ -9,7 +9,7 @@ import { Consumable } from 'rx-flowable';
 import 'reflect-metadata';
 
 export const formatter = (format: StringFormat): Formatter => {
-  return (req, res, body) => {
+  return (_req, res, body) => {
     const data = `${format.opening || ''}${format.stringify(body)}${format.closing || ''}`;
     res.setHeader('Content-Length', Buffer.byteLength(data));
     return data;
@@ -53,6 +53,11 @@ export interface HasContext<K extends string, V> {
   set(key: K, value: V): void;
 }
 
+interface EndPointSetup {
+  use(...handlers: RequestHandlerType[]): void;
+  useFor(verb: Verb, ...handlers: RequestHandlerType[]): void;
+}
+
 // noinspection JSUnusedGlobalSymbols
 export class EndPoint<Outer extends Routable> implements Routable {
   del: RestServer['del'];
@@ -66,7 +71,8 @@ export class EndPoint<Outer extends Routable> implements Routable {
 
   constructor(
     readonly outer: Outer,
-    stem: string
+    stem: string,
+    beforeHandlers?: (setup: EndPointSetup) => void
   ) {
     EndPoint.checkRoute(stem);
     const api = (route: string) => {
@@ -81,6 +87,8 @@ export class EndPoint<Outer extends Routable> implements Routable {
         ...this.nextify(handlers)
       );
     }
+    const { use, useFor } = this;
+    beforeHandlers?.({ use, useFor });
     for (let [verb, ...args] of getDecoratedHandlers(this))
       this[verb].apply(this, args);
   }
@@ -90,13 +98,13 @@ export class EndPoint<Outer extends Routable> implements Routable {
       throw new RangeError('Route must start with "/"');
   }
 
-  use(...handlers: RequestHandlerType[]) {
+  private use = (...handlers: RequestHandlerType[]) => {
     this.useHandlers.push(...this.nextify(handlers));
-  }
+  };
 
-  useFor(verb: Verb, ...handlers: RequestHandlerType[]) {
+  private useFor = (verb: Verb, ...handlers: RequestHandlerType[]) => {
     (this.useForHandlers[verb] ??= []).push(...this.nextify(handlers));
-  }
+  };
 
   private nextify(handlers: RequestHandlerType[]) {
     return handlers.flat().map(handler => {

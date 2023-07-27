@@ -1,0 +1,84 @@
+---
+layout: page.liquid
+---
+<section class="columns is-mobile">
+  <div class="column"></div>
+  <article class="column box is-narrow">
+    <form action="/activate" method="post">
+      <div class="field">
+        <label class="label" for="codeInput">Activation Code</label>
+        <div class="control">
+          <input id="codeInput"
+                 name="code"
+                 class="input"
+                 type="text"
+                 placeholder="activation code"
+                 pattern="[0-9]{6}"
+                 title="six digits"
+                 autofocus
+                 required>
+        </div>
+        <p class="help">Enter the activation code we sent to {{ '{{ email }}' }}.</p>
+      </div>
+      {% comment %}
+      Server-provided value for loopback (see form action)
+      {% endcomment %}
+      <input name="jwe" type="hidden" value="{{ '{{ jwe }}' }}">
+      <div class="control">
+        <button class="button is-primary">Submit</button>
+      </div>
+    </form>
+  </article>
+  <div class="column"></div>
+</section>
+{{ '{% if key %}' }}
+  <div id="result" class="modal is-active">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <article class="message is-success">
+        <div class="message-header">
+          <p>Account {{ '{{ account }}' }} was created!</p>
+        </div>
+        <div class="message-body field">
+          <label class="label" for="keyText">
+            Your new account key
+          </label>
+          <div class="control">
+          <textarea id="keyText"
+                    class="textarea is-family-monospace"
+                    onfocus="this.select()"
+                    readonly>{{ '{{ key }}' }}</textarea>
+          </div>
+          <p class="help">We don't keep your key, so copy it to somewhere safe.</p>
+        </div>
+      </article>
+    </div>
+    <a class="modal-close is-large"
+       aria-label="close"
+       href="named-subdomains"></a>
+  </div>
+{{ '{% elsif error %}' }}
+  <div id="result" class="modal is-active">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <article class="message is-danger">
+        <div class="message-header">
+          <p>{{ '{{ error.code }}' }}</p>
+        </div>
+        <div class="message-body">
+          <p>{{ '{{ error.message }}' }}</p>
+          <p class="help">Sorry. Let's <a href="register">try that again</a>.</p>
+        </div>
+      </article>
+    </div>
+    <a class="modal-close is-large"
+       aria-label="close"
+       href="register"></a>
+  </div>
+{{ '{% endif %}' }}
+<script>
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape')
+      document.querySelector('#result .modal-close').click();
+  });
+</script>

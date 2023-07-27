@@ -1,5 +1,5 @@
 import { EndPoint, HasContext, patch, post, use } from './EndPoint.js';
-import { GatewayEndPoint } from './GatewayEndPoint.js';
+import { ApiEndPoint } from './ApiEndPoint.js';
 import { ForbiddenError, NotFoundError, UnauthorizedError } from './errors.js';
 import { Authorization, Notifier } from '../server/index.js';
 import { AccountOwnedId, as, validate } from '../lib/index.js';
@@ -7,8 +7,8 @@ import { Request, Response } from 'restify';
 
 export type UserRequest = Request & HasContext<'user', string>;
 
-export class UserEndPoint extends EndPoint<GatewayEndPoint> {
-  constructor(outer: GatewayEndPoint, private notifier: Notifier) {
+export class UserEndPoint extends EndPoint<ApiEndPoint> {
+  constructor(outer: ApiEndPoint, private notifier: Notifier) {
     super(outer, '/user/:user');
   }
 
@@ -36,12 +36,13 @@ export class UserEndPoint extends EndPoint<GatewayEndPoint> {
     const code = req.header('x-activation-code');
     if (code) {
       if (req.authorization) {
-        const { user, email } =
-          this.gateway.verifyActivation(code, req.authorization.credentials);
+        const jwe = req.authorization.credentials;
+        const { user, email } = this.gateway.verifyActivation(code, jwe);
         if (user !== req.get('user'))
           throw new UnauthorizedError('User does not match activation');
         const acc = await this.gateway.account(user, true);
-        res.json(200, await acc.generateKey({ email, type }));
+        const config = await acc.generateKey({ email, type });
+        res.json(200, config);
       } else {
         throw new UnauthorizedError('Missing bearer token');
       }
@@ -54,9 +55,8 @@ export class UserEndPoint extends EndPoint<GatewayEndPoint> {
   // TODO: This needs to be secured against denial-of-service
   @post('/activation')
   async getActivation(req: UserRequest, res: Response) {
-    const { email } = validate(req.body ?? {}, as.object({
-      email: as.string().email().required()
-    }));
+    const { email } = req.body;
+    validate(email, as.string().email().required());
     const { jwe, code } = await this.gateway.activation(req.get('user'), email);
     await this.notifier.sendActivationCode(email, code);
     res.json(200, { jwe });

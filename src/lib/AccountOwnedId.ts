@@ -85,18 +85,18 @@ export class AccountOwnedId {
     return this;
   }
 
-  static checkComponentId(id: string) {
+  static checkComponentId(id: any) {
     as.assert(id, AccountOwnedId.asComponentId);
   }
 
-  static isComponentId(id: string) {
+  static isComponentId(id: any): id is string {
     return !AccountOwnedId.asComponentId.validate(id).error;
   }
 
   static asComponentId = as.string().regex(/^[a-z0-9_-]+$/).required();
 
   /**
-   * @returns {string[]} relative directory path suitable for persistence
+   * @returns path relative directory path suitable for persistence
    */
   toPath() {
     return [
