@@ -1,29 +1,43 @@
-import { EndPoint, post } from './EndPoint.js';
+import { EndPoint, get, head, post } from './EndPoint.js';
 import { plugins, Request, Response, Server } from 'restify';
-import { Gateway, Notifier } from '../server/index.js';
-import { fileURLToPath } from 'url';
-import { AccountOwnedId, validate } from '../lib/index.js';
+import { AccountOwnedId, resolveGateway, validate } from '../lib/index.js';
 import { as } from '../lib/validate.js';
-import { Liquid } from 'liquidjs';
 import { pipeline } from 'stream/promises';
-import { toHttpError } from './errors.js';
-
-/** Directory of the m-ld-gateway package */
-const siteDir = fileURLToPath(new URL('../../_site/', import.meta.url));
+import { MethodNotAllowedError, toHttpError } from './errors.js';
+import type { Gateway, Notifier } from '../server/index.js';
+import type { Liquid } from 'liquidjs';
 
 export class GatewayWebsite extends EndPoint<Server> {
-  private liquid = new Liquid({ root: siteDir });
+  private readonly pageVars: Promise<{ origin: string, domain: string }>;
+  private readonly startTime = new Date();
 
   constructor(
     readonly gateway: Gateway,
     server: Server,
-    private notifier: Notifier
+    private readonly notifier: Notifier,
+    private readonly liquid: Liquid
   ) {
     super(server, '', ({ useFor }) =>
       useFor('post', plugins.bodyParser()));
-    server.get('/*', plugins.serveStatic({
-      directory: siteDir, default: 'index'
+    this.pageVars = Promise.resolve(resolveGateway(gateway.config.gateway)).then(url => ({
+      origin: url.origin, domain: gateway.domainName
     }));
+  }
+
+  @get('/*')
+  async getPage(req: Request, res: Response) {
+    if (req.path() === '/activate')
+      throw new MethodNotAllowedError;
+    await this.renderHtml(res, req.path().slice(1) || 'index', await this.pageVars);
+  }
+
+  @head('/*')
+  async headPage(req: Request, res: Response) {
+    if (req.path() === '/activate')
+      throw new MethodNotAllowedError;
+    // This will throw ENOENT if not found
+    await this.liquid.parseFile(req.path().slice(1) || 'index');
+    this.setHtmlHeaders(res).send();
   }
 
   @post('/activate')
@@ -47,8 +61,19 @@ export class GatewayWebsite extends EndPoint<Server> {
     } catch (e) {
       pageVars = { account, email, error: toHttpError(e).toJSON() };
     }
-    const html = await this.liquid.renderFileToNodeStream('activate', pageVars);
+    await this.renderHtml(res, 'activate', pageVars);
+  }
+
+  private async renderHtml(res: Response, file: string, pageVars: {}) {
+    // This will throw ENOENT if not found
+    const html = await this.liquid.renderFileToNodeStream(file, pageVars);
+    await pipeline(html, this.setHtmlHeaders(res));
+  }
+
+  private setHtmlHeaders(res: Response) {
+    res.header('content-type', 'text/html');
     res.header('transfer-encoding', 'chunked');
-    await pipeline(html, res);
+    res.header('last-modified', this.startTime);
+    return res;
   }
 }

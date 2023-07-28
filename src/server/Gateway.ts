@@ -22,11 +22,10 @@ import { Subdomain, SubdomainSpec } from '../data/Subdomain.js';
 export type Who = { acc: Account, keyid: string };
 
 export class Gateway extends BaseGateway implements AccountContext {
-  readonly me: GatewayPrincipal;
-  /*readonly*/
-  domain: MeldClone;
+  public readonly me: GatewayPrincipal;
+  public /*readonly*/ domain: MeldClone;
+  public readonly config: GatewayConfig;
 
-  private readonly config: GatewayConfig;
   private readonly subdomains: { [name: string]: SubdomainClone } = {};
   private readonly subs: Subscription = new Subscription();
 

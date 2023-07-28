@@ -7,6 +7,8 @@ import {
 } from './lib/index.js';
 import { logNotifier, SmtpNotifier } from './server/Notifier.js';
 import { uuid } from '@m-ld/m-ld';
+import { Liquid } from 'liquidjs';
+import { fileURLToPath } from 'url';
 
 /**
  * @typedef {object} process.env required for Gateway node startup
@@ -68,8 +70,14 @@ import { uuid } from '@m-ld/m-ld';
   }
 
   const gateway = new Gateway(env, config, cloneFactory, keyStore);
-  const notifier = config.smtp != null ? new SmtpNotifier(config) : logNotifier;
-  const server = setupGatewayHttp(gateway, notifier);
+  const server = setupGatewayHttp({
+    gateway,
+    notifier: config.smtp != null ? new SmtpNotifier(config) : logNotifier,
+    liquid: new Liquid({
+      root: fileURLToPath(new URL('../_site/', import.meta.url)),
+      cache: true
+    })
+  });
 
   if (setupType === 'io') {
     const { IoService } = await import('./socket.io/index.js');

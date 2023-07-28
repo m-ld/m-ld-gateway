@@ -6,9 +6,9 @@ const domainId = uuid();
 
 const meld = await clone(new MemoryLevel(), IoRemotes, {
   '@id': uuid(),
-  '@domain': `${domainId}.public.gw.m-ld.org`,
+  '@domain': `${domainId}.public.{{ '{{ domain }}' }}`,
   genesis: true, // Other clones will have `false`
-  io: { uri: 'https://gw.m-ld.org' }
+  io: { uri: "{{ '{{ origin }}' }}" }
 });
 
 // Tell other clones the domain ID so they can join!

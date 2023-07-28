@@ -1,11 +1,11 @@
 import errors from 'restify-errors';
 import { as } from '../lib/validate.js';
 
-export function toHttpError(e: any) {
-  return e instanceof errors.HttpError ? e :
-    as.isError(e) ? new BadRequestError(e) :
-      new InternalServerError(e);
-}
+export const toHttpError = (e: any) =>
+  e instanceof errors.HttpError ? e :
+    e?.code === 'ENOENT' ? new NotFoundError(e) :
+      as.isError(e) ? new BadRequestError(e) :
+        new InternalServerError(e);
 
 export const UnauthorizedError = errors.UnauthorizedError;
 export const MethodNotAllowedError = errors.MethodNotAllowedError;

@@ -2,8 +2,6 @@
 layout: doc.liquid
 title: named subdomains
 ---
-[//]: # (cURLs in this file are generated from the .http file using http-client.env.json)
-
 # Using Named Subdomains
 
 Named subdomains are _cloned_ in the Gateway, and are thereby backed up.
@@ -15,7 +13,7 @@ To use named subdomains, you first need [an account](accounts). (If your Gateway
 A new domain can be created with:
 
 ```bash
-curl -X PUT --location "https://≪gateway≫/api/v1/domain/≪account name≫/≪subdomain≫" \
+curl -X PUT --location "{{ '{{ origin }}' }}/api/v1/domain/≪account name≫/≪subdomain≫" \
     -H "Accept: application/json" \
     --basic --user ≪account name≫:≪account key≫
 ```

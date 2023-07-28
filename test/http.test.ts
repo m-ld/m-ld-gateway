@@ -8,11 +8,14 @@ import { setupGatewayHttp } from '../src/http/index.js';
 import request from 'supertest';
 import { mock, MockProxy } from 'jest-mock-extended';
 import { Server } from 'restify';
+import { Readable } from 'stream';
+import type { Liquid } from 'liquidjs';
 
-describe('Gateway REST API', () => {
+describe('Gateway HTTP API', () => {
   let env: TestEnv;
   let gateway: Gateway;
   let notifier: MockProxy<Notifier>;
+  let liquid: MockProxy<Liquid>;
   let cloneFactory: TestCloneFactory;
   let app: Server;
 
@@ -30,12 +33,41 @@ describe('Gateway REST API', () => {
     }, cloneFactory, new DomainKeyStore('app'));
     await gateway.initialise();
     notifier = mock<Notifier>();
-    app = setupGatewayHttp(gateway, notifier);
+    liquid = mock<Liquid>();
+    app = setupGatewayHttp({ gateway, notifier, liquid });
   });
 
   afterEach(async () => {
     await gateway?.close();
     env.tearDown();
+  });
+
+  describe('website', () => {
+    test('head a page', async () => {
+      await request(app)
+        .head('/a')
+        .accept('text/html')
+        .expect('Content-Type', 'text/html')
+        .expect('Transfer-Encoding', 'chunked')
+        .expect(200);
+      expect(liquid.parseFile).toBeCalledWith('a');
+    });
+
+    test('get index page', async () => {
+      liquid.renderFileToNodeStream
+        .mockResolvedValue(Readable.from(['html']));
+      await request(app)
+        .get('/')
+        .accept('text/html')
+        .expect('Content-Type', 'text/html')
+        .expect('Transfer-Encoding', 'chunked')
+        .expect(200, 'html');
+      expect(liquid.renderFileToNodeStream).toBeCalledWith('index', {
+        origin: 'https://ex.org', domain: 'ex.org'
+      });
+    });
+
+    test.todo('/activate route');
   });
 
   test('gets context', async () => {

@@ -48,23 +48,22 @@ export class BaseGateway {
  *
  */
 export function resolveGateway(
-  address: string
-): { root: URL | Promise<URL>, domainName: string } {
-  if (isFQDN(address)) {
-    return { root: new URL(`https://${address}/`), domainName: address };
+  address: string | URL
+): URL | Promise<URL> {
+  if (address instanceof URL) {
+    return address;
+  } else if (isFQDN(address)) {
+    return new URL(`https://${address}/`);
   } else {
     const url = new URL('/', address);
     const domainName = url.hostname;
     if (domainName.endsWith('.local')) {
-      return {
-        root: dns.lookup(domainName).then(a => {
-          url.hostname = a.address;
-          return url;
-        }),
-        domainName
-      };
+      return dns.lookup(domainName).then(a => {
+        url.hostname = a.address;
+        return url;
+      });
     } else {
-      return { root: url, domainName };
+      return url;
     }
   }
 }

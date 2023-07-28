@@ -2,8 +2,6 @@
 layout: doc.liquid
 title: accounts
 ---
-[//]: # (cURLs in this file are generated from the .http file using http-client.env.json)
-
 # Accounts
 
 Accounts have two purposes in the **m-ld** Gateway.
@@ -19,7 +17,7 @@ Account names (`≪account≫` in the below) must be composed only of **lowercas
 First, request an activation code with an email address.
 
 ```bash
-curl -X POST --location "https://≪gateway≫/api/v1/user/≪account≫/activation" \
+curl -X POST --location "{{ '{{ origin }}' }}/api/v1/user/≪account≫/activation" \
     -H "Accept: application/json" \
     -H "Content-Type: application/json" \
     -d "{ \"email\": \"≪email≫\" }"
@@ -32,7 +30,7 @@ An email will be sent to the given address, containing a six-digit activation co
 The account can then be created with another HTTP request:
 
 ```bash
-curl -X POST --location "https://≪gateway≫/api/v1/user/≪account≫/key" \
+curl -X POST --location "{{ '{{ origin }}' }}/api/v1/user/≪account≫/key" \
     -H "Authorization: Bearer ≪jwe≫" \
     -H "X-Activation-Code: ≪emailed activation code≫" \
     -H "Accept: application/json"
@@ -45,7 +43,7 @@ The body of the response will be of the form `{ "auth": { "key": "≪my-key≫" 
 The Gateway root account can be used to create any user account directly.
 
 ```bash
-curl -X POST --location "https://≪gateway≫/api/v1/user/≪account name≫/key" \
+curl -X POST --location "{{ '{{ origin }}' }}/api/v1/user/≪account name≫/key" \
     -H "Accept: application/json" \
     --basic --user ≪root≫:≪root key≫
 ```
@@ -62,7 +60,7 @@ When [connecting to subdomains](clone-subdomain), clients may need to provide au
 The required option can be set as follows.
 
 ```bash
-curl -X PATCH --location "https://≪gateway≫/api/v1/user/≪account name≫" \
+curl -X PATCH --location "{{ '{{ origin }}' }}/api/v1/user/≪account name≫" \
     -H "Accept: application/json" \
     -H "Content-Type: application/json" \
     -d "{ \"@insert\": { \"remotesAuth\": \"≪remotes auth option≫\" } }" \

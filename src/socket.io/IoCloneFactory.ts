@@ -27,7 +27,7 @@ export class IoCloneFactory extends CloneFactory {
     this.address = address;
   }
 
-  remotes(config: BaseGatewayConfig) {
+  remotes() {
     return IoRemotes;
   }
 
@@ -46,7 +46,7 @@ export class IoCloneFactory extends CloneFactory {
   ) {
     // Reusable config always doles out public gateway address
     const uri = !reusable && this.address ? this.address :
-      (await resolveGateway(config.gateway.toString()).root).toString();
+      (await resolveGateway(config.gateway)).toString();
     const io: MeldIoConfig['io'] = { uri };
     // When using Socket.io, the authorisation key is sent to the server
     // See https://socket.io/docs/v4/middlewares/#sending-credentials

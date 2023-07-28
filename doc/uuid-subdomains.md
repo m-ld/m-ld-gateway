@@ -2,9 +2,6 @@
 layout: doc.liquid
 title: uuid subdomains
 ---
-
-[//]: # (cURLs in this file are generated from the .http file using http-client.env.json)
-
 # Using UUID Subdomains
 
 UUID subdomains are _unmanaged_ by the Gateway, and are not backed up. The Gateway provides a message relay to allow clones on the subdomain to communicate.
@@ -19,7 +16,7 @@ To use UUID subdomains, you first need [an account](accounts).
 By default, a Gateway account only allows [named subdomains](named-subdomains). To enable UUID subdomains for an account:
 
 ```bash
-curl -X PATCH --location "https://≪gateway≫/api/v1/user/≪account name≫" \
+curl -X PATCH --location "{{ '{{ origin }}' }}/api/v1/user/≪account name≫" \
     -H "Content-Type: application/json" \
     -d "{ \"@insert\": { \"naming\": \"uuid\" } }" \
     --basic --user ≪account name≫:≪account key≫
@@ -34,7 +31,7 @@ The domain name must take the form `≪uuid≫.my-account.my-gateway`, where `�
 For convenience, you can request suitable configuration for a new UUID subdomain from the Gateway, as follows. Note that this does not create anything new on the Gateway, but it will generate a compliant UUID for the domain name.
 
 ```bash
-curl -X POST --location "https://≪gateway≫/api/v1/domain/≪account name≫" \
+curl -X POST --location "{{ '{{ origin }}' }}/api/v1/domain/≪account name≫" \
     -H "Accept: application/json"
 ```
 

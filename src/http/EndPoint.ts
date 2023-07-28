@@ -44,7 +44,7 @@ function nextifyHandler(handler: NextFreeHandler): RequestHandler {
   };
 }
 
-type Verb = 'del' | 'get' | 'put' | 'post' | 'patch';
+type Verb = 'del' | 'get' | 'head' | 'put' | 'post' | 'patch';
 type RouteDef = string | RegExp | RouteOptions;
 type Routable = Pick<RestServer, Verb>;
 
@@ -62,6 +62,7 @@ interface EndPointSetup {
 export class EndPoint<Outer extends Routable> implements Routable {
   del: RestServer['del'];
   get: RestServer['get'];
+  head: RestServer['head'];
   put: RestServer['put'];
   post: RestServer['post'];
   patch: RestServer['patch'];
@@ -79,7 +80,7 @@ export class EndPoint<Outer extends Routable> implements Routable {
       EndPoint.checkRoute(route);
       return `${stem}${route}`;
     };
-    for (let verb of ['del', 'get', 'put', 'post', 'patch'] as Verb[]) {
+    for (let verb of ['del', 'get', 'head', 'put', 'post', 'patch'] as Verb[]) {
       this[verb] = (route: string, ...handlers) => outer[verb](
         api(route),
         ...this.useHandlers,
@@ -149,6 +150,7 @@ function handlerDecorator(verb: Verb | 'use', opts: RouteDef = '') {
 export const use = handlerDecorator('use');
 export const del = handlerDecorator('del');
 export const get = handlerDecorator('get');
+export const head = handlerDecorator('head');
 export const put = handlerDecorator('put');
 export const post = handlerDecorator('post');
 export const patch = handlerDecorator('patch');
