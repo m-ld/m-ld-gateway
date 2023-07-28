@@ -1,10 +1,10 @@
 import { clone as meldClone, Describe, MeldClone } from '@m-ld/m-ld';
 import { MemoryLevel } from 'memory-level';
 import { firstValueFrom } from 'rxjs';
-import { SubdomainClone, SubdomainUpdate } from '../src/server/SubdomainClone';
+import { SubdomainClone, SubdomainUpdate } from '../src/server/SubdomainClone.js';
 import { setTimeout } from 'timers/promises';
 import { once } from 'events';
-import { DeadRemotes } from './fixtures';
+import { DeadRemotes } from './fixtures.js';
 
 describe('Subdomain clone', () => {
   let clone: MeldClone;
@@ -13,9 +13,9 @@ describe('Subdomain clone', () => {
   beforeEach(async () => {
     const backend = new MemoryLevel;
     clone = await meldClone(backend, DeadRemotes, {
-      '@id': 'test', '@domain': 'ex.org', genesis: true
+      '@id': 'test', '@domain': 'test.acc.ex.org', genesis: true
     });
-    sdc = new SubdomainClone(clone, backend);
+    sdc = new SubdomainClone({ account: 'acc', name: 'test' }, clone, backend);
   });
 
   test('initialises unlocked', () => {

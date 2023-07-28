@@ -15,9 +15,10 @@ describe('Ably as a key store', () => {
       capability: {} // ignored
     }));
     keyStore = new AblyKeyStore({
-      '@id': '1',
+      '@id': 'test',
       '@domain': 'ex.org',
       auth: { key: 'appid.topId.topSecret' },
+      key: { type: 'rsa', public: '', private: '' }, // unused
       ably: { apiKey: 'apiKey' },
       gateway: 'ex.org',
       genesis: true

@@ -1,39 +1,68 @@
 import { Server as SocketIoServer } from 'socket.io';
 import { IoRemotesService } from '@m-ld/m-ld/ext/socket.io-server';
-import { BasicAuthorization } from '../server/Authorization.js';
-import { AccountOwnedId } from '../lib/index.js';
-import { ForbiddenError } from '../http/errors.js';
-import { Server as RestifyServer } from 'restify';
+import { JwtAuthorization, KeyAuthorization } from '../server/Authorization.js';
+import { AccountOwnedId, as, asUuid, validate } from '../lib/index.js';
+import {
+  BadRequestError, ForbiddenError, InternalServerError, toHttpError
+} from '../http/errors.js';
 import LOG from 'loglevel';
-import { Gateway } from '../server/index.js';
+import { Account, Gateway } from '../server/index.js';
+import type { Server } from 'http';
+
+const asHandshakeAuth = as.object({
+  user: AccountOwnedId.asComponentId.optional(),
+  key: as.string(),
+  jwt: as.string()
+});
+const asHandshakeQuery = as.object({
+  '@domain': as.string().domain().required()
+}).unknown();
 
 export class IoService extends IoRemotesService {
-  constructor(gateway: Gateway, server: RestifyServer) {
-    const io = new SocketIoServer(server.server);
+  constructor(gateway: Gateway, server: Server) {
+    const io = new SocketIoServer(server, {
+      cors: { origin: '*', methods: ['GET', 'POST'] }
+    });
     super(io.sockets);
     // Attach authorisation
     io.use(async (socket, next) => {
-      const { user, key } = socket.handshake.auth;
-      const { '@domain': domainName } = socket.handshake.query;
       try {
-        if (user) {
-          if (typeof domainName == 'string') {
-            // A user is trying to access a given domain
-            await new BasicAuthorization(user, key).verifyUser(gateway, {
-              id: AccountOwnedId.fromDomain(domainName), forWrite: 'Subdomain'
-            });
-          } else {
-            return next(new ForbiddenError('Domain not specified'));
-          }
-        } else if (key !== gateway.me.authKey.toString()) {
-          // The gateway is connecting to a domain: its own, or a subdomain
-          return next(new ForbiddenError('Unrecognised machine key'));
+        const { user, key, jwt } = validate(socket.handshake.auth, asHandshakeAuth);
+        const { '@domain': domainName } = validate(socket.handshake.query, asHandshakeQuery);
+        if (!domainName.endsWith(gateway.domainName))
+          return next(new BadRequestError('Bad gateway'));
+        // The gateway is connecting to a domain: its own, or a subdomain
+        if (key === gateway.me.authKey.toString())
+          return next();
+
+        const sdId = AccountOwnedId.fromDomain(domainName).validate();
+        const access = { id: sdId, forWrite: 'Subdomain' };
+        const remotesAuth = await Account.getDetails(
+          gateway.domain, sdId.account, 'remotesAuth');
+        if (!user && !key && !jwt) {
+          validate(sdId.name, asUuid); // Anonymous messaging requires UUID subdomain
+          if (!remotesAuth.includes('anon'))
+            return next(new ForbiddenError('Anonymous messaging unavailable'));
+        } else if (user && key) {
+          // key authentication is the default if nothing else is specified
+          if (remotesAuth.length && !remotesAuth.includes('key'))
+            return next(new ForbiddenError('Key-authenticated messaging unavailable'));
+          await new KeyAuthorization(user, key).verifyUser(gateway, access);
+        } else if (jwt) {
+          if (!remotesAuth.includes('jwt'))
+            return next(new ForbiddenError('JWT-authenticated messaging unavailable'));
+          await new JwtAuthorization(jwt).verifyUser(gateway, access);
+        } else {
+          return next(new ForbiddenError('Unrecognised authentication'));
         }
-        LOG.debug('IO authorised for', user, 'in', domainName);
+
+        LOG.debug('IO authorised for', user || 'anonymous', 'in', domainName);
         return next();
       } catch (e) {
-        LOG.error('IO authorisation failed for', user, 'in', domainName, e);
-        return next(e);
+        const httpError = toHttpError(e);
+        if (httpError instanceof InternalServerError)
+          LOG.error('IO authorisation failed for', socket.handshake, e);
+        return next(httpError);
       }
     });
   }

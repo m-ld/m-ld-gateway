@@ -1,0 +1,28 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+hide footbox
+
+title App with anonymous users using Gateway public messaging
+
+anon -> Gateway: POST /domain/public ☆
+return config for new clones
+note left
+<code>
+{
+  @domain:"<<uuid>>.public.<<hostname>>",
+  genesis:true,
+  io
+}
+</code>
+end note
+note right: no backup clone created ☆
+anon -> anon ++: Create genesis clone
+<-- anon: Tell other app instances
+anon <--> Gateway: socket.io remotes (rate limited)
+
+note over Gateway
+The Gateway does no management of
+clone genesis beyond providing an ID.
+end note
+
+@enduml

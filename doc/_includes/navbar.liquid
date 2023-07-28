@@ -1,0 +1,33 @@
+<nav class="navbar mb-3" role="navigation" aria-label="main navigation">
+  <div class="container is-fluid">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://m-ld.org/">
+        <img src="https://m-ld.org/m-ld.svg" width="112"/>
+      </a>
+      <a class="navbar-brand is-size-3 has-text-weight-light" href="/">gateway</a>
+      <script>
+        function navbarToggle() {
+          document.querySelector('#navbarBurger').classList.toggle('is-active');
+          document.querySelector('#navbarMenu').classList.toggle('is-active');
+        }
+      </script>
+      <a id="navbarBurger" role="button" class="navbar-burger burger" onclick="navbarToggle()"
+         aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div id="navbarMenu" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a href="register" class="button is-primary">register</a>
+            {% include 'example-project-button.html' %}
+            <a href="https://m-ld.org/hello/" class="button is-info">feedback</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

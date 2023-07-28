@@ -1,10 +1,10 @@
-import { AuthKey, AuthKeyStore } from './AuthKey.js';
+import { AuthKey, KeyStore } from './AuthKey.js';
 import { randomBytes } from 'crypto';
 
 /**
  * A key store that persists to a m-ld domain
  */
-export class DomainKeyStore implements AuthKeyStore {
+export class DomainKeyStore implements KeyStore {
   constructor(
     private readonly appId: string
   ) {}

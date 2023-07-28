@@ -1,7 +1,7 @@
-import { GraphSubject, MeldClone, MeldReadState, propertyValue, Reference } from '@m-ld/m-ld';
 import {
-  AccountOwnedId, AuthKey, AuthKeyConfig, AuthKeyStore, GatewayPrincipal, idSet
-} from '../lib/index.js';
+  GraphSubject, MeldClone, MeldReadState, propertyValue, Reference, Subject, Update
+} from '@m-ld/m-ld';
+import { AccountOwnedId, as, GatewayPrincipal, idSet, KeyStore, validate } from '../lib/index.js';
 import { UserKey } from '../data/index.js';
 import {
   BadRequestError, ForbiddenError, InternalServerError, UnauthorizedError
@@ -22,10 +22,24 @@ export interface AccountContext {
   readonly me: GatewayPrincipal;
   readonly domain: MeldClone;
   readonly domainName: string;
-  readonly keyStore: AuthKeyStore;
-  readonly usingUserKeys: boolean;
+  readonly keyStore: KeyStore;
   readonly rootAccountName: string;
 }
+
+export type SubdomainNaming = 'any' | 'uuid';
+export type RemotesAuthType = 'anon' | 'key' | 'jwt';
+
+export interface AccountDetails {
+  emails: string[],
+  naming: SubdomainNaming[],
+  remotesAuth: RemotesAuthType[]
+}
+
+const asAccountUpdate = as.object({
+  email: as.string().email(),
+  naming: as.valid('any', 'uuid'),
+  remotesAuth: as.valid('anon', 'key', 'jwt')
+}).or('email', 'naming', 'remotesAuth');
 
 /**
  * Javascript representation of an Account subject in the Gateway domain.
@@ -40,7 +54,16 @@ export class Account {
       keyids: propertyValue(src, 'key', Array, Reference).map(UserKey.keyidFromRef),
       admins: idSet(propertyValue(src, 'vf:primaryAccountable', Array, Reference)),
       subdomains: propertyValue(src, 'subdomain', Array, Reference)
-    }, false);
+    });
+  }
+
+  static async getDetails<K extends keyof AccountDetails>(
+    state: MeldReadState,
+    account: string,
+    detail: K
+  ): Promise<AccountDetails[K]> {
+    const acc = await state.get(account, detail);
+    return acc != null ? <AccountDetails[K]>propertyValue(acc, detail, Array, String) : [];
   }
 
   /** plain account name */
@@ -51,7 +74,7 @@ export class Account {
   readonly keyids: Set<string>;
   /** admin (primary accountable) IRIs */
   readonly admins: Set<string>;
-  /** directly-owned entity IRIs */
+  /** directly-owned subdomain IRIs */
   readonly subdomains: Reference[];
   /**
    * Cache of owned entities, including indirectly via org account
@@ -67,8 +90,7 @@ export class Account {
       keyids = [],
       admins = [],
       subdomains = []
-    }: AccountSpec,
-    readonly isNew = true
+    }: AccountSpec
   ) {
     this.gateway = gateway;
     this.name = name;
@@ -79,31 +101,38 @@ export class Account {
     this.allOwned = {}; // See allOwned
   }
 
+  update(patch: Update) {
+    const asMyUpdate = asAccountUpdate.append({
+      '@id': as.equal(this.name).default(this.name)
+    });
+    const update = validate(patch, as.object({
+      '@delete': asMyUpdate,
+      '@insert': asMyUpdate
+    }).or('@delete', '@insert'));
+    return this.gateway.domain.write(update);
+  }
+
   /**
    * Activation of a gateway account with a user email.
    * @returns key config for the account
    */
-  async generateKey(email?: string) {
+  async generateKey(opts: { email?: string, type?: 'rsa' }) {
     // Every activation creates a new key (assumes new device)
     const keyDetails = await this.gateway.keyStore
       .mintKey(`${this.name}@${this.gateway.domainName}`);
-    let key: GraphSubject, config: AuthKeyConfig;
-    if (this.gateway.usingUserKeys) {
-      // Generate a key pair for signing
-      const userKey = UserKey.generate(keyDetails.key);
-      key = userKey.toJSON();
-      config = userKey.toConfig(keyDetails.key);
-    } else {
-      key = UserKey.refFromKeyid(keyDetails.key.keyid);
-      config = keyDetails.key.toConfig();
-    }
+    // Generate a key pair for signing
+    const userKey = UserKey.generate(keyDetails.key);
+    const key = userKey.toJSON();
+    const config = opts.type != null ?
+      userKey.toConfig(keyDetails.key) :
+      keyDetails.key.toConfig();
     // Store the keyid and the email
     this.keyids.add(keyDetails.key.keyid);
-    if (email)
-      this.emails.add(email);
+    if (opts.email)
+      this.emails.add(opts.email);
     // Patch the changed details, including the new key
     await this.gateway.domain.write({
-      '@id': this.name, key, email
+      '@id': this.name, key, email: opts.email
     });
     return config;
   }
@@ -114,44 +143,33 @@ export class Account {
    * @throws UnauthorizedError if the key does not belong to this account or is
    * revoked
    */
-  async authorise(keyid: string, access?: AccessRequest): Promise<UserKey | AuthKey> {
+  async authorise(keyid: string, access?: AccessRequest): Promise<UserKey> {
     return new Promise(async (resolve, reject) => {
       this.gateway.domain.read(async state => {
         try {
           const userKey = await this.key(state, keyid);
-          if (userKey?.revoked)
+          if (userKey.revoked)
             return reject(new UnauthorizedError('Key revoked'));
-          // noinspection JSIncompatibleTypesComparison
-          if (access != null)
-            await this.checkAccess(state, access);
-          try {
-            if (this.name === this.gateway.rootAccountName) {
-              // Special case: do not ping the key if it's the root
-              const principal = this.gateway.me;
-              resolve(principal.userKey ?? principal.authKey);
-            } else {
-              const keyDetail = await this.gateway.keyStore.pingKey(
-                keyid, () => this.allSubdomainIds(state));
-              if (keyDetail == null && userKey == null)
-                return reject(new InternalServerError(
-                  `Configuration error: key ${keyid} not available`));
-              if (keyDetail?.revoked)
-                // TODO: If keystore says revoked, update the userKey
-                return reject(new UnauthorizedError('Key revoked'));
-              return resolve(keyDetail?.key ?? userKey!);
-            }
-          } catch (e) {
-            // TODO: Assuming this is a Not Found
-            return reject(new UnauthorizedError(e));
-          }
+          if (access != null && !await this.hasAccess(state, access))
+            return reject(new ForbiddenError);
+          // Special case: do not ping the key if it's the root
+          if (this.name === this.gateway.rootAccountName)
+            return resolve(this.gateway.me.userKey);
+          const keyDetail = await this.gateway.keyStore.pingKey(
+            keyid, () => this.allSubdomainIds(state));
+          if (keyDetail?.revoked)
+            // TODO: If keystore says revoked, update the userKey
+            return reject(new UnauthorizedError('Key revoked'));
+          return resolve(userKey);
         } catch (e) {
-          return reject(e);
+          // TODO: Assuming this is a Not Found
+          return reject(new UnauthorizedError(e));
         }
       });
     });
   }
 
-  async checkAccess(state: MeldReadState, access: AccessRequest) {
+  async hasAccess(state: MeldReadState, access: AccessRequest): Promise<boolean> {
     const iri = access.id.toRelativeIri();
     const writable: { [key: string]: Set<string> } = {};
     if (access.forWrite && !this.ownedTypes.includes(access.forWrite))
@@ -160,27 +178,30 @@ export class Account {
       writable[ownedType] = await this.loadAllOwned(state, ownedType);
     if (access.forWrite && !(await state.ask({ '@where': { '@id': iri } }))) {
       // Creating; check write access to account
-      if (access.id.account !== this.name &&
-        !(await state.ask({ '@where': userIsAdmin(this.name, access.id.account) })))
-        throw new ForbiddenError();
+      if (!await this.hasWriteAccess(state, access.id.account))
+        return false;
       // Otherwise OK to create
       writable[access.forWrite].add(iri);
+      return true;
     } else if (!Object.values(writable).some(owned => owned.has(iri))) {
-      if (access.forWrite) {
-        throw new ForbiddenError();
-      } else {
-        return this.checkReadAccess(state, iri, writable);
-      }
+      return access.forWrite ? false : this.hasReadAccess(state, iri, writable);
+    } else {
+      return true;
     }
   }
 
+  protected async hasWriteAccess(state: MeldReadState, toAccount: string) {
+    return toAccount === this.name ||
+      state.ask({ '@where': userIsAdmin(this.name, toAccount) });
+  }
+
   // TODO: Override in timeld
-  async checkReadAccess(
+  protected async hasReadAccess(
     _state: MeldReadState,
     _iri: string,
     _writable: { [key: string]: Set<string> }
-  ): Promise<unknown> {
-    throw new ForbiddenError();
+  ): Promise<boolean> {
+    return false;
   }
 
   /**
@@ -213,22 +234,20 @@ export class Account {
 
   /**
    * Checks that the given keyid belongs to this account and returns the
-   * corresponding user key, if cryptographic keys are being used.
+   * corresponding user key
    * @throws UnauthorizedError if the key does not belong to this account
    */
-  async key(state: MeldReadState, keyid: string): Promise<UserKey | undefined> {
+  async key(state: MeldReadState, keyid: string): Promise<UserKey> {
     if (!this.keyids.has(keyid))
       throw new UnauthorizedError(
         `Key ${keyid} does not belong to account ${this.name}`);
-    if (this.gateway.usingUserKeys) {
-      if (this.name === this.gateway.rootAccountName)
-        return this.gateway.me.userKey;
-      const src = await state.get(UserKey.refFromKeyid(keyid)['@id']);
-      if (src != null)
-        return UserKey.fromJSON(src);
-      else
-        throw new InternalServerError('User key not found');
-    }
+    if (this.name === this.gateway.rootAccountName)
+      return this.gateway.me.userKey;
+    const src = await state.get(UserKey.refFromKeyid(keyid)['@id']);
+    if (src != null)
+      return UserKey.fromJSON(src);
+    else
+      throw new InternalServerError('User key not found');
   }
 
   /**
@@ -240,7 +259,7 @@ export class Account {
       .map(iri => AccountOwnedId.fromIri(iri, this.gateway.domainName));
   }
 
-  toJSON() {
+  toJSON(): Subject {
     return {
       '@id': this.name, // scoped to gateway domain
       '@type': 'Account',

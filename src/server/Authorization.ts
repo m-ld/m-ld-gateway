@@ -1,10 +1,10 @@
-import { AccountOwnedId, AuthKey, verifyJwt } from '../lib/index.js';
+import { AccountOwnedId, AuthKey } from '../lib/index.js';
 import { UserKey } from '../data/index.js';
 import { UnauthorizedError } from '../http/errors.js';
 import type { Request } from 'restify';
 import { Gateway, Who } from './Gateway.js';
 import { decode } from 'jsonwebtoken';
-import { Account } from './Account';
+import { Account } from './Account.js';
 
 export interface AccessRequest {
   /** An ID for which access is requested */
@@ -19,13 +19,13 @@ export interface AccessRequest {
 export abstract class Authorization {
   static fromRequest(req: Request) {
     if (req.authorization == null)
-      throw new UnauthorizedError();
+      throw new UnauthorizedError;
     switch (req.authorization.scheme) {
       case 'Bearer':
-        return new BearerAuthorization(req.authorization.credentials);
+        return new JwtAuthorization(req.authorization.credentials);
       case 'Basic':
         const { username, password } = req.authorization.basic!;
-        return new BasicAuthorization(username, password);
+        return new KeyAuthorization(username, password);
       default:
         throw new UnauthorizedError('Unrecognised authorization');
     }
@@ -51,7 +51,7 @@ export abstract class Authorization {
   }
 }
 
-export class BasicAuthorization extends Authorization {
+export class KeyAuthorization extends Authorization {
   /**
    * @param user
    * @param key an authorisation key associated with this Account
@@ -68,12 +68,12 @@ export class BasicAuthorization extends Authorization {
     const authKey = AuthKey.fromString(this.key);
     const userKey = await userAcc.authorise(authKey.keyid, access);
     if (!userKey.matches(authKey))
-      throw new UnauthorizedError();
+      throw new UnauthorizedError;
     return { acc: userAcc, keyid: userKey.keyid };
   }
 }
 
-export class BearerAuthorization extends Authorization {
+export class JwtAuthorization extends Authorization {
   /** @param jwt a JWT containing a keyid associated with this Account */
   constructor(
     private readonly jwt: string
@@ -88,25 +88,8 @@ export class BearerAuthorization extends Authorization {
     const userAcc = await this.getUserAccount(gateway, payload.sub);
     let keyid: string;
     try { // Verify the JWT against its declared keyid
-      if (gateway.usingUserKeys) {
-        // Asymmetric user keys
-        await UserKey.verifyJwt(this.jwt, async header => {
-          const userKey = await userAcc.authorise(keyid = header.kid!, access);
-          if (userKey instanceof UserKey)
-            return userKey;
-          else
-            throw new RangeError('Expecting a user key');
-        });
-      } else {
-        // Symmetric secret
-        await verifyJwt(this.jwt, async header => {
-          const authKey = await userAcc.authorise(keyid = header.kid!, access);
-          if (authKey instanceof AuthKey)
-            return authKey.secret;
-          else
-            throw new RangeError('Expecting a secret');
-        });
-      }
+      await UserKey.verifyJwt(this.jwt, async header =>
+        userAcc.authorise(keyid = header.kid!, access));
     } catch (e) {
       throw new UnauthorizedError(e);
     }

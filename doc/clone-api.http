@@ -1,0 +1,18 @@
+###
+
+POST {{gateway}}/api/v1/domain/{{account}}/{{subdomain}}/state
+Authorization: Basic {{account}} {{accountKey}}
+Content-Type: application/json
+
+{
+  "@id": "Client-0005",
+  "company_name": "The Flintstones"
+}
+
+###
+
+GET {{gateway}}/api/v1/domain/{{account}}/{{subdomain}}/state?q=%7B%22%40describe%22%3A%22%3Fid%22%2C%22%40where%22%3A%7B%22%40id%22%3A%22%3Fid%22%7D%7D
+Authorization: Basic {{account}} {{accountKey}}
+Accept: application/json
+
+###

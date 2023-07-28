@@ -9,7 +9,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 /** General configuration */
-interface Config {[key: Exclude<string, '_' | '$0'>]: unknown;}
+export interface Config {[key: Exclude<string, '_' | '$0'>]: unknown;}
 
 /** paths for local data, config, logs etc. */
 type EnvPaths = Paths & {
@@ -36,7 +36,7 @@ export class Env {
       { env: Env.toEnvVar(appName) }, env_paths(appName), envPaths);
   }
 
-  /** @returns {string} uppercase snake-case */
+  /** @returns name uppercase snake-case */
   static toEnvVar(name: string) {
     return name
       // Non-word characters (including hyphens) with underscores
@@ -44,17 +44,6 @@ export class Env {
       // Camel case to snake case
       .replace(/([A-Z])/g, '_$&')
       .toUpperCase();
-  }
-
-  /**
-   * Loads environment variables from any .env file up to three directories up
-   */
-  static initScript() {
-    for (let i = 0; i < 3; i++) {
-      if (!dotenv.config({
-        path: join(process.cwd(), ...new Array(i).fill('..'), '.env')
-      }).error) break;
-    }
   }
 
   get envPrefix() {
@@ -66,10 +55,10 @@ export class Env {
    *   TIMELD_GATEWAY_KEY1: 'key1',
    *   TIMELD_GATEWAY_NESTED__KEY2: 'key2',
    * }
-   * @param {object} config
-   * @param {string[]} filter if non-empty, the keys to include
-   * @param {object} env existing env to add to
-   * @param {string} prefix prefix for new entries
+   * @param config
+   * @param filter if non-empty, the keys to include
+   * @param env existing env to add to
+   * @param prefix prefix for new entries
    */
   asEnv(
     config: Config,
@@ -78,7 +67,7 @@ export class Env {
     prefix = this.envPrefix
   ) {
     for (let [key, value] of Object.entries(config)) {
-      if (value != null && (filter.length === 0 || filter.includes(key))) {
+      if (value != null && value !== '' && (filter.length === 0 || filter.includes(key))) {
         const envVar = `${prefix}${Env.toEnvVar(key)}`;
         if (typeof value == 'object')
           this.asEnv(<Config>value, [], env, `${envVar}__`);
@@ -89,9 +78,6 @@ export class Env {
     return env;
   }
 
-  /**
-   * @returns {yargs.Argv<{}>}
-   */
   baseYargs(args = hideBin(process.argv)) {
     // noinspection SpellCheckingInspection
     return createYargs(args)
@@ -99,9 +85,6 @@ export class Env {
       .parserConfiguration({ 'strip-dashed': true, 'strip-aliased': true });
   }
 
-  /**
-   * @returns {yargs.Argv<{}>}
-   */
   async yargs(args = hideBin(process.argv)) {
     const argv = this.baseYargs(args);
     return (this.envPaths.env ? argv.env(this.envPaths.env) : argv.env(false))
@@ -226,6 +209,7 @@ export class Env {
     }
   }
 
+  // noinspection JSUnusedGlobalSymbols
   async delEnvFile(key: keyof Paths, path: string[]) {
     // Delete the given path, and then any empty parent folders
     await rm(join(this.envPaths[key], ...path));

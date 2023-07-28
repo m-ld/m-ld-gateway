@@ -1,38 +1,31 @@
 // noinspection SpellCheckingInspection
 
-import { DirResult, dirSync } from 'tmp';
-import {
-  AccountOwnedId, AuthKey, BackendLevel, CloneFactory, DomainKeyStore, Env, gatewayContext, UserKey
-} from '../src/index.js';
-import { join } from 'path';
-import { clone as meldClone, Describe, MeldClone } from '@m-ld/m-ld';
-import { MemoryLevel } from 'memory-level';
-import { DeadRemotes, parseNdJson } from './fixtures.js';
+import { AccountOwnedId, AuthKey, DomainKeyStore, gatewayContext, UserKey } from '../src/index.js';
+import { Describe, MeldClone } from '@m-ld/m-ld';
+import { parseNdJson, TestCloneFactory, testCloneFactory, TestEnv } from './fixtures.js';
 import { Account, Gateway, Notifier } from '../src/server/index.js';
-import { GatewayHttp } from '../src/http/index.js';
+import { setupGatewayHttp } from '../src/http/index.js';
 import request from 'supertest';
 import { mock, MockProxy } from 'jest-mock-extended';
 import { Server } from 'restify';
+import { Readable } from 'stream';
+import type { Liquid } from 'liquidjs';
 
-describe('Gateway REST API', () => {
-  let tmpDir: DirResult;
+describe('Gateway HTTP API', () => {
+  let env: TestEnv;
   let gateway: Gateway;
   let notifier: MockProxy<Notifier>;
-  let clone: MeldClone;
+  let liquid: MockProxy<Liquid>;
+  let cloneFactory: TestCloneFactory;
   let app: Server;
 
   beforeEach(async () => {
-    tmpDir = dirSync({ unsafeCleanup: true });
-    const env = new Env('app', { data: join(tmpDir.name, 'data') });
-    const cloneFactory: MockProxy<CloneFactory> = mock<CloneFactory>();
-    cloneFactory.clone.mockImplementation(async (config): Promise<[MeldClone, BackendLevel]> => {
-      const backend = new MemoryLevel();
-      clone = await meldClone(backend, DeadRemotes, config);
-      return [clone, backend];
-    });
+    env = new TestEnv();
+    cloneFactory = testCloneFactory();
     const authKey = AuthKey.fromString('app.rootid:secret');
     const machineKey = UserKey.generate(authKey);
     gateway = new Gateway(env, {
+      '@id': 'test',
       '@domain': 'ex.org',
       genesis: true,
       gateway: 'ex.org',
@@ -40,17 +33,45 @@ describe('Gateway REST API', () => {
     }, cloneFactory, new DomainKeyStore('app'));
     await gateway.initialise();
     notifier = mock<Notifier>();
-    app = new GatewayHttp(gateway, notifier).server;
+    liquid = mock<Liquid>();
+    app = setupGatewayHttp({ gateway, notifier, liquid });
   });
 
   afterEach(async () => {
     await gateway?.close();
-    // noinspection JSUnresolvedFunction
-    tmpDir.removeCallback();
+    env.tearDown();
+  });
+
+  describe('website', () => {
+    test('head a page', async () => {
+      await request(app)
+        .head('/a')
+        .accept('text/html')
+        .expect('Content-Type', 'text/html')
+        .expect('Transfer-Encoding', 'chunked')
+        .expect(200);
+      expect(liquid.parseFile).toBeCalledWith('a');
+    });
+
+    test('get index page', async () => {
+      liquid.renderFileToNodeStream
+        .mockResolvedValue(Readable.from(['html']));
+      await request(app)
+        .get('/')
+        .accept('text/html')
+        .expect('Content-Type', 'text/html')
+        .expect('Transfer-Encoding', 'chunked')
+        .expect(200, 'html');
+      expect(liquid.renderFileToNodeStream).toBeCalledWith('index', {
+        origin: 'https://ex.org', domain: 'ex.org'
+      });
+    });
+
+    test.todo('/activate route');
   });
 
   test('gets context', async () => {
-    const res = await request(new GatewayHttp(gateway).server)
+    const res = await request(app)
       .get('/api/v1/context')
       .accept('application/json');
     expect(res.status).toBe(200);
@@ -62,7 +83,7 @@ describe('Gateway REST API', () => {
 
   test('root create new account with a key', async () => {
     const res = await request(app)
-      .post('/api/v1/user/test/key')
+      .post('/api/v1/user/test/key?type=rsa')
       .auth('app', 'app.rootid:secret')
       .accept('application/json');
     expect(res.status).toBe(200);
@@ -85,7 +106,7 @@ describe('Gateway REST API', () => {
       'test@ex.org', expect.stringMatching(/\d{6}/));
     const [, code] = notifier.sendActivationCode.mock.lastCall!;
     const res = await request(app)
-      .post('/api/v1/user/test/key')
+      .post('/api/v1/user/test/key?type=rsa')
       .auth(jwe, { type: 'bearer' })
       .set('X-Activation-Code', code)
       .accept('application/json');
@@ -113,13 +134,37 @@ describe('Gateway REST API', () => {
 
     test('generates a new key', async () => {
       const res = await request(app)
-        .post('/api/v1/user/test/key')
+        .post('/api/v1/user/test/key?type=rsa')
         .auth('test', 'app.keyid:secret')
         .accept('application/json');
       expect(res.status).toBe(200);
       expect(res.body).toMatchObject({
         auth: { key: expect.stringMatching(/app\..{6}:.{20,}/) },
         key: { private: expect.any(String), public: expect.any(String) }
+      });
+    });
+
+    describe('with uuid subdomains', () => {
+      beforeEach(async () => {
+        const res = await request(app)
+          .patch('/api/v1/user/test')
+          .auth('test', 'app.keyid:secret')
+          .accept('application/json')
+          .send({ '@insert': { naming: 'uuid' } });
+        expect(res.status).toBe(204);
+      });
+
+      test('can retrieve subdomain config', async () => {
+        cloneFactory.reusableConfig.mockResolvedValueOnce({ reusable: true });
+        const res = await request(app)
+          .post('/api/v1/domain/test')
+          .accept('application/json');
+        expect(res.status).toBe(200);
+        expect(res.body).toEqual({
+          '@domain': expect.stringMatching(/^c[a-z0-9]{24}\.test\.ex\.org/),
+          genesis: true,
+          reusable: true
+        });
       });
     });
 
@@ -138,10 +183,12 @@ describe('Gateway REST API', () => {
 
     describe('with subdomain', () => {
       let sdId: AccountOwnedId;
+      let clone: MeldClone;
 
       beforeEach(async () => {
-        sdId = gateway.ownedId('test', 'sd1');
-        await gateway.subdomainConfig(sdId, { acc, keyid: 'keyid' });
+        sdId = gateway.ownedId({ account: 'test', name: 'sd1' });
+        await gateway.subdomainConfig(sdId, 'any', { acc, keyid: 'keyid' });
+        clone = cloneFactory.clones[sdId.toDomain()];
       });
 
       test('get no lock', async () => {
@@ -161,7 +208,7 @@ describe('Gateway REST API', () => {
           .send({ '@id': 'fred', name: 'Fred' });
         expect(res.status).toBe(200);
         expect(res.headers['etag']).toMatch(/"\w+"/);
-        const clone = await gateway.getSubdomain(sdId);
+        const clone = (await gateway.getSubdomain(sdId))!;
         await expect(clone.state.read<Describe>({ '@describe': 'fred' }))
           .resolves.toEqual([{ '@id': 'fred', name: 'Fred' }]);
       });
@@ -174,7 +221,7 @@ describe('Gateway REST API', () => {
         expect(res.status).toBe(201);
         expect(res.headers['etag']).toMatch(/"\w+"/);
         expect(res.headers['location']).toMatch(/state\?lock$/);
-        const clone = await gateway.getSubdomain(sdId);
+        const clone = (await gateway.getSubdomain(sdId))!;
         await expect(clone.state.read<Describe>({ '@describe': 'fred' }))
           .resolves.toEqual([{ '@id': 'fred', name: 'Fred' }]);
       });

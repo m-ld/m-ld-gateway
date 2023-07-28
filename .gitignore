@@ -2,4 +2,6 @@
 ext/
 node_modules/
 local/
-.env
+_site/
+*.private.env.json
+*.env

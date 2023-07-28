@@ -1,0 +1,45 @@
+---
+layout: page.liquid
+---
+<section class="columns is-mobile">
+  <div class="column"></div>
+  <div class="column box is-narrow">
+    <h1 class="title">Register an Account</h1>
+    <p class="help">Enter the details below to register a new account.</p>
+    <p class="help">You can also use this form to get a new key for an existing account.</p>
+    <hr/>
+    <form action="/activate" method="post">
+      <div class="field">
+        <label class="label" for="accInput">Account Name</label>
+        <div class="control">
+          <input id="accInput"
+                 name="account"
+                 class="input"
+                 type="text"
+                 placeholder="new account name"
+                 pattern="[a-z0-9\-_]+"
+                 title="lowercase letters, digits and dashes"
+                 autofocus
+                 required>
+        </div>
+        <p class="help">May only contain lowercase letters, digits and dashes.</p>
+      </div>
+      <div class="field">
+        <label class="label" for="emailInput">Email</label>
+        <div class="control">
+          <input id="emailInput"
+                 name="email"
+                 class="input"
+                 type="email"
+                 placeholder="your email"
+                 required>
+        </div>
+        <p class="help">We'll send an activation code to this address.</p>
+      </div>
+      <div class="control">
+        <button class="button is-primary">Submit</button>
+      </div>
+    </form>
+  </div>
+  <div class="column"></div>
+</section>

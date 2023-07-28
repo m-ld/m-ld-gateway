@@ -1,19 +1,20 @@
 import { domainRelativeIri } from './util.js';
 import { Reference } from '@m-ld/m-ld';
+import { as } from '../lib/validate.js';
 
 /**
  * Combination of gateway, account and timesheet/project. Representations:
  * 1. Presentation string `[<account>/]<name>[@<gateway>]`,
- *   see {@link toString} and {@link fromString}.
+ *   see {@link toString} and {@link #fromString}.
  * 2. Configuration/persistence path array
- *   see {@link toPath} and {@link fromPath}.
+ *   see {@link #toPath} and {@link #fromPath}.
  * 3. m-ld domain name `<name>.<account>.<gateway>`
- *   see {@link fromDomain}.
+ *   see {@link #fromDomain}.
  */
 export class AccountOwnedId {
   static fromString(str: string) {
-    const [orgTs, gateway] = str.split('@');
-    const [account, name] = orgTs.split('/');
+    const [accName, gateway] = str.split('@');
+    const [account, name] = accName.split('/');
     if (name != null) // account included
       return new AccountOwnedId({ account, name, gateway });
     else // No account included
@@ -84,17 +85,18 @@ export class AccountOwnedId {
     return this;
   }
 
-  static checkComponentId(id: string) {
-    if (!AccountOwnedId.isComponentId(id))
-      throw `${id} should contain only lowercase letters, digits & dashes`;
+  static checkComponentId(id: any) {
+    as.assert(id, AccountOwnedId.asComponentId);
   }
 
-  static isComponentId(id: string) {
-    return id != null && /^[a-z0-9_-]+$/.test(id);
+  static isComponentId(id: any): id is string {
+    return !AccountOwnedId.asComponentId.validate(id).error;
   }
+
+  static asComponentId = as.string().regex(/^[a-z0-9_-]+$/).required();
 
   /**
-   * @returns {string[]} relative directory path suitable for persistence
+   * @returns path relative directory path suitable for persistence
    */
   toPath() {
     return [

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentStyleType="text/css" height="430px" preserveAspectRatio="none"
+     style="width:854px;height:430px;background:#FFFFFF;" version="1.1" viewBox="0 0 854 430"
+     width="854px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="26.4883" id="_title" style="stroke:none;stroke-width:1.0;" width="200" x="328" y="10"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="190" x="333" y="28.5352">App with Gateway account</text><rect fill="#FFFFFF" height="43.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="151" y="370.8145"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="156" x2="156" y1="90.4648" y2="423.125"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="351" x2="351" y1="90.4648" y2="423.125"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="710.5" x2="710.5" y1="90.4648" y2="423.125"/><rect fill="#E2E2F0" height="46.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="54" x="129" y="42.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="142" y="63.0234">App</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="40" x="136" y="79.5117">Client</text><rect fill="#E2E2F0" height="46.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="94" x="304" y="42.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="80" x="311" y="63.0234">App Service</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70" x="316" y="79.5117">or lambda</text><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="71" x="675.5" y="58.9766"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="682.5" y="79.5117">Gateway</text><rect fill="#FFFFFF" height="43.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="151" y="370.8145"/><polygon fill="#181818" points="699,117.7754,709,121.7754,699,125.7754,703,121.7754" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="351" x2="705" y1="121.7754" y2="121.7754"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="260" x="358" y="117.0332">PUT /domain/&lt;&lt;account&gt;&gt;/&lt;&lt;name&gt;&gt;</text><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="72" x="622" y="116.7095">{authKey}</text><polygon fill="#181818" points="362,213.4395,352,217.4395,362,221.4395,358,217.4395" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="356" x2="710" y1="217.4395" y2="217.4395"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="136" x="368" y="212.6973">config for new clones</text><path d="M5,134.7754 L5,219.7754 L346,219.7754 L346,144.7754 L336,134.7754 L5,134.7754 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M336,134.7754 L336,144.7754 L346,144.7754 L336,134.7754 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="8" x="11" y="151.8423">{</text><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="304" x="27" y="166.9751">@domain:"«name».«account».«hostname»",</text><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="104" x="27" y="182.1079">genesis:true,</text><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="16" x="27" y="197.2407">io</text><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="8" x="11" y="212.3735">}</text><path d="M716,149.6416 L716,204.6416 L847,204.6416 L847,159.6416 L837,149.6416 L716,149.6416 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M837,149.6416 L837,159.6416 L847,159.6416 L837,149.6416 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="97" x="722" y="167.21">if backup clone</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="110" x="722" y="182.5205">or domain exists,</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="97" x="722" y="197.8311">genesis is false</text><polygon fill="#181818" points="167,242.75,157,246.75,167,250.75,163,246.75" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="339,242.75,349,246.75,339,250.75,343,246.75" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="161" x2="345" y1="246.75" y2="246.75"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="171" x="173" y="242.0078">Authenticate user (or anon)</text><line style="stroke:#181818;stroke-width:1.0;" x1="351" x2="393" y1="291.3711" y2="291.3711"/><line style="stroke:#181818;stroke-width:1.0;" x1="393" x2="393" y1="291.3711" y2="304.3711"/><line style="stroke:#181818;stroke-width:1.0;" x1="352" x2="393" y1="304.3711" y2="304.3711"/><polygon fill="#181818" points="362,300.3711,352,304.3711,362,308.3711,358,304.3711" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="110" x="358" y="271.3184">Create client JWT,</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="112" x="358" y="286.6289">sign with authKey</text><polygon fill="#181818" points="167,329.5039,157,333.5039,167,337.5039,163,333.5039" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="161" x2="350" y1="333.5039" y2="333.5039"/><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="104" x="173" y="328.438">{config, jwt}</text><line style="stroke:#181818;stroke-width:1.0;" x1="156" x2="203" y1="357.8145" y2="357.8145"/><line style="stroke:#181818;stroke-width:1.0;" x1="203" x2="203" y1="357.8145" y2="370.8145"/><line style="stroke:#181818;stroke-width:1.0;" x1="162" x2="203" y1="370.8145" y2="370.8145"/><polygon fill="#181818" points="172,366.8145,162,370.8145,172,374.8145,168,370.8145" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="78" x="168" y="353.0723">Create clone</text><polygon fill="#181818" points="172,401.125,162,405.125,172,409.125,168,405.125" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="699,401.125,709,405.125,699,409.125,703,405.125" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="166" x2="705" y1="405.125" y2="405.125"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="113" x="178" y="400.3828">socket.io remotes</text><text fill="#000000" font-family="monospace" font-size="13" lengthAdjust="spacing" textLength="40" x="295" y="400.0591">{jwt}</text><!--MD5=[1f5c6e217069f37ab3587a76cdee0940]
+@startuml
+'https://plantuml.com/sequence-diagram
+hide footbox
+
+title App with Gateway account
+
+participant "App\nClient" as client
+participant "App Service\nor lambda" as service
+
+service -> Gateway: PUT /domain/<<account>>/<<name>> ""{authKey}""
+return config for new clones
+note left
+<code>
+{
+  @domain:"<<name>>.<<account>>.<<hostname>>",
+  genesis:true,
+  io
+}
+</code>
+end note
+note right
+if backup clone
+or domain exists,
+genesis is false
+end note
+client <- -> service: Authenticate user (or anon)
+service -> service: Create client JWT,\nsign with authKey
+service -> client: ""{config, jwt}""
+client -> client ++: Create clone
+client <- -> Gateway: socket.io remotes ""{jwt}""
+
+@enduml
+
+@startuml
+hide footbox
+
+title App with Gateway account
+
+participant "App\nClient" as client
+participant "App Service\nor lambda" as service
+
+service -> Gateway: PUT /domain/<<account>>/<<name>> ""{authKey}""
+return config for new clones
+note left
+<code>
+{
+  @domain:"<<name>>.<<account>>.<<hostname>>",
+  genesis:true,
+  io
+}
+</code>
+end note
+note right
+if backup clone
+or domain exists,
+genesis is false
+end note
+client <- -> service: Authenticate user (or anon)
+service -> service: Create client JWT,\nsign with authKey
+service -> client: ""{config, jwt}""
+client -> client ++: Create clone
+client <- -> Gateway: socket.io remotes ""{jwt}""
+
+@enduml
+
+PlantUML version 1.2022.8(Sun Sep 25 10:00:33 BST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

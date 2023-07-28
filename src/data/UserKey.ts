@@ -1,12 +1,11 @@
-import { GraphSubject, normaliseValue, Optional, propertyValue, Reference } from '@m-ld/m-ld';
+import { GraphSubject, Optional, propertyValue, Reference } from '@m-ld/m-ld';
 import {
   createPrivateKey, createPublicKey, generateKeyPairSync, KeyObject, PrivateKeyInput,
   PublicKeyInput, RSAKeyPairOptions, sign, verify
 } from 'crypto';
-import {
-  AuthKey, AuthKeyConfig, domainRelativeIri, Key, signJwt, verifyJwt
-} from '../lib/index.js';
+import { AuthKey, AuthKeyConfig, domainRelativeIri, Key } from '../lib/index.js';
 import { JwtHeader, Secret, SignOptions } from 'jsonwebtoken';
+import { signJwt, verifyJwt } from '@m-ld/io-web-runtime/dist/server/jwt';
 
 export interface UserKeyConfig extends AuthKeyConfig {
   key: {
@@ -199,21 +198,18 @@ export class UserKey implements Key {
       ...UserKey.refFromKeyid(this.keyid),
       '@type': 'UserKey',
       name: this.name,
-      public: normaliseValue(this.publicKey),
-      private: excludePrivate ? undefined : normaliseValue(this.privateKey),
+      public: this.publicKey,
+      private: excludePrivate ? undefined : this.privateKey,
       revoked: this.revoked
     };
   }
 
   /**
    * Note this is only a partial inverse of {@link fromConfig}:
-   * - the auth key is only included if provided
    * - the user and domain are not included
    */
-  toConfig(): Partial<UserKeyConfig>;
-  toConfig(authKey: AuthKey): UserKeyConfig;
-  toConfig(authKey?: AuthKey): Partial<UserKeyConfig> {
-    return Object.assign(authKey ? authKey.toConfig() : {}, {
+  toConfig(authKey: AuthKey): UserKeyConfig {
+    return Object.assign(authKey.toConfig(), {
       key: {
         type: 'rsa' as 'rsa', // Typescript weirdness
         public: this.publicKey.toString('base64'),

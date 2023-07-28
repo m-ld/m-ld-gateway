@@ -1,15 +1,22 @@
 {
-  "name": "m-ld-gateway",
-  "version": "0.0.0",
+  "name": "@m-ld/gateway",
+  "version": "0.1.0",
   "description": "m-ld gateway for services",
   "type": "module",
   "main": "ext/index.js",
   "types": "ext/index.d.ts",
+  "files": [
+    "_site",
+    "ext"
+  ],
   "scripts": {
-    "start": "tsc --incremental && node ext/start.js",
+    "start": "node ext/start.js",
     "clean": "rm -rf ext",
-    "build": "npm run clean && tsc && npm run test",
-    "test": "node --experimental-vm-modules node_modules/.bin/jest --silent"
+    "build": "tsc && npx @11ty/eleventy",
+    "doc-dev": "npx @11ty/eleventy --serve",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest --silent",
+    "predocker": "cp package.json package-lock.json deploy && cd deploy && npm pack ..",
+    "deploy-fly": "npm run predocker && cd deploy && fly deploy"
   },
   "repository": {
     "type": "git",
@@ -25,18 +32,19 @@
   },
   "homepage": "https://github.com/m-ld/m-ld-gateway#readme",
   "devDependencies": {
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
+    "@flydotio/dockerfile": "^0.3.3",
+    "@m-ld/io-web-build": "^0.2.0-0",
     "@types/cryptr": "^4.0.1",
     "@types/jest": "^29.2.4",
-    "@types/jsonwebtoken": "^8.5.9",
+    "@types/jsonwebtoken": "^9.0.2",
     "@types/restify": "^8.5.5",
     "@types/restify-errors": "^4.3.4",
     "@types/supertest": "^2.0.12",
     "@types/tmp": "^0.2.3",
-    "@types/validator": "^13.7.10",
     "@types/yargs": "^17.0.13",
     "jest": "^29.3.1",
     "jest-mock-extended": "^3.0.1",
-    "jtd": "^0.1.1",
     "memory-level": "^1.0.0",
     "supertest": "^6.3.1",
     "tmp": "^0.2.1",
@@ -44,8 +52,8 @@
     "typescript": "^4.9.3"
   },
   "dependencies": {
-    "@m-ld/io-web-runtime": "^0.2.2",
-    "@m-ld/m-ld": "^0.9.1",
+    "@m-ld/io-web-runtime": "^0.2.3",
+    "@m-ld/m-ld": "^0.10.0-edge.5",
     "@types/nodemailer": "^6.4.7",
     "ably": "^1.2.33",
     "abstract-level": "^1.0.3",
@@ -54,10 +62,12 @@
     "dotenv": "^16.0.3",
     "env-paths": "^3.0.0",
     "http-graceful-shutdown": "^3.1.11",
-    "jsonwebtoken": "^8.5.1",
-    "jtd": "^0.1.1",
+    "joi": "^17.9.2",
+    "jsonwebtoken": "^9.0.1",
+    "liquidjs": "^10.8.4",
     "loglevel": "^1.8.1",
     "nodemailer": "^6.9.0",
+    "reflect-metadata": "^0.1.13",
     "restify": "^11.0.0",
     "restify-errors": "^8.0.2",
     "rx-flowable": "^0.1.2",
@@ -65,7 +75,6 @@
     "simple-peer": "^9.11.1",
     "socket.io": "^4.5.3",
     "socket.io-client": "^4.5.3",
-    "validator": "^13.7.0",
     "yargs": "^17.6.2"
   },
   "jest": {
@@ -91,6 +100,9 @@
     "moduleNameMapper": {
       "^(\\.{1,2}/.*)\\.js$": "$1",
       "@m-ld/m-ld/ext/socket.io/server": "<rootDir>/node_modules/@m-ld/m-ld/ext/socket.io/server/index.js"
-    }
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/test/setup.ts"
+    ]
   }
 }

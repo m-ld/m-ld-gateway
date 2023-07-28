@@ -1,10 +1,21 @@
 import nodemailer, { Transporter } from 'nodemailer';
-import type SMTPTransport from 'nodemailer/lib/smtp-transport/index';
-import type Mail from 'nodemailer/lib/mailer/index';
+import type SMTPTransport from 'nodemailer/lib/smtp-transport';
+import type Mail from 'nodemailer/lib/mailer';
+import LOG from 'loglevel';
 
 export type SmtpOptions = SMTPTransport.Options;
 
-export class Notifier {
+export interface Notifier {
+  sendActivationCode(email: string, activationCode: string): Promise<unknown>;
+}
+
+export const logNotifier: Notifier = {
+  async sendActivationCode(email: string, activationCode: string) {
+    LOG.info(`Activation code for ${email}: ${activationCode}`);
+  }
+}
+
+export class SmtpNotifier implements Notifier {
   private readonly transporter: Transporter<SMTPTransport.SentMessageInfo>;
   private readonly from: string | Mail.Address | undefined;
   private readonly domain: string;

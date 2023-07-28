@@ -2,6 +2,8 @@
 'https://plantuml.com/component-diagram
 skinparam componentStyle rectangle
 
+title App Service with Database and Sidecar Gateway
+
 node Browser {
   database "Browser\nStorage" as bs
   component page {
@@ -30,6 +32,11 @@ cloud {
 database "App Database" {
   [DB_TABLE]
 }
+note bottom
+The database is the
+source of truth for
+the application
+end note
 
 form <--> app
 app <--> gw : JSON/HTTP/ws

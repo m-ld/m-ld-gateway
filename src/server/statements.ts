@@ -1,8 +1,8 @@
-import type { AccountOwnedId } from '../lib/index.js';
 import type { Subject } from '@m-ld/m-ld';
+import { Subdomain } from '../data/Subdomain.js';
 
-export const accountHasSubdomain = (tsId: AccountOwnedId): Subject => ({
-  '@id': tsId.account, subdomain: { '@id': tsId.toIri() }
+export const accountHasSubdomain = (sd: Subdomain): Subject => ({
+  '@id': sd.account, subdomain: sd.toJSON()
 });
 
 export const userIsAdmin = (user: string, account: string): Subject => ({

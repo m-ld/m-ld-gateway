@@ -1,16 +1,16 @@
 import { AccountOwnedId } from './AccountOwnedId.js';
 import { domainRelativeIri } from './util.js';
 import { MeldConfig, Reference } from '@m-ld/m-ld';
-import isFQDN from 'validator/lib/isFQDN.js';
 import * as dns from 'dns/promises';
 import { AuthKeyConfig } from './AuthKey.js';
+import { isFQDN } from './validate.js';
 
 /**
- * The basic config used by both CLI and gateway
+ * The basic config used by both clients (using this lib) and servers
  */
 export interface BaseGatewayConfig extends MeldConfig, AuthKeyConfig {
   /**
-   * Gateway identifier, may be a domain name or a URL
+   * Public Gateway address, may be a domain name or a URL
    * @see resolveGateway
    */
   gateway: string | URL;
@@ -19,7 +19,6 @@ export interface BaseGatewayConfig extends MeldConfig, AuthKeyConfig {
   /** Allow any other keys for config */
   [key: string]: any;
 }
-
 
 /**
  * Utility base class for things that represent a Gateway, may be a client proxy
@@ -34,7 +33,7 @@ export class BaseGateway {
     return AccountOwnedId.fromReference(tsRef, this.domainName);
   }
 
-  ownedId(account: string, name: string) {
+  ownedId({ account, name }: { account: string, name: string }) {
     return new AccountOwnedId({
       gateway: this.domainName, account, name
     });
@@ -49,23 +48,27 @@ export class BaseGateway {
  *
  */
 export function resolveGateway(
-  address: string
-): { root: URL | Promise<URL>, domainName: string } {
-  if (isFQDN(address)) {
-    return { root: new URL(`https://${address}/`), domainName: address };
+  address: string | URL
+): URL | Promise<URL> {
+  if (address instanceof URL) {
+    return address;
+  } else if (isFQDN(address)) {
+    return new URL(`https://${address}/`);
   } else {
     const url = new URL('/', address);
     const domainName = url.hostname;
     if (domainName.endsWith('.local')) {
-      return {
-        root: dns.lookup(domainName).then(a => {
-          url.hostname = a.address;
-          return url;
-        }),
-        domainName
-      };
+      return dns.lookup(domainName).then(a => {
+        url.hostname = a.address;
+        return url;
+      });
     } else {
-      return { root: url, domainName };
+      return url;
     }
   }
+}
+
+export function resolveDomain(gateway: BaseGatewayConfig['gateway']) {
+  return typeof gateway == 'string' && isFQDN(gateway) ?
+    gateway : new URL(gateway).hostname;
 }

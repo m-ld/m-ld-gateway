@@ -1,15 +1,15 @@
 import { clone as meldClone, uuid } from '@m-ld/m-ld';
 import { MemoryLevel } from 'memory-level';
 import { DeadRemotes } from './fixtures.js';
-import { AccountOwnedId, AuthKey, AuthKeyStore, gatewayContext, UserKey } from '../src';
+import { AccountOwnedId, AuthKey, gatewayContext, KeyStore, UserKey } from '../src/index.js';
 import { Account } from '../src/server/index.js';
 import { mock, MockProxy } from 'jest-mock-extended';
-import { UserKeyConfig } from '../src/data/UserKey';
-import { AccountContext } from '../src/server/Account';
+import { UserKeyConfig } from '../src/data/UserKey.js';
+import { AccountContext } from '../src/server/Account.js';
 
 describe('Gateway account', () => {
   let gateway: MockProxy<AccountContext>;
-  let keyStore: MockProxy<AuthKeyStore>;
+  let keyStore: MockProxy<KeyStore>;
   let userKey: UserKey;
 
   beforeAll(() => {
@@ -31,7 +31,7 @@ describe('Gateway account', () => {
     };
     // noinspection JSCheckFunctionSignatures
     const domain = await meldClone(new MemoryLevel(), DeadRemotes, config);
-    keyStore = mock<AuthKeyStore>();
+    keyStore = mock<KeyStore>();
     gateway = Object.assign(mock<AccountContext>(), {
       domainName: 'ex.org', keyStore, domain
     });
@@ -66,7 +66,9 @@ describe('Gateway account', () => {
     keyStore.mintKey.mockImplementation(name => Promise.resolve({
       key: AuthKey.fromString('appid.keyid:secret'), name, revoked: false
     }));
-    const keyConfig = <UserKeyConfig>await acc.generateKey('test@ex.org');
+    const keyConfig = <UserKeyConfig>await acc.generateKey({
+      email: 'test@ex.org', type: 'rsa'
+    });
     expect(gateway.keyStore.mintKey).toBeCalledWith('test@ex.org');
     expect(acc.emails).toEqual(new Set(['test@ex.org']));
     expect(acc.keyids).toEqual(new Set(['keyid']));
@@ -80,14 +82,8 @@ describe('Gateway account', () => {
     await expect(gateway.domain.get('.keyid')).resolves.toEqual({
       '@id': '.keyid',
       '@type': 'UserKey',
-      public: {
-        '@type': 'http://www.w3.org/2001/XMLSchema#base64Binary',
-        '@value': keyConfig.key.public
-      },
-      private: {
-        '@type': 'http://www.w3.org/2001/XMLSchema#base64Binary',
-        '@value': keyConfig.key.private
-      },
+      public: Buffer.from(keyConfig.key.public, 'base64'),
+      private: Buffer.from(keyConfig.key.private!, 'base64'),
       revoked: false
     });
   });

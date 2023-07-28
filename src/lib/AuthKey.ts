@@ -8,6 +8,8 @@ export interface AuthKeyConfig {
  * TODO: Better factoring of Key, AuthKey, AuthKeyDetail and UserKey
  */
 export interface Key {
+  /** Key identity */
+  readonly keyid: string;
   /**
    * @returns {boolean} `false` if the auth key does not correspond to this key
    */
@@ -58,9 +60,9 @@ export class AuthKey implements Key {
 /**
  * Full details of an authorisation key
  */
-export interface AuthKeyDetail {
-  /** The complete key including secret */
-  key: AuthKey;
+export interface KeyDetail<K extends Key = Key> {
+  /** The comparable key */
+  key: K;
   /** Account name */
   name: string;
   /** The revocation status */
@@ -72,13 +74,13 @@ export type GetAuthorisedTsIds = () => Promise<AccountOwnedId[]>;
 /**
  * A persistent store of keys
  */
-export interface AuthKeyStore {
+export interface KeyStore {
   /**
    * Mint a new authorisation key with the given friendly name.
    * @param name Friendly name for reference
    * @returns the key details
    */
-  mintKey(name: string): Promise<AuthKeyDetail>;
+  mintKey(name: string): Promise<KeyDetail<AuthKey>>;
   /**
    * Ping the given authorisation keyid. This operation checks that the key
    * exists, and may update its privileges; it returns the key details.
@@ -90,5 +92,5 @@ export interface AuthKeyStore {
   pingKey(
     keyid: string,
     getAuthorisedTsIds?: GetAuthorisedTsIds
-  ): Promise<AuthKeyDetail | undefined>;
+  ): Promise<KeyDetail | undefined>;
 }
