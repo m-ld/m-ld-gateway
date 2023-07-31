@@ -3,7 +3,7 @@ import { IoRemotesService } from '@m-ld/m-ld/ext/socket.io-server';
 import { JwtAuthorization, KeyAuthorization } from '../server/Authorization.js';
 import { AccountOwnedId, as, asUuid, validate } from '../lib/index.js';
 import {
-  BadRequestError, ForbiddenError, InternalServerError, toHttpError
+  BadRequestError, ForbiddenError, InternalServerError, NotFoundError, toHttpError
 } from '../http/errors.js';
 import LOG from 'loglevel';
 import { Account, Gateway } from '../server/index.js';
@@ -43,17 +43,24 @@ export class IoService extends IoRemotesService {
           validate(sdId.name, asUuid); // Anonymous messaging requires UUID subdomain
           if (!remotesAuth.includes('anon'))
             return next(new ForbiddenError('Anonymous messaging unavailable'));
-        } else if (user && key) {
-          // key authentication is the default if nothing else is specified
-          if (remotesAuth.length && !remotesAuth.includes('key'))
-            return next(new ForbiddenError('Key-authenticated messaging unavailable'));
-          await new KeyAuthorization(user, key).verifyUser(gateway, access);
-        } else if (jwt) {
-          if (!remotesAuth.includes('jwt'))
-            return next(new ForbiddenError('JWT-authenticated messaging unavailable'));
-          await new JwtAuthorization(jwt).verifyUser(gateway, access);
         } else {
-          return next(new ForbiddenError('Unrecognised authentication'));
+          if (user && key) {
+            // key authentication is the default if nothing else is specified
+            if (remotesAuth.length && !remotesAuth.includes('key'))
+              return next(new ForbiddenError('Key-authenticated messaging unavailable'));
+            await new KeyAuthorization(user, key).verifyUser(gateway, access);
+          } else if (jwt) {
+            if (!remotesAuth.includes('jwt'))
+              return next(new ForbiddenError('JWT-authenticated messaging unavailable'));
+            await new JwtAuthorization(jwt).verifyUser(gateway, access);
+          } else {
+            return next(new ForbiddenError('Unrecognised authentication'));
+          }
+          // If subdomain is named, ensure it's in the cache and live
+          const sdc = await gateway.getSubdomain(sdId);
+          if (sdc == null)
+            return next(new NotFoundError);
+          await sdc.clone.status.becomes({ online: true });
         }
 
         LOG.debug('IO authorised for', user || 'anonymous', 'in', domainName);

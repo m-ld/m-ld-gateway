@@ -41,6 +41,7 @@ export class SubdomainClone extends Subdomain {
   private readonly queueStore: AbstractSublevel<BackendLevel, unknown, string, any>;
   private _state: CloneState;
   private events = new EventEmitter;
+  private _closing = false;
 
   constructor(
     spec: SubdomainSpec,
@@ -153,7 +154,8 @@ export class SubdomainClone extends Subdomain {
       else
         this._clone.write(state =>
           this.doAndStayLocked({ state, lock: 'write' },
-            () => doWrite(state))).catch(reject);
+            () => doWrite(state))
+        ).catch(reject);
     });
   }
 
@@ -166,7 +168,10 @@ export class SubdomainClone extends Subdomain {
     this.events.emit('lockRelease');
   }
 
-  close() {
-    return this._clone.close();
+  async close() {
+    if (!this._closing) {
+      this._closing = true;
+      await this._clone.close();
+    }
   }
 }

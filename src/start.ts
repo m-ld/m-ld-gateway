@@ -1,4 +1,4 @@
-import { Gateway, GatewayConfig } from './server/index.js';
+import { Gateway, GatewayConfig, SubdomainCache } from './server/index.js';
 import LOG from 'loglevel';
 import { setupGatewayHttp } from './http/index.js';
 import gracefulShutdown from 'http-graceful-shutdown';
@@ -52,6 +52,7 @@ import { fileURLToPath } from 'url';
       port: as.number().default(3000),
       host: as.string().optional()
     }).default(3000),
+    subdomainCacheSize: as.number().optional(),
     logLevel: asLogLevel.default('INFO')
   }).unknown());
   LOG.setLevel(config.logLevel ?? 'INFO');
@@ -69,7 +70,8 @@ import { fileURLToPath } from 'url';
     cloneFactory = new IoCloneFactory();
   }
 
-  const gateway = new Gateway(env, config, cloneFactory, keyStore);
+  const subdomainCache = new SubdomainCache(config);
+  const gateway = new Gateway(env, config, cloneFactory, keyStore, subdomainCache);
   const server = setupGatewayHttp({
     gateway,
     notifier: config.smtp != null ? new SmtpNotifier(config) : logNotifier,

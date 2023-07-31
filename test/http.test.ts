@@ -3,7 +3,7 @@
 import { AccountOwnedId, AuthKey, DomainKeyStore, gatewayContext, UserKey } from '../src/index.js';
 import { Describe, MeldClone } from '@m-ld/m-ld';
 import { parseNdJson, TestCloneFactory, testCloneFactory, TestEnv } from './fixtures.js';
-import { Account, Gateway, Notifier } from '../src/server/index.js';
+import { Account, Gateway, Notifier, SubdomainCache } from '../src/server/index.js';
 import { setupGatewayHttp } from '../src/http/index.js';
 import request from 'supertest';
 import { mock, MockProxy } from 'jest-mock-extended';
@@ -24,13 +24,20 @@ describe('Gateway HTTP API', () => {
     cloneFactory = testCloneFactory();
     const authKey = AuthKey.fromString('app.rootid:secret');
     const machineKey = UserKey.generate(authKey);
-    gateway = new Gateway(env, {
+    const config = {
       '@id': 'test',
       '@domain': 'ex.org',
       genesis: true,
       gateway: 'ex.org',
       ...machineKey.toConfig(authKey)
-    }, cloneFactory, new DomainKeyStore('app'));
+    };
+    gateway = new Gateway(
+      env,
+      config,
+      cloneFactory,
+      new DomainKeyStore('app'),
+      new SubdomainCache(config)
+    );
     await gateway.initialise();
     notifier = mock<Notifier>();
     liquid = mock<Liquid>();

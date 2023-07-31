@@ -1,6 +1,6 @@
 import { clone as meldClone, MeldClone } from '@m-ld/m-ld';
 import { MemoryLevel } from 'memory-level';
-import { Account, Gateway } from '../src/server/index.js';
+import { Account, Gateway, SubdomainCache } from '../src/server/index.js';
 import {
   AuthKey, BackendLevel, CloneFactory, gatewayContext, KeyStore, UserKey
 } from '../src/index.js';
@@ -31,14 +31,21 @@ describe('Gateway', () => {
     });
     keyStore = mock<KeyStore>();
     const authKey = AuthKey.fromString('app.id:secret');
-    gateway = new Gateway(env, {
+    const config = {
       '@id': 'test',
       '@domain': 'ex.org',
       genesis: true,
       gateway: 'ex.org',
       ...UserKey.generate(authKey).toConfig(authKey),
       tls: true
-    }, cloneFactory, keyStore);
+    };
+    gateway = new Gateway(
+      env,
+      config,
+      cloneFactory,
+      keyStore,
+      new SubdomainCache(config)
+    );
     await gateway.initialise();
   });
 
@@ -125,11 +132,16 @@ describe('Gateway', () => {
         subdomain: { '@id': 'test/sd1' }
       });
       expect(existsSync(join(env.tmpDir.name, 'data', 'domain', 'test', 'sd1')));
-      // Expect subdomain clone to contain user principal for signing
+      // Expect subdomain clone to exist and contain user principal for signing
       const sdc = (await gateway.getSubdomain(gateway.ownedId(sd)))!;
       await expect(sdc.state.get('http://ex.org/test')).resolves.toEqual({
         '@id': 'http://ex.org/test', '@type': 'Account', key: { '@id': '.keyid' }
       });
+    });
+
+    test('does not get a domain that does not exist', async () => {
+      const id = gateway.ownedId({ account: 'test', name: 'garbage' });
+      await expect(gateway.getSubdomain(id)).resolves.toBeUndefined();
     });
 
     test('clones a new subdomain, with signatures', async () => {
@@ -143,8 +155,11 @@ describe('Gateway', () => {
       });
       // Doing another write awaits all follow handlers
       await gateway.domain.write({});
-      // The gateway should attempt to clone the subdomain.
+      const id = gateway.ownedId({ account: 'test', name: 'sd1' });
+      // The gateway should attempt to clone the subdomain in the get.
       // (It will fail due to dead remotes, but we don't care.)
+      cloneFactory.clone.mockResolvedValueOnce([mock<MeldClone>(), mock<BackendLevel>()])
+      await expect(gateway.getSubdomain(id)).rejects.toThrow();
       expect(cloneFactory.clone.mock.lastCall).toMatchObject([
         {
           '@id': expect.stringMatching(/\w+/),
