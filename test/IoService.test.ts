@@ -1,5 +1,5 @@
 import { AuthKey, DomainKeyStore, Env, IoCloneFactory, IoService, UserKey } from '../src/index.js';
-import { Gateway } from '../src/server/index.js';
+import { Account, Gateway, GatewayConfig, SubdomainCache } from '../src/server/index.js';
 import { createServer, Server } from 'http';
 import { TestEnv } from './fixtures.js';
 import { clone, MeldConfig, uuid } from '@m-ld/m-ld';
@@ -13,6 +13,7 @@ describe('Socket.io service', () => {
   let env: TestEnv;
   let gateway: Gateway;
   let serverUrl: string;
+  let subdomainCache: SubdomainCache;
 
   beforeEach(async () => {
     env = new TestEnv();
@@ -24,16 +25,24 @@ describe('Socket.io service', () => {
     const cloneFactory = new IoCloneFactory;
     const rootKey = AuthKey.fromString('app.rootid:secret');
     const machineKey = UserKey.generate(rootKey);
-    gateway = new Gateway(env, {
+    const config: GatewayConfig = {
       '@id': 'test',
       '@domain': 'ex.org',
       genesis: true,
       gateway: serverUrl,
       ...machineKey.toConfig(rootKey),
       logLevel: 'debug'
-    }, cloneFactory, new DomainKeyStore('app'));
+    };
+    subdomainCache = new SubdomainCache(config);
+    gateway = new Gateway(
+      env,
+      config,
+      cloneFactory,
+      new DomainKeyStore('app'),
+      subdomainCache
+    );
     new IoService(gateway, server);
-    await cloneFactory.initialise(serverUrl);
+    cloneFactory.initialise(serverUrl);
     await gateway.initialise();
   });
 
@@ -66,49 +75,64 @@ describe('Socket.io service', () => {
     await clientCloneOfGwDomain.close();
   });
 
-  test('cannot connect to named subdomain anonymously', async () => {
-    const acc = await gateway.account('hanna-barbera', true);
-    const { auth: { key } } = await acc.generateKey({});
-    const user = acc.name;
-    const { keyid } = AuthKey.fromString(key);
-    const subdomain = { account: user, name: 'flintstones' };
-    const clientConfig = Env.mergeConfig<MeldConfig>(
-      await gateway.subdomainConfig(subdomain, 'any', { acc, keyid }),
-      { '@id': uuid(), io: { opts: false } } // Remove auth placeholders
-    );
-    await expect(clone(new MemoryLevel, IoRemotes, clientConfig)).rejects.toThrow();
-  });
+  describe('with account', () => {
+    let acc: Account;
+    let key: AuthKey;
 
-  test('can connect to subdomain with user account key', async () => {
-    const acc = await gateway.account('hanna-barbera', true);
-    const user = acc.name;
-    const { auth: { key } } = await acc.generateKey({});
-    const { keyid } = AuthKey.fromString(key);
-    const subdomain = { account: user, name: 'flintstones' };
-    const config = await gateway.subdomainConfig(subdomain, 'any', { acc, keyid });
-    const gwClone = (await gateway.getSubdomain(gateway.ownedId(subdomain)))!;
-    await gwClone.write({ '@id': 'fred', name: 'Fred' });
-    await gwClone.unlock();
-    // Add id and user credentials into the generated config
-    const clientConfig = Env.mergeConfig<MeldConfig>(config, {
-      '@id': uuid(), io: { opts: { auth: { key, user } } }
+    beforeEach(async () => {
+      acc = await gateway.account('hanna-barbera', true);
+      const { auth: { key: keyString } } = await acc.generateKey({});
+      key = AuthKey.fromString(keyString);
     });
-    const clientClone = await clone(new MemoryLevel, IoRemotes, clientConfig);
-    await expect(clientClone.get('fred')).resolves.toBeDefined();
-    await clientClone.close();
-  });
 
-  test.todo('can connect to subdomain with user-signed JWT');
+    test('can connect to unknown UUID subdomain anonymously', async () => {
+      await acc.update({ '@insert': { remotesAuth: 'anon' } });
+      const config: MeldIoConfig = {
+        '@id': uuid(), '@domain': `${uuid()}.hanna-barbera.ex.org`,
+        genesis: true, io: { uri: serverUrl }
+      };
+      const clientClone = await clone(new MemoryLevel, IoRemotes, config);
+      await expect(clientClone.status.becomes({ online: true })).resolves.toBeDefined();
+      await clientClone.close();
+    });
 
-  test('can connect to unknown UUID subdomain anonymously', async () => {
-    const acc = await gateway.account('hanna-barbera', true);
-    await acc.update({ '@insert': { remotesAuth: 'anon' } });
-    const config: MeldIoConfig = {
-      '@id': uuid(), '@domain': `${uuid()}.hanna-barbera.ex.org`,
-      genesis: true, io: { uri: serverUrl }
-    };
-    const clientClone = await clone(new MemoryLevel, IoRemotes, config);
-    await expect(clientClone.status.becomes({ online: true })).resolves.toBeDefined();
-    await clientClone.close();
+    test('cannot connect to named subdomain anonymously', async () => {
+      const subdomain = { account: acc.name, name: 'flintstones' };
+      const clientConfig = Env.mergeConfig<MeldConfig>(
+        await gateway.subdomainConfig(subdomain, 'any', { acc, keyid: key.keyid }),
+        { '@id': uuid(), io: { opts: false } } // Remove auth placeholders
+      );
+      await expect(clone(new MemoryLevel, IoRemotes, clientConfig)).rejects.toThrow();
+    });
+
+    test('can connect to subdomain with user account key', async () => {
+      const subdomain = { account: acc.name, name: 'flintstones' };
+      const config = await gateway.subdomainConfig(subdomain, 'any', { acc, keyid: key.keyid });
+      const gwClone = (await gateway.getSubdomain(gateway.ownedId(subdomain)))!;
+      await gwClone.write({ '@id': 'fred', name: 'Fred' });
+      await gwClone.unlock();
+      // Add id and user credentials into the generated config
+      const clientConfig = Env.mergeConfig<MeldConfig>(config, {
+        '@id': uuid(), io: { opts: { auth: { key: key.toString(), user: acc.name } } }
+      });
+      const clientClone = await clone(new MemoryLevel, IoRemotes, clientConfig);
+      await expect(clientClone.get('fred')).resolves.toBeDefined();
+      await clientClone.close();
+    });
+
+    test.todo('can connect to subdomain with user-signed JWT');
+
+    test('can connect to a domain cleared from the cache', async () => {
+      const subdomain = { account: acc.name, name: 'flintstones' };
+      const config = await gateway.subdomainConfig(subdomain, 'any', { acc, keyid: key.keyid });
+      await subdomainCache.clear();
+      expect(subdomainCache.has(gateway.ownedId(subdomain).toDomain())).toBe(false);
+      const clientConfig = Env.mergeConfig<MeldConfig>(config, {
+        '@id': uuid(), io: { opts: { auth: { key: key.toString(), user: acc.name } } }
+      });
+      const clientClone = await clone(new MemoryLevel, IoRemotes, clientConfig);
+      expect(clientClone).toBeDefined();
+      await clientClone.close();
+    });
   });
 });
