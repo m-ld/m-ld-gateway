@@ -1,0 +1,4 @@
+POST {{origin}}/api/v1/user/{{account}}/key
+Authorization: Bearer {{jwe}}
+X-Activation-Code: {{activation}}
+Accept: application/json

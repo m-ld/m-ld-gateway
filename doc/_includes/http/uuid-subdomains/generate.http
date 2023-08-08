@@ -1,0 +1,2 @@
+POST {{origin}}/api/v1/domain/{{account}}
+Accept: application/json

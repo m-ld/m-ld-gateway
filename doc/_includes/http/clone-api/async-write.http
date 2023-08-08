@@ -1,0 +1,8 @@
+POST {{origin}}/api/v1/domain/{{account}}/{{subdomain}}/state
+Authorization: Basic {{digest}}
+Content-Type: application/json
+
+{
+  "@id": "Client-0005",
+  "company_name": "The Flintstones"
+}

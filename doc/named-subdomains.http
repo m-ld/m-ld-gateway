@@ -1,7 +1,0 @@
-###
-
-PUT {{gateway}}/api/v1/domain/{{account}}/{{subdomain}}
-Authorization: Basic {{account}} {{accountKey}}
-Accept: application/json
-
-###

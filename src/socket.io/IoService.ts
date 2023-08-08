@@ -19,6 +19,8 @@ const asHandshakeQuery = as.object({
 }).unknown();
 
 export class IoService extends IoRemotesService {
+  private resolveLive: Map<string, () => void> = new Map;
+
   constructor(gateway: Gateway, server: Server) {
     const io = new SocketIoServer(server, {
       cors: { origin: '*', methods: ['GET', 'POST'] }
@@ -56,11 +58,16 @@ export class IoService extends IoRemotesService {
           } else {
             return next(new ForbiddenError('Unrecognised authentication'));
           }
-          // If subdomain is named, ensure it's in the cache and live
-          const sdc = await gateway.getSubdomain(sdId);
-          if (sdc == null)
-            return next(new NotFoundError);
-          await sdc.clone.status.becomes({ online: true });
+          // Ensure named subdomain is in the cache and live
+          if (!gateway.hasClonedSubdomain(sdId)) {
+            const [sdc] = await Promise.all([
+              gateway.getSubdomain(sdId),
+              new Promise<void>(resolve =>
+                this.resolveLive.set(sdId.toDomain(), resolve))
+            ]);
+            if (sdc == null)
+              return next(new NotFoundError);
+          }
         }
 
         LOG.debug('IO authorised for', user || 'anonymous', 'in', domainName);
@@ -72,5 +79,14 @@ export class IoService extends IoRemotesService {
         return next(httpError);
       }
     });
+  }
+
+  protected async getPresent(domain: string): Promise<string[]> {
+    const present = await super.getPresent(domain);
+    if (present.length > 0) {
+      this.resolveLive.get(domain)?.();
+      this.resolveLive.delete(domain);
+    }
+    return present;
   }
 }

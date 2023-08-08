@@ -1,0 +1,5 @@
+GET {{origin}}/api/v1/domain/{{account}}/{{subdomain}}/state
+Authorization: Basic {{digest}}
+Accept: application/json
+[QueryStringParams]
+q: {{read}} # to be URL-encoded as the query string

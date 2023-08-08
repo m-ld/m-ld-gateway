@@ -1,0 +1,5 @@
+PATCH {{origin}}/api/v1/user/{{account}}
+Authorization: Basic {{digest}}
+Content-Type: application/json
+
+{ "@insert": { "naming": "uuid" } }

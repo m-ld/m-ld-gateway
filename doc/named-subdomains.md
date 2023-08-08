@@ -12,10 +12,8 @@ To use named subdomains, you first need [an account](accounts). (If your Gateway
 
 A new domain can be created with:
 
-```bash
-curl -X PUT --location "{{ '{{ origin }}' }}/api/v1/domain/≪account name≫/≪subdomain≫" \
-    -H "Accept: application/json" \
-    --basic --user ≪account name≫:≪account key≫
+```
+{% include 'http/named-subdomains/create.http' %}
 ```
 
 This creates the domain `≪subdomain≫` in the account. Domain names must be composed only of **lowercase** letters, numbers, hyphens `-` and underscores `_`.
