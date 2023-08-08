@@ -15,30 +15,14 @@ The 'clone' (noun, not verb) API is provided for such a client to access the dat
 
 Some data can be added to the domain with:
 
-```bash
-curl -X POST --location "{{ '{{ origin }}' }}/api/v1/domain/≪account name≫/≪subdomain≫/state" \
-    -H "Content-Type: application/json" \
-    -d "{
-          \"@id\": \"Client-0005\",
-          \"company_name\": \"The Flintstones\"
-        }" \
-    --basic --user ≪account name≫:≪account key≫
+```
+{% include 'http/clone-api/async-write.http' %}
 ```
 
 Data in the domain can be queried with:
 
-```bash
-curl -X GET --location "{{ '{{ origin }}' }}/api/v1/domain/≪account name≫/≪subdomain≫/state?q=%7B%22%40describe%22%3A%22%3Fid%22%2C%22%40where%22%3A%7B%22%40id%22%3A%22%3Fid%22%7D%7D" \
-    -H "Accept: application/json" \
-    --basic --user ≪account name≫:≪account key≫
+```
+{% include 'http/clone-api/async-read.http' %}
 ```
 
-Note that the query string includes the URL-encoded json-rql query, for example the describe-all query:
-```json
-{
-  "@describe": "?id",
-  "@where": {
-    "@id": "?id"
-  }
-}
-```
+This example query describes all the subjects in the domain, which is to say, their top-level properties.

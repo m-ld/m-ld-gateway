@@ -85,7 +85,7 @@ import { fileURLToPath } from 'url';
     const { IoService } = await import('./socket.io/index.js');
     const io = new IoService(gateway, server.server);
     io.on('error', LOG.error);
-    io.on('debug', LOG.debug);
+    io.on('debug', (...args) => LOG.debug(JSON.stringify(args)));
   }
 
   server.listen(config.address, async () => {

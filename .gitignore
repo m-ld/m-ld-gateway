@@ -5,3 +5,4 @@ local/
 _site/
 *.private.env.json
 *.env
+.clinic

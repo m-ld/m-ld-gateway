@@ -1,0 +1,3 @@
+POST {{origin}}/api/v1/user/{{account}}/key
+Authorization: Basic {{rootAccount}} {{rootKey}}
+Accept: application/json

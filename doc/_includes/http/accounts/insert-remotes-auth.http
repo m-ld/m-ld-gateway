@@ -1,0 +1,6 @@
+PATCH {{origin}}/api/v1/user/{{account}}
+Authorization: Basic {{digest}}
+Accept: application/json
+Content-Type: application/json
+
+{ "@insert": { "remotesAuth": "{{remotesAuth}}" } }

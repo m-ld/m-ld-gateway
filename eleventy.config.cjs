@@ -2,6 +2,9 @@ const { default11tyConfig, packageDir } = require('@m-ld/io-web-build');
 const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight');
 const { join } = require('path');
 
+/**
+ * @param {import('@11ty/eleventy').UserConfig} eleventy
+ */
 module.exports = function (eleventy) {
   eleventy.ignores.add('doc/README.md');
   eleventy.addPlugin(syntaxHighlight);

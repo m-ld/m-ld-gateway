@@ -5,7 +5,7 @@ title: self-hosting setup
 # Hosting a Gateway
 
 ## build
-```bash
+```
 npm run build
 ```
 
@@ -32,7 +32,7 @@ The data path can be omitted, in which case a local path will be used in an OS-s
 
 For convenience these variables can be specified in a `.env` file in the working directory.
 
-```bash
+```
 npm run start -- --genesis true
 ```
 

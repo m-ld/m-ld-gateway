@@ -20,7 +20,7 @@ export class GatewayWebsite extends EndPoint<Server> {
     super(server, '', ({ useFor }) =>
       useFor('post', plugins.bodyParser()));
     this.pageVars = Promise.resolve(resolveGateway(gateway.config.gateway)).then(url => ({
-      origin: url.origin, domain: gateway.domainName
+      origin: url.origin, domain: gateway.domainName, root: gateway.rootAccountName
     }));
   }
 

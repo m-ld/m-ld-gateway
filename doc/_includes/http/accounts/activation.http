@@ -1,0 +1,5 @@
+POST {{origin}}/api/v1/user/{{account}}/activation
+Accept: application/json
+Content-Type: application/json
+
+{ "email": "{{email}}" }

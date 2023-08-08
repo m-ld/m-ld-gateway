@@ -1,0 +1,3 @@
+PUT {{origin}}/api/v1/domain/{{account}}/{{subdomain}}
+Accept: application/json
+Authorization: Basic {{digest}}
