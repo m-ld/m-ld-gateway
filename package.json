@@ -1,6 +1,6 @@
 {
   "name": "@m-ld/gateway",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "m-ld gateway for services",
   "type": "module",
   "main": "ext/index.js",
@@ -31,13 +31,13 @@
   "bugs": {
     "url": "https://github.com/m-ld/m-ld-gateway/issues"
   },
-  "homepage": "https://github.com/m-ld/m-ld-gateway#readme",
+  "homepage": "https://gw.m-ld.org/",
   "devDependencies": {
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
     "@faker-js/faker": "^8.0.2",
     "@flydotio/dockerfile": "^0.3.3",
     "@m-ld/io-web-build": "^0.2.0-0",
-    "@m-ld/m-ld-test": "^0.1.1-edge.1",
+    "@m-ld/m-ld-test": "^0.1.1-edge.3",
     "@orangeopensource/hurl": "^4.0.0",
     "@types/jest": "^29.2.4",
     "@types/node-fetch-cache": "^3.0.0",

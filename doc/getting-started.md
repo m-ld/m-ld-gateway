@@ -4,6 +4,14 @@ title: getting started
 ---
 # Getting Started
 
+The Gateway is a service to help you use [**m-ld**](https://m-ld.org/), which is a _peer-to-peer_ technology, and so it doesn't need any services! Wait... what?
+
+The trouble is, most networks – including the internet – don't have a standard way to _broadcast_ messages to a group of participants, without using a service. Also, peer-to-peer apps are susceptible to data loss if all the peer devices get dropped in the bath. The Gateway is one way to fill these gaps.
+
+There are plenty of other ways, like using a message bus or a pubsub service, or putting clones on the cloud, which can work just as well. If you're here, you're probably looking for options, and the paragraphs below might describe you. But if they don't, please do [get in touch](http://m-ld.org/hello/).
+
+---
+
 > I'm just getting started with **m-ld**. I want to try building an app, without having to deploy a messaging service.
 
 The Gateway serves free public messaging for **m-ld**! Your domains will be named like `≪uuid≫.public.{{ '{{ domain }}' }}`, and you'll need a network connection to create new domains and keep clones synchronised (although individual clones can work offline, as usual). For usage instructions see [UUID subdomains](uuid-subdomains).
@@ -28,4 +36,4 @@ Keeping a database in sync with information in **m-ld** requires a dedicated clo
 
 The best deployment approach will be to embed this local clone in your service tier, where it can be animated directly from the application logic. If an engine doesn't exist for your server platform though, you can [deploy a Gateway](self-host) in a "sidecar" arrangement with your services. The Gateway [clone API](clone-api) can be used to provide serialised state to your app, for synchronisation with the database.
 
-> 🚧 More detail will be available here soon. In the meantime, please do [get in touch](http://m-ld.org/hello/) to discuss your use-case!
+> 🚧 More detail on this option will be available here soon. In the meantime, please do [get in touch](http://m-ld.org/hello/) to discuss your use-case!

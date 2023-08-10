@@ -5,20 +5,22 @@ hide circle
 allowmixing
 
 class Gateway <<domain>> <<service>> {
-  rootAccount : UserAccount
+  rootAccount : Account
   rootKey : AuthKey
 }
 
 Gateway *-- "*" Account
 
 class Account <<abstract>> <<subject>> {
+  email : string [1..*]
+  key : UserKey [*]
   subdomain : Subdomain [*]
   naming : any | uuid [*] = any
   remotesAuth : anon | key | jwt [*] = key
 }
-note right of Account::subdomain
-  A Subdomain can only
-  appear in one Account
+note right of Account::email
+  Registered email, used
+  for account activation
 end note
 note right of Account::naming
  ""any"" naming requires an app
@@ -31,42 +33,22 @@ note right of Account::remotesAuth
   Allowed remote
   authentication methods
   for subdomain clones.
-end note
-note left of Account::remotesAuth
-  ""anon"" auth requires
-  ""uuid"" subdomains
+  ""anon"" auth only works
+  with ""uuid"" subdomains
 end note
 
 Account *-- "*" Subdomain
 
-actor User
+actor "User (account owner)" as User
 
-class UserAccount <<subject>> {
-  email : string [1..*]
-  key : UserKey [*]
-}
-note left of UserAccount::email
-  Registered email, used
-  for account activation
-end note
-UserAccount --|> Account
-User ..> UserAccount: has
+User ..> Account: has
 User ..> "*" AuthKey: has
 
-class OrganisationAccount <<subject>> {
-  vf:primaryAccountable : UserAccount [1..*]
-}
-note right of OrganisationAccount::vf:primaryAccountable
-  The account "admins"
-end note
-OrganisationAccount --|> Account
-OrganisationAccount o-- "1..*" UserAccount
-
 class Subdomain <<domain>> <<subject>> {
-  //account<sub>p</sub> : Account//
+  //account : Account//
   useSignatures : boolean
 }
-note left of Subdomain
+note top of Subdomain
   a subject in the
   Gateway domain;
   also a domain shared
@@ -90,7 +72,7 @@ class UserKey <<subject>> {
   revoked? : boolean
 }
 note right of UserKey::name
-  account<sub>u</sub>@≪gateway≫
+  account@≪gateway≫
   Not present in config
 end note
 note right of UserKey::privateKey
@@ -102,7 +84,7 @@ note right of UserKey::revoked
   Assumed ""true"" in config
 end note
 
-UserAccount "1" *-- "*" UserKey
+Account "1" *-- "*" UserKey
 
 class AuthKey <<secret>> {
   keyid : string
@@ -111,7 +93,9 @@ class AuthKey <<secret>> {
 }
 note right of AuthKey
   String-serialised "API key"
-  Usable with Basic HTTP auth
+  Usable with Basic HTTP auth.
+  ""secret"" content is not
+  known to the Gateway.
 end note
 
 @enduml

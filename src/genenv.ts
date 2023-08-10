@@ -22,11 +22,11 @@ async function ask(prompt: string, schema: as.Schema<string> = asInput): Promise
 
 (async function () {
   const gateway = await ask(
-    'Gateway domain name or URL',
+    'External hostname or origin',
     as.alt(asInput.domain(), asInput.uri())
   );
   const appId = await ask(
-    'Gateway root account',
+    'Gateway root account name',
     AccountOwnedId.asComponentId
   );
   const env = new Env('m-ld-gateway');
@@ -46,6 +46,10 @@ async function ask(prompt: string, schema: as.Schema<string> = asInput): Promise
         asInput.regex(/\d{,5}/)
       )
     },
+    dataPath: await ask(
+      `Data path (default ${env.envPaths.data})`,
+      as.string().empty('')
+    ),
     logLevel: await ask(
       'Log level (default INFO)',
       asLogLevel.empty('')

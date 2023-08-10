@@ -25,10 +25,4 @@ package "User End-Point" {
   note right: DEL /user/:user
 }
 
-package "Organisation End-Point" {
-  user ---> (create org)
-  user --> (delete org)
-  user --> (change admins)
-}
-
 @enduml

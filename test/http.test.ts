@@ -70,7 +70,10 @@ describe('Gateway HTTP API', () => {
         .expect('Transfer-Encoding', 'chunked')
         .expect(200, 'html');
       expect(liquid.renderFileToNodeStream).toBeCalledWith('index', {
-        origin: 'https://ex.org', domain: 'ex.org', root: 'app'
+        origin: 'https://ex.org',
+        domain: 'ex.org',
+        root: 'app',
+        version: expect.any(String)
       });
     });
 

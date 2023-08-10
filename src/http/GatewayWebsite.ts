@@ -6,9 +6,12 @@ import { pipeline } from 'stream/promises';
 import { MethodNotAllowedError, toHttpError } from './errors.js';
 import type { Gateway, Notifier } from '../server/index.js';
 import type { Liquid } from 'liquidjs';
+import { version } from '../lib/version.js';
+
+type PageVars = Record<string, string>;
 
 export class GatewayWebsite extends EndPoint<Server> {
-  private readonly pageVars: Promise<{ origin: string, domain: string }>;
+  private readonly pageVars: Promise<PageVars>;
   private readonly startTime = new Date();
 
   constructor(
@@ -20,7 +23,10 @@ export class GatewayWebsite extends EndPoint<Server> {
     super(server, '', ({ useFor }) =>
       useFor('post', plugins.bodyParser()));
     this.pageVars = Promise.resolve(resolveGateway(gateway.config.gateway)).then(url => ({
-      origin: url.origin, domain: gateway.domainName, root: gateway.rootAccountName
+      origin: url.origin,
+      domain: gateway.domainName,
+      root: gateway.rootAccountName,
+      version
     }));
   }
 
@@ -43,7 +49,7 @@ export class GatewayWebsite extends EndPoint<Server> {
   @post('/activate')
   async activation(req: Request, res: Response) {
     const { account, email, code, jwe } = req.body;
-    let pageVars: {};
+    const pageVars: PageVars = { account, email, version };
     try {
       if (email) {
         AccountOwnedId.checkComponentId(account);
@@ -51,20 +57,20 @@ export class GatewayWebsite extends EndPoint<Server> {
         validate(email, as.string().email());
         const { jwe, code } = await this.gateway.activation(account, email);
         await this.notifier.sendActivationCode(email, code);
-        pageVars = { account, email, jwe };
+        pageVars.jwe = jwe;
       } else {
         const { user: account, email } = this.gateway.verifyActivation(code, jwe);
         const acc = await this.gateway.account(account, true);
         const { auth: { key } } = await acc.generateKey({ email });
-        pageVars = { account, email, key };
+        pageVars.key = key;
       }
     } catch (e) {
-      pageVars = { account, email, error: toHttpError(e).toJSON() };
+      pageVars.error = toHttpError(e).toJSON();
     }
     await this.renderHtml(res, 'activate', pageVars);
   }
 
-  private async renderHtml(res: Response, file: string, pageVars: {}) {
+  private async renderHtml(res: Response, file: string, pageVars: PageVars) {
     // This will throw ENOENT if not found
     const html = await this.liquid.renderFileToNodeStream(file, pageVars);
     await pipeline(html, this.setHtmlHeaders(res));
