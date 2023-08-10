@@ -41,7 +41,7 @@ The **root API access key** will be of the form `rootacc.keyid:secret`, where `r
 
 (Note the components are never used separately; once created, you always use the whole key, e.g. for HTTP Basic Authorization.)
 
-The **root public key** is an RSA public key of type SPKI and encoded with DER and base64 (note: not PEM). The corresponding **root private key** is of type PKCS8, encrypted with AES-256-CBC using the root API access key, and encoded with DER and base64. Note that `rsa` is the only supported **root key type* at present (and can be omitted).
+The **root public key** is an RSA public key of type SPKI and encoded with DER and base64 (note: not PEM). The corresponding **root private key** is of type PKCS8, encrypted with AES-256-CBC using the root API access key, and encoded with DER and base64. Note that `rsa` is the only supported **root key type** at present (and can be omitted).
 
 The **directory path for data** should point to a volume with capacity for the all the data managed by the Gateway. It can be omitted, in which case an OS-specific data area on the local file system will be used.
 
