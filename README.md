@@ -14,7 +14,7 @@
 <pre></pre>
 
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/m-ld/m-ld-gateway/node.js.yml?branch=main)](https://github.com/m-ld/m-ld-js/actions)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/m-ld/m-ld-gateway/node.js.yml?branch=main)](https://github.com/m-ld/m-ld-gateway/actions)
 [![Gitter](https://img.shields.io/gitter/room/m-ld/community)](https://gitter.im/m-ld/community)
 [![GitHub Discussions](https://img.shields.io/github/discussions/m-ld/m-ld-spec)](https://github.com/m-ld/m-ld-spec/discussions)
 

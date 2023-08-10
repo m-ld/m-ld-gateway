@@ -7,7 +7,7 @@
 # Adjust NODE_VERSION as desired
 ARG NODE_VERSION=16.19.0
 FROM node:${NODE_VERSION}-slim as base
-ARG GW_VERSION=0.1.0
+ARG GW_VERSION
 
 LABEL fly_launch_runtime="Node.js"
 

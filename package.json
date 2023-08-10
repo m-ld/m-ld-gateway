@@ -17,8 +17,8 @@
     "dev": "tsc --watch",
     "doc-dev": "npx @11ty/eleventy --serve",
     "test": "node --experimental-vm-modules node_modules/.bin/jest --silent",
-    "predocker": "cp package.json package-lock.json deploy && cd deploy && npm pack ..",
-    "deploy-fly": "npm run predocker && cd deploy && fly deploy"
+    "predocker": "npm run build && cp package.json package-lock.json deploy && cd deploy && npm pack ..",
+    "deploy-fly": "npm run predocker && cd deploy && fly deploy --build-arg GW_VERSION=$(npm run ver -s)"
   },
   "repository": {
     "type": "git",
