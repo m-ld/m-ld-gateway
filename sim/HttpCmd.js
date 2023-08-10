@@ -3,12 +3,18 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const specPath = fileURLToPath(new URL('../doc/_includes/http', import.meta.url));
+/**
+ * Gets the path to a documentation HTTP file
+ */
 export const spec = id => path.join(specPath, ...id.split('/')) + '.http';
 
 // Not using npx to run hurl because it tries to debug
 const hurlPath = fileURLToPath(new URL(
   '../node_modules/@orangeopensource/hurl/bin/hurl', import.meta.url));
 
+/**
+ * Uses [hurl](https://hurl.dev/) to run .http files and gather the output
+ */
 export default class HttpCmd extends Cmd {
   constructor(origin) {
     super();

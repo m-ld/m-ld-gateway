@@ -5,6 +5,12 @@ import { fileURLToPath } from 'url';
 
 const startPath = fileURLToPath(new URL('../ext/start.js', import.meta.url));
 
+/**
+ * Runs the gateway as a child process.
+ *
+ * Optionally allows the use of [Clinic.js](https://clinicjs.org/) to profile
+ * the process.
+ */
 export default class GwCmd extends Cmd {
   /**
    * @param {string} name

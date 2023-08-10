@@ -12,7 +12,7 @@ import { SwapiUser } from './SwappUser.js';
 Cmd.wd = fileURLToPath(new URL('.', import.meta.url));
 
 ////////////////////////////////////////////////////////////////////////////////
-// Start the gateway
+// Start the gateway in a child process
 const gw = new GwCmd({ clinic: false, logLevel: 'info' });
 await gw.start();
 const origin = await gw.findByPrefix('listening at ');

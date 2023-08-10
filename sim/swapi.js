@@ -18,6 +18,10 @@ export const context = {
   characters: { '@type': '@id' },
 };
 
+/**
+ * Fetches an observable stream of resources of a particular type from the [Star
+ * Wars API](https://swapi.dev/) (with aggressive caching, see `fetch` above).
+ */
 export function resource(type) {
   return from(fetch(`https://swapi.dev/api/${type}/`)
     .then(res => res.json())
