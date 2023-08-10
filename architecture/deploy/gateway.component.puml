@@ -1,0 +1,43 @@
+@startuml
+'https://plantuml.com/component-diagram
+skinparam componentStyle rectangle
+
+title m-ld Gateway Components
+
+node Node.js {
+  component "Gateway" <<service>> as gw {
+    component "Gateway administration" <<m-ld clone>> as gwClone
+    note top of gwClone
+      Contains accounts,
+      user keys and list
+      of named subdomains
+    end note
+    component "remotes service" as remotes
+    collections "Backup clones" <<m-ld clone>> as bkClones
+    note top of bkClones
+      Backup clones of
+      named subdomains
+    end note
+  }
+}
+interface "Administration API" <<http>> as adminApi
+interface "Clone API" <<http>> as cloneApi
+gwClone -- adminApi
+bkClones -- cloneApi
+
+component "Gateway Website" as gwWeb
+gw --> gwWeb : serves
+
+database volume
+
+gwClone --> volume : persist
+bkClones --> volume : persist
+
+collections (Application\nm-ld Domains) as apDomains #line.dashed
+collections "App clones" <<m-ld clone>> as apClones
+
+bkClones .. apDomains
+apDomains .. apClones
+bkClones <-> remotes : <<socket.io>>\npubsub
+apClones <-> remotes : <<socket.io>>\npubsub
+@enduml

@@ -29,4 +29,4 @@ It can be used as:
 - 📠 A **"sidecar" container** of **m-ld** domains for server-based environments which not have a native **m-ld** engine.
 - 🧱 A building block for **custom gateway services** dedicated to specific apps.
 
-[Let's get started.](doc/getting-started.md)
+[Let's get started.](https://gw.m-ld.org/)

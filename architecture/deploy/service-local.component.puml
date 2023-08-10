@@ -2,7 +2,7 @@
 'https://plantuml.com/component-diagram
 skinparam componentStyle rectangle
 
-title App Service with Database and Sidecar Gateway
+title Web App with Database and Sidecar Gateway
 
 node Browser {
   database "Browser\nStorage" as bs
@@ -20,14 +20,11 @@ node "App Service Tier" {
   }
   component "m-ld Gateway" as gw #lightgreen {
     component "m-ld clone" as gwClone #lightyellow
+    component "m-ld remotes service" as remotes #lightyellow
   }
 }
 
 database volume #lightyellow
-
-cloud {
-  component "m-ld remotes service" as remotes #lightyellow
-}
 
 database "App Database" {
   [DB_TABLE]
@@ -39,7 +36,7 @@ the application
 end note
 
 form <--> app
-app <--> gw : JSON/HTTP/ws
+app <--> gw : JSON/HTTP
 app <-> DB_TABLE
 jsClone <--> remotes : pubsub
 gwClone <--> volume : persist
