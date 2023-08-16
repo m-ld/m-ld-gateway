@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi, { ValidationOptions } from 'joi';
 
 export const asReference = Joi.object({
   '@id': Joi.string().required()
@@ -12,7 +12,7 @@ export const asDateValue = Joi.object({
 export const asUuid = Joi.string().regex(/^c[a-z0-9]{24}$/);
 
 export function isFQDN(address: string) {
-  return !Joi.string().domain().validate(address).error;
+  return matches(address, Joi.string().domain());
 }
 
 export const asLogLevel = Joi.valid(
@@ -25,5 +25,13 @@ export const asLogLevel = Joi.valid(
 );
 
 export const validate = Joi.attempt;
+
+export function matches(
+  value: unknown,
+  schema: Joi.StringSchema,
+  opts?: ValidationOptions
+) {
+  return !schema.validate(value, opts).error;
+}
 
 export { Joi as as };

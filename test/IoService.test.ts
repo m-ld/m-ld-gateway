@@ -99,7 +99,7 @@ describe('Socket.io service', () => {
     test('cannot connect to named subdomain anonymously', async () => {
       const subdomain = { account: acc.name, name: 'flintstones' };
       const clientConfig = Env.mergeConfig<MeldConfig>(
-        await gateway.subdomainConfig(subdomain, 'any', { acc, keyid: key.keyid }),
+        await gateway.ensureNamedSubdomain(subdomain, { acc, keyid: key.keyid }),
         { '@id': uuid(), io: { opts: false } } // Remove auth placeholders
       );
       await expect(clone(new MemoryLevel, IoRemotes, clientConfig)).rejects.toThrow();
@@ -107,7 +107,7 @@ describe('Socket.io service', () => {
 
     test('can connect to subdomain with user account key', async () => {
       const subdomain = { account: acc.name, name: 'flintstones' };
-      const config = await gateway.subdomainConfig(subdomain, 'any', { acc, keyid: key.keyid });
+      const config = await gateway.ensureNamedSubdomain(subdomain, { acc, keyid: key.keyid });
       const gwClone = (await gateway.getSubdomain(gateway.ownedId(subdomain)))!;
       await gwClone.write({ '@id': 'fred', name: 'Fred' });
       await gwClone.unlock();
@@ -124,7 +124,7 @@ describe('Socket.io service', () => {
 
     test('can connect to a domain cleared from the cache', async () => {
       const subdomain = { account: acc.name, name: 'flintstones' };
-      const config = await gateway.subdomainConfig(subdomain, 'any', { acc, keyid: key.keyid });
+      const config = await gateway.ensureNamedSubdomain(subdomain, { acc, keyid: key.keyid });
       await subdomainCache.clear();
       expect(subdomainCache.has(gateway.ownedId(subdomain).toDomain())).toBe(false);
       const clientConfig = Env.mergeConfig<MeldConfig>(config, {

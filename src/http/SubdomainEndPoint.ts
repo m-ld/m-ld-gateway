@@ -45,9 +45,9 @@ export class SubdomainEndPoint extends EndPoint<ApiEndPoint> {
       useSignatures: as.boolean().optional()
     }));
     const { account, name } = req.get('id');
-    res.json(await this.gateway.subdomainConfig({
+    res.json(await this.gateway.ensureNamedSubdomain({
       useSignatures, account, name
-    }, 'any', req.get('who')));
+    }, req.get('who')));
   }
 
   @post('/poll')

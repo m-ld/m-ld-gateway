@@ -1,7 +1,7 @@
 // noinspection SpellCheckingInspection
 
 import { AccountOwnedId, AuthKey, DomainKeyStore, gatewayContext, UserKey } from '../src/index.js';
-import { Describe, MeldClone } from '@m-ld/m-ld';
+import { Describe, MeldClone, uuid } from '@m-ld/m-ld';
 import { parseNdJson, TestCloneFactory, testCloneFactory, TestEnv } from './fixtures.js';
 import { Account, Gateway, Notifier, SubdomainCache } from '../src/server/index.js';
 import { setupGatewayHttp } from '../src/http/index.js';
@@ -154,6 +154,13 @@ describe('Gateway HTTP API', () => {
       });
     });
 
+    test('cannot post new uuid subdomain without config', async () => {
+      const res = await request(app)
+        .post('/api/v1/domain/test')
+        .accept('application/json');
+      expect(res.status).toBe(405);
+    });
+
     describe('with uuid subdomains', () => {
       beforeEach(async () => {
         const res = await request(app)
@@ -164,7 +171,7 @@ describe('Gateway HTTP API', () => {
         expect(res.status).toBe(204);
       });
 
-      test('can retrieve subdomain config', async () => {
+      test('can post new uuid subdomain config', async () => {
         cloneFactory.reusableConfig.mockResolvedValueOnce({ reusable: true });
         const res = await request(app)
           .post('/api/v1/domain/test')
@@ -172,9 +179,48 @@ describe('Gateway HTTP API', () => {
         expect(res.status).toBe(200);
         expect(res.body).toEqual({
           '@domain': expect.stringMatching(/^c[a-z0-9]{24}\.test\.ex\.org/),
-          genesis: true,
+          genesis: true, // Definitely new
           reusable: true
         });
+      });
+
+      test('can post given uuid subdomain config', async () => {
+        cloneFactory.reusableConfig.mockResolvedValueOnce({ reusable: true });
+        const name = uuid();
+        const res = await request(app)
+          .post('/api/v1/domain/test')
+          .accept('application/json')
+          .send({ name });
+        expect(res.status).toBe(200);
+        expect(res.body).toEqual({
+          '@domain': `${name}.test.ex.org`,
+          genesis: undefined, // Unknown whether new – app's responsibility
+          reusable: true
+        });
+      });
+
+      test('cannot post given name subdomain config without auth', async () => {
+        cloneFactory.reusableConfig.mockResolvedValueOnce({ reusable: true });
+        const res = await request(app)
+          .post('/api/v1/domain/test')
+          .accept('application/json')
+          .send({ name: 'sd1' });
+        expect(res.status).toBe(401);
+      });
+    });
+
+    test('can post new subdomain', async () => {
+      cloneFactory.reusableConfig.mockResolvedValueOnce({ reusable: true });
+      const res = await request(app)
+        .post('/api/v1/domain/test')
+        .auth('test', 'app.keyid:secret')
+        .accept('application/json')
+        .send({ name: 'sd1' });
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual({
+        '@domain': 'sd1.test.ex.org',
+        genesis: false, // Has been backed-up
+        reusable: true
       });
     });
 
@@ -197,7 +243,7 @@ describe('Gateway HTTP API', () => {
 
       beforeEach(async () => {
         sdId = gateway.ownedId({ account: 'test', name: 'sd1' });
-        await gateway.subdomainConfig(sdId, 'any', { acc, keyid: 'keyid' });
+        await gateway.ensureNamedSubdomain(sdId, { acc, keyid: 'keyid' });
         clone = cloneFactory.clones[sdId.toDomain()];
       });
 

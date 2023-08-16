@@ -2,15 +2,18 @@ import {
   MeldClone, MeldConfig, MeldReadState, MeldUpdate, propertyValue, Reference, uuid
 } from '@m-ld/m-ld';
 import {
-  AccountOwnedId, BaseGateway, BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal, KeyStore
+  AccountOwnedId, asUuid, BaseGateway, BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal,
+  KeyStore, matches
 } from '../lib/index.js';
 import { gatewayContext, Iri, UserKey } from '../data/index.js';
 import LOG from 'loglevel';
 import { access, rm, writeFile } from 'fs/promises';
 import { Subscription } from 'rxjs';
-import { BadRequestError, ConflictError, UnauthorizedError } from '../http/errors.js';
+import {
+  BadRequestError, ConflictError, NotFoundError, UnauthorizedError
+} from '../http/errors.js';
 import { GatewayConfig } from './index.js';
-import { Account, AccountContext, RemotesAuthType, SubdomainNaming } from './Account.js';
+import { Account, AccountContext } from './Account.js';
 import { SubdomainClone } from './SubdomainClone.js';
 import { randomInt } from 'crypto';
 import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
@@ -185,63 +188,85 @@ export class Gateway extends BaseGateway implements AccountContext {
   }
 
   /**
-   * Gets the m-ld configuration for a subdomain. Calling this method will
-   * create the subdomain if it does not already exist.
+   * Ensures that the named subdomain exists and is backed-up locally.
    *
    * The caller must have already checked user access to the subdomain.
    *
-   * @param spec the subdomain identity
-   * @param naming if `'any'`, a named subdomain will be created
+   * @param spec the subdomain specification
    * @param who the user who is asking
+   * @return MeldConfig the m-ld configuration for the subdomain
    */
-  async subdomainConfig(
-    spec: SubdomainSpec,
-    naming: SubdomainNaming,
-    who?: Who
-  ): Promise<Partial<MeldConfig>> {
+  async ensureNamedSubdomain(spec: SubdomainSpec, who: Who): Promise<Partial<MeldConfig>> {
     const id = this.ownedId(spec);
-    const remotesAuth: RemotesAuthType[] = [];
     // Use m-ld write locking to guard against API race conditions
     await this.domain.write(async state => {
-      if (naming === 'any') {
-        // Does this subdomain already exist in its account?
-        const src = await state.get(id.toRelativeIri()); // Genesis if null
-        let sdClone = this.subdomainCache.get(id.toDomain());
-        if (sdClone == null) {
-          // Check that this subdomain has not existed before
-          if (src == null && await this.tsTombstoneExists(id))
-            throw new ConflictError('Cannot re-use domain name');
-          sdClone = await this.cloneSubdomain(spec, src == null);
-          // Ensure that the clone is online to avoid race with the client
-          await sdClone.clone.status.becomes({ online: true });
-          // Ensure the subdomain is in the domain
-          state = await state.write({
-            '@id': id.account, subdomain: sdClone.toJSON()
-          });
-          if (sdClone.useSignatures && who != null) {
-            // Ensure that the user account is in the subdomain for signing
-            const userKey = await who.acc.key(state, who.keyid);
-            await this.writePrincipalToSubdomain(
-              sdClone, who.acc.name, 'Account', userKey);
-          }
-          this.subdomainCache.set(id.toDomain(), sdClone);
-        } else if (src != null &&
-          spec.useSignatures != null &&
-          Subdomain.fromJSON(src).useSignatures !== spec.useSignatures) {
-          throw new ConflictError('Cannot change use of signatures after creation');
+      // Does this subdomain already exist in its account?
+      const src = await state.get(id.toRelativeIri()); // Genesis if null
+      let sdClone = this.subdomainCache.get(id.toDomain());
+      if (sdClone == null) {
+        // Check that this subdomain has not existed before
+        if (src == null && await this.tsTombstoneExists(id))
+          throw new ConflictError('Cannot re-use domain name');
+        sdClone = await this.cloneSubdomain(spec, src == null);
+        // Ensure that the clone is online to avoid race with the client
+        await sdClone.clone.status.becomes({ online: true });
+        // Ensure the subdomain is in the domain
+        state = await state.write({
+          '@id': id.account, subdomain: sdClone.toJSON()
+        });
+        if (sdClone.useSignatures && who != null) {
+          // Ensure that the user account is in the subdomain for signing
+          const userKey = await who.acc.key(state, who.keyid);
+          await this.writePrincipalToSubdomain(
+            sdClone, who.acc.name, 'Account', userKey);
         }
+        this.subdomainCache.set(id.toDomain(), sdClone);
+      } else if (src != null &&
+        spec.useSignatures != null &&
+        Subdomain.fromJSON(src).useSignatures !== spec.useSignatures) {
+        throw new ConflictError('Cannot change use of signatures after creation');
       }
-      remotesAuth.push(...await Account.getDetails(
-        state, spec.account, 'remotesAuth'));
     });
-    // Return the config required for a new clone, using some of our config
-    return Object.assign({
-      '@domain': this.ownedId(spec).toDomain(), genesis: naming !== 'any'
-    }, await this.cloneFactory.reusableConfig(this.config, remotesAuth, who));
+    return this.getSubdomainConfig(id, false, who);
   }
 
-  getSubdomain(id: AccountOwnedId) {
-    return new Promise<SubdomainClone | undefined>((resolve, reject) => {
+  /**
+   * @param id the subdomain identity
+   * @param who the user who is asking
+   * @param genesis whether the domain is genesis, if known
+   * @returns config required for a new clone, using some of our config
+   */
+  getSubdomainConfig(
+    id: AccountOwnedId,
+    genesis?: boolean,
+    who?: Who
+  ): Promise<Partial<MeldConfig>> {
+    return new Promise((resolve, reject) => {
+      this.domain.read(async state => {
+        try {
+          const remotesAuth =
+            await Account.getDetails(state, id.account, 'remotesAuth');
+          if (genesis == null) {
+            if (await state.ask({ '@where': { '@id': id.toRelativeIri() } })) {
+              genesis = false; // We have a backup
+            } else if (!matches(id.name, asUuid) ||
+              !await Account.allowsUuidSubdomains(state, id.account)) {
+              return reject(new NotFoundError); // UUID domains not allowed
+            } // Otherwise, don't know
+          }
+          resolve({
+            '@domain': id.toDomain(), genesis,
+            ...await this.cloneFactory.reusableConfig(this.config, remotesAuth, who)
+          });
+        } catch (e) {
+          reject(e);
+        }
+      });
+    });
+  }
+
+  getSubdomain(id: AccountOwnedId): Promise<SubdomainClone | undefined> {
+    return new Promise((resolve, reject) => {
       // Use a read lock to prevent concurrent cache manipulation
       this.domain.read(async state => {
         try { // First check the cache

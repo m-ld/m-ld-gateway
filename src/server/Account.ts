@@ -66,6 +66,10 @@ export class Account {
     return acc != null ? <AccountDetails[K]>propertyValue(acc, detail, Array, String) : [];
   }
 
+  static async allowsUuidSubdomains(state: MeldReadState, account: string) {
+    return (await Account.getDetails(state, account, 'naming')).includes('uuid');
+  }
+
   /** plain account name */
   readonly name: string;
   /** verifiable account identities */
