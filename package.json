@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "@m-ld/io-web-runtime": "^0.2.3",
-    "@m-ld/m-ld": "^0.10.0-edge.7",
+    "@m-ld/m-ld": "^0.10.0-edge.12",
     "@types/cryptr": "^4.0.1",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/lru-cache": "^5.1.1",

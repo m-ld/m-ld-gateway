@@ -57,7 +57,7 @@ describe('Subdomain clone', () => {
   });
 
   test('write gets update', async () => {
-    await expect(sdc.write({ '@id': 'fred', name: 'Fred' }))
+    await expect(sdc.write({ '@id': 'fred', name: 'Fred' }).then(jsonify))
       .resolves.toMatchObject({
         '@insert': [{ '@id': 'fred', name: 'Fred' }],
         '@emitCount': 1
@@ -102,7 +102,7 @@ describe('Subdomain clone', () => {
   test('subscriber receives update', async () => {
     const willUpdate = once(sdc, 'update');
     await clone.write({ '@id': 'fred', name: 'Fred' });
-    await expect(willUpdate).resolves.toMatchObject([{
+    await expect(willUpdate.then(jsonify)).resolves.toMatchObject([{
       '@insert': [{ '@id': 'fred', name: 'Fred' }],
       '@emitCount': 1
     }]);
@@ -125,3 +125,7 @@ describe('Subdomain clone', () => {
     await expect(willUpdateSecond).resolves.toBeUndefined();
   });
 });
+
+function jsonify(thing: any) {
+  return JSON.parse(JSON.stringify(thing));
+}
