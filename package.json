@@ -39,7 +39,7 @@
     "@flydotio/dockerfile": "^0.3.3",
     "@m-ld/io-js-build": "^0.1.1",
     "@m-ld/io-web-build": "^0.2.0-0",
-    "@m-ld/m-ld-test": "^0.1.1-edge.3",
+    "@m-ld/m-ld-test": "^0.1.1",
     "@orangeopensource/hurl": "^4.0.0",
     "@types/jest": "^29.2.4",
     "@types/node-fetch-cache": "^3.0.0",
@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "@m-ld/io-web-runtime": "^0.2.3",
-    "@m-ld/m-ld": "^0.10.0-edge.12",
+    "@m-ld/m-ld": "^0.10.0",
     "@types/cryptr": "^4.0.1",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/lru-cache": "^5.1.1",
