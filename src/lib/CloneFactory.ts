@@ -15,6 +15,12 @@ import { RemotesAuthType } from '../server/Account.js';
 
 export type BackendLevel = AbstractLevel<unknown, string, unknown>;
 
+export interface ConfigContext {
+  who?: Who,
+  remotesAuth: RemotesAuthType[],
+  mintJwt?(): Promise<string>
+}
+
 export abstract class CloneFactory {
   async clone(
     config: BaseGatewayConfig,
@@ -50,8 +56,7 @@ export abstract class CloneFactory {
    */
   async reusableConfig(
     config: BaseGatewayConfig,
-    remotesAuth: RemotesAuthType[],
-    who?: Who
+    _context: ConfigContext
   ): Promise<Partial<BaseGatewayConfig>> {
     const { networkTimeout, maxOperationSize, logLevel } = config;
     return { networkTimeout, maxOperationSize, logLevel };

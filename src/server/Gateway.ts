@@ -2,8 +2,8 @@ import {
   MeldClone, MeldConfig, MeldReadState, MeldUpdate, propertyValue, Reference, uuid
 } from '@m-ld/m-ld';
 import {
-  AccountOwnedId, asUuid, BaseGateway, BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal,
-  KeyStore, matches
+  AccountOwnedId, asUuid, AuthKey, BaseGateway, BaseGatewayConfig, CloneFactory, ConfigContext, Env,
+  GatewayPrincipal, KeyStore, matches
 } from '../lib/index.js';
 import { gatewayContext, Iri, UserKey } from '../data/index.js';
 import LOG from 'loglevel';
@@ -16,15 +16,11 @@ import { GatewayConfig } from './index.js';
 import { Account, AccountContext } from './Account.js';
 import { SubdomainClone } from './SubdomainClone.js';
 import { randomInt } from 'crypto';
-import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
+import jsonwebtoken, { JwtPayload, SignOptions } from 'jsonwebtoken';
 import Cryptr from 'cryptr';
 import { Subdomain, SubdomainSpec } from '../data/Subdomain.js';
 import { SubdomainCache } from './SubdomainCache';
-
-export interface Who {
-  acc: Account,
-  keyid: string
-}
+import { Who } from './Authorization';
 
 export class Gateway extends BaseGateway implements AccountContext {
   public readonly me: GatewayPrincipal;
@@ -92,10 +88,10 @@ export class Gateway extends BaseGateway implements AccountContext {
    * @param type note vocabulary is common between gw and ts
    * @param key
    */
-  async writePrincipalToSubdomain(
+  private async writePrincipalToSubdomain(
     sd: SubdomainClone,
     iri: Iri,
-    type: 'Account' | 'Gateway',
+    type: 'Account' | 'Gateway' | 'User',
     key: UserKey
   ) {
     await sd.write({
@@ -104,6 +100,31 @@ export class Gateway extends BaseGateway implements AccountContext {
       key: key.toJSON(true)
     });
     await sd.unlock();
+  }
+
+  /**
+   * Ensures that the user account is in the subdomain for signing
+   * @param state
+   * @param sd
+   * @param who
+   * @private
+   */
+  private async writeUserToSubdomain(
+    state: MeldReadState,
+    sd: SubdomainClone,
+    who: Who
+  ) {
+    if (who.user != null) {
+      if (who.user.key == null)
+        throw new BadRequestError('User key is required for signatures');
+      await this.writePrincipalToSubdomain(
+        sd, who.user['@id'], 'User', who.user.key);
+    } else {
+      // Use the account as the user
+      const userKey = await who.acc.key(state, who.key.keyid);
+      await this.writePrincipalToSubdomain(
+        sd, who.acc.name, 'Account', userKey);
+    }
   }
 
   getDataPath(id: AccountOwnedId) {
@@ -214,12 +235,8 @@ export class Gateway extends BaseGateway implements AccountContext {
         state = await state.write({
           '@id': id.account, subdomain: sdClone.toJSON()
         });
-        if (sdClone.useSignatures && who != null) {
-          // Ensure that the user account is in the subdomain for signing
-          const userKey = await who.acc.key(state, who.keyid);
-          await this.writePrincipalToSubdomain(
-            sdClone, who.acc.name, 'Account', userKey);
-        }
+        if (sdClone.useSignatures && who != null)
+          await this.writeUserToSubdomain(state, sdClone, who);
         this.subdomainCache.set(id.toDomain(), sdClone);
       } else if (src != null &&
         spec.useSignatures != null &&
@@ -241,28 +258,41 @@ export class Gateway extends BaseGateway implements AccountContext {
     genesis?: boolean,
     who?: Who
   ): Promise<Partial<MeldConfig>> {
-    return new Promise((resolve, reject) => {
-      this.domain.read(async state => {
-        try {
-          const remotesAuth =
-            await Account.getDetails(state, id.account, 'remotesAuth');
-          if (genesis == null) {
-            if (await state.ask({ '@where': { '@id': id.toRelativeIri() } })) {
-              genesis = false; // We have a backup
-            } else if (!matches(id.name, asUuid) ||
-              !await Account.allowsUuidSubdomains(state, id.account)) {
-              return reject(new NotFoundError); // UUID domains not allowed
-            } // Otherwise, don't know
-          }
-          resolve({
-            '@domain': id.toDomain(), genesis,
-            ...await this.cloneFactory.reusableConfig(this.config, remotesAuth, who)
-          });
-        } catch (e) {
-          reject(e);
-        }
-      });
-    });
+    return Promise.resolve(this.domain.read(async state => {
+      const remotesAuth =
+        await Account.getDetails(state, id.account, 'remotesAuth');
+      if (genesis == null) {
+        if (await state.ask({ '@where': { '@id': id.toRelativeIri() } })) {
+          genesis = false; // We have a backup
+        } else if (!matches(id.name, asUuid) ||
+          !await Account.allowsUuidSubdomains(state, id.account)) {
+          throw new NotFoundError; // UUID domains not allowed
+        } // Otherwise, don't know
+      }
+      const mintJwt = who && this.getMintJwt(state, who);
+      return {
+        '@domain': id.toDomain(), genesis,
+        ...await this.cloneFactory.reusableConfig(this.config, {
+          who, remotesAuth, mintJwt
+        })
+      };
+    }));
+  }
+
+  private getMintJwt(state: MeldReadState, who: Who): ConfigContext['mintJwt'] | undefined {
+    if (who.key instanceof AuthKey) {
+      const authKey = who.key;
+      return async () => {
+        const userKey = await who.acc.key(state, who.key.keyid);
+        const signOptions: SignOptions = {
+          issuer: this.absoluteId(who.acc.name),
+          expiresIn: '10m'
+        };
+        if (who.user != null)
+          signOptions.subject = who.user['@id'];
+        return userKey.signJwt({}, authKey, signOptions);
+      };
+    }
   }
 
   getSubdomain(id: AccountOwnedId): Promise<SubdomainClone | undefined> {

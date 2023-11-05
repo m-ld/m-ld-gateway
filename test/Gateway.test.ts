@@ -105,7 +105,8 @@ describe('Gateway', () => {
 
     test('gets subdomain config', async () => {
       const sd = new Subdomain({ account: 'test', name: 'sd1', useSignatures: true });
-      const sdConfig = await gateway.ensureNamedSubdomain(sd, { acc, keyid: 'keyid' }) as any;
+      const sdConfig = await gateway.ensureNamedSubdomain(
+        sd, { acc, key: { keyid: 'keyid' } }) as any;
       expect(sdConfig).toEqual({
         '@domain': 'sd1.test.ex.org',
         genesis: false,
@@ -158,7 +159,7 @@ describe('Gateway', () => {
       const id = gateway.ownedId({ account: 'test', name: 'sd1' });
       // The gateway should attempt to clone the subdomain in the get.
       // (It will fail due to dead remotes, but we don't care.)
-      cloneFactory.clone.mockResolvedValueOnce([mock<MeldClone>(), mock<BackendLevel>()])
+      cloneFactory.clone.mockResolvedValueOnce([mock<MeldClone>(), mock<BackendLevel>()]);
       await expect(gateway.getSubdomain(id)).rejects.toThrow();
       expect(cloneFactory.clone.mock.lastCall).toMatchObject([
         {
@@ -175,7 +176,7 @@ describe('Gateway', () => {
 
     test('removes a subdomain', async () => {
       const sd = new Subdomain({ account: 'test', name: 'sd1' });
-      await gateway.ensureNamedSubdomain(sd, { acc, keyid: 'keyid' });
+      await gateway.ensureNamedSubdomain(sd, { acc, key: { keyid: 'keyid' } });
       await gateway.domain.write({
         '@delete': { '@id': 'test', subdomain: { '@id': 'test/sd1', '?': '?' } }
       });
@@ -184,7 +185,7 @@ describe('Gateway', () => {
       expect(!existsSync(join(env.tmpDir.name, 'data', 'domain', 'test', 'sd1')));
       expect(gateway.hasClonedSubdomain(gateway.ownedId(sd))).toBe(false);
       // Cannot re-use a subdomain name
-      await expect(gateway.ensureNamedSubdomain(sd, { acc, keyid: 'keyid' }))
+      await expect(gateway.ensureNamedSubdomain(sd, { acc, key: { keyid: 'keyid' } }))
         .rejects.toThrowError();
     });
   });

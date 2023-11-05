@@ -24,9 +24,7 @@ export class ApiEndPoint extends EndPoint<RestServer> {
 
   @get('/publicKey')
   async getPublicKey(_req: Request, res: Response) {
-    res.contentType = 'text';
-    res.send(this.gateway.me.userKey!.getCryptoPublicKey().export({
-      format: 'pem', type: 'spki'
-    }));
+    res.contentType = 'application/x-pem-file';
+    res.send(this.gateway.me.userKey.getCryptoPublicKey());
   }
 }

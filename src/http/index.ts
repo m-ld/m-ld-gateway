@@ -1,6 +1,6 @@
 import { createServer, plugins, pre, Server as RestServer } from 'restify';
 import LOG from 'loglevel';
-import { formatter, HTML_FORMAT, JSON_LD_FORMAT } from './EndPoint.js';
+import { HTML_FORMAT, JSON_LD_FORMAT, PEM_FORMAT, stringFormatter } from './EndPoint.js';
 import { ApiEndPoint } from './ApiEndPoint.js';
 import { SubdomainEndPoint } from './SubdomainEndPoint.js';
 import { SubdomainStateEndPoint } from './SubdomainStateEndPoint.js';
@@ -17,8 +17,9 @@ export function setupGatewayHttp({ gateway, notifier, liquid }: {
 }): RestServer {
   const server = createServer({
     formatters: {
-      'application/ld+json': formatter(JSON_LD_FORMAT),
-      'text/html': formatter(HTML_FORMAT)
+      'application/ld+json': stringFormatter(JSON_LD_FORMAT),
+      'text/html': stringFormatter(HTML_FORMAT),
+      'application/x-pem-file': stringFormatter(PEM_FORMAT)
     }
   }).pre(pre.context())
     .use(plugins.queryParser({ mapParams: true }))

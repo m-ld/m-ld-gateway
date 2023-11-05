@@ -5,7 +5,7 @@ import { Consumable } from 'rx-flowable';
 export interface StringFormat {
   opening?: string;
   closing?: string;
-  separator: string;
+  separator?: string;
   stringify(value: any): string;
 }
 
@@ -27,7 +27,7 @@ export class StringReadable extends Readable {
       next: async bite => {
         openIfRequired();
         const subjectStr = format.stringify(bite.value);
-        this.push(Buffer.from(`${this.index++ ? format.separator : ''}${subjectStr}`));
+        this.push(Buffer.from(`${(this.index++ && format.separator) || ''}${subjectStr}`));
         this.next = bite.next;
       },
       complete: () => {
@@ -42,7 +42,7 @@ export class StringReadable extends Readable {
     });
   }
 
-  _read(size: number) {
+  _read(_size: number) {
     if (this.next) {
       this.next();
       delete this.next;
