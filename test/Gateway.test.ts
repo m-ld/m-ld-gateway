@@ -136,7 +136,9 @@ describe('Gateway', () => {
       // Expect subdomain clone to exist and contain user principal for signing
       const sdc = (await gateway.getSubdomain(gateway.ownedId(sd)))!;
       await expect(sdc.state.get('http://ex.org/test')).resolves.toEqual({
-        '@id': 'http://ex.org/test', '@type': 'Account', key: { '@id': '.keyid' }
+        '@id': 'http://ex.org/test',
+        '@type': 'http://gw.m-ld.org/#Account',
+        'http://gw.m-ld.org/#key': { '@id': '.keyid' }
       });
     });
 

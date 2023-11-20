@@ -226,12 +226,16 @@ export class UserKey implements Key {
    */
   toConfig(authKey: AuthKey): UserKeyConfig {
     return Object.assign(authKey.toConfig(), {
-      key: {
-        type: 'rsa' as 'rsa', // Typescript weirdness
-        public: this.publicKey.toString('base64'),
-        private: this.privateKey?.toString('base64')
-        // revoked assumed false
-      }
+      key: this.getRsaKeyConfig()
     });
+  }
+
+  getRsaKeyConfig() {
+    return {
+      type: 'rsa' as 'rsa', // Typescript weirdness
+      public: this.publicKey.toString('base64'),
+      private: this.privateKey?.toString('base64')
+      // revoked assumed false
+    };
   }
 }

@@ -73,12 +73,13 @@ export class Gateway extends BaseGateway implements AccountContext {
     );
   }
 
-  // TODO: implement this in timeld
+  // override this in timeld
   onUpdateSubdomain(
-    _id: AccountOwnedId,
-    _update: MeldUpdate,
+    id: AccountOwnedId,
+    update: MeldUpdate,
     _state: MeldReadState
   ): Promise<void> {
+    LOG.info(id.toRelativeIri(), JSON.stringify(update));
     return Promise.resolve();
   }
 
@@ -95,6 +96,7 @@ export class Gateway extends BaseGateway implements AccountContext {
     key: UserKey
   ) {
     await sd.write({
+      '@context': gatewayContext,
       '@id': this.absoluteId(iri),
       '@type': type,
       key: key.toJSON(true)
@@ -235,14 +237,14 @@ export class Gateway extends BaseGateway implements AccountContext {
         state = await state.write({
           '@id': id.account, subdomain: sdClone.toJSON()
         });
-        if (sdClone.useSignatures && who != null)
-          await this.writeUserToSubdomain(state, sdClone, who);
         this.subdomainCache.set(id.toDomain(), sdClone);
       } else if (src != null &&
         spec.useSignatures != null &&
         Subdomain.fromJSON(src).useSignatures !== spec.useSignatures) {
         throw new ConflictError('Cannot change use of signatures after creation');
       }
+      if (sdClone.useSignatures && who != null)
+        await this.writeUserToSubdomain(state, sdClone, who);
     });
     return this.getSubdomainConfig(id, false, who);
   }

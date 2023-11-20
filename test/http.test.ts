@@ -251,26 +251,63 @@ describe('Gateway HTTP API', () => {
       });
     });
 
-    test('puts new subdomain with JWT', async () => {
-      await acc.update({ '@insert': { remotesAuth: 'jwt' } });
-      cloneFactory.reusableConfig.mockImplementation(async (_config, context) => ({
-        jwt: await context?.mintJwt?.()
-      }));
-      const res = await request(app)
-        .put('/api/v1/domain/test/sd1')
-        .auth('test', 'app.keyid:secret')
-        .accept('application/json')
-        .send({ user: { '@id': 'http://ex.org/fred' } });
-      expect(res.status).toBe(200);
-      expect(res.body).toMatchObject({
-        '@domain': 'sd1.test.ex.org', genesis: false, jwt: anyString()
+    describe('puts new subdomain with JWT', () => {
+      beforeEach(async () => {
+        await acc.update({ '@insert': { remotesAuth: 'jwt' } });
+        cloneFactory.reusableConfig.mockImplementation(async (_config, context) => ({
+          jwt: await context?.mintJwt?.()
+        }));
       });
-      expect(decode(res.body.jwt, { json: true })).toMatchObject({
-        iss: 'http://ex.org/test', sub: 'http://ex.org/fred'
+
+      test('without user key', async () => {
+        const res = await request(app)
+          .put('/api/v1/domain/test/sd1')
+          .auth('test', 'app.keyid:secret')
+          .accept('application/json')
+          .send({ user: { '@id': 'http://ex.org/fred' } });
+        expect(res.status).toBe(200);
+        expect(res.body).toMatchObject({
+          '@domain': 'sd1.test.ex.org', genesis: false, jwt: anyString()
+        });
+        expect(decode(res.body.jwt, { json: true })).toMatchObject({
+          iss: 'http://ex.org/test', sub: 'http://ex.org/fred'
+        });
+      });
+
+      test('with user key', async () => {
+        const userKey = UserKey.generate('app.keyid:secret');
+        const rsaKeyConfig = userKey.getRsaKeyConfig();
+        const res = await request(app)
+          .put('/api/v1/domain/test/sd1')
+          .auth('test', 'app.keyid:secret')
+          .accept('application/json')
+          .send({
+            useSignatures: true,
+            user: {
+              '@id': 'http://ex.org/fred',
+              key: { keyid: 'keyid', public: rsaKeyConfig.public }
+            }
+          });
+        expect(res.status).toBe(200);
+        expect(res.body).toMatchObject({
+          '@domain': 'sd1.test.ex.org', genesis: false, jwt: anyString()
+        });
+        const sdc = await gateway.getSubdomain(gateway.ownedId({
+          account: 'test', name: 'sd1'
+        }));
+        expect(sdc?.useSignatures).toBe(true);
+        // Note that users inserted into subdomains use the Gateway vocabulary
+        await expect(sdc?.state.get('http://ex.org/fred')).resolves.toMatchObject({
+          '@id': 'http://ex.org/fred',
+          'http://gw.m-ld.org/#key': { '@id': '.keyid' }
+        });
+        await expect(sdc?.state.get('.keyid')).resolves.toMatchObject({
+          'http://gw.m-ld.org/#public': expect.any(Buffer)
+        });
       });
     });
 
-    test.todo('Put subdomain with context');
+    test.todo('puts subdomain with context');
 
     describe('with subdomain', () => {
       let sdId: AccountOwnedId;

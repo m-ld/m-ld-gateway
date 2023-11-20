@@ -1,7 +1,7 @@
 import { ClassicLevel } from 'classic-level';
 import {
   AppPrincipal, Attribution, clone as meldClone, ConstructRemotes, InitialApp, MeldClone,
-  MeldConfig, MeldReadState, MeldTransportSecurity, propertyValue
+  MeldReadState, MeldTransportSecurity, propertyValue
 } from '@m-ld/m-ld';
 import { AuthKey } from './AuthKey.js';
 import { gatewayVocab } from '../data/index.js';
@@ -45,7 +45,6 @@ export abstract class CloneFactory {
   abstract initialise(address: string): void | Promise<unknown>;
 
   /**
-   * @param {MeldConfig} config
    * @returns {ConstructRemotes | Promise<ConstructRemotes>}
    */
   abstract remotes(config: BaseGatewayConfig): ConstructRemotes | Promise<ConstructRemotes>;

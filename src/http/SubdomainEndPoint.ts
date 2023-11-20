@@ -47,9 +47,9 @@ export class SubdomainEndPoint extends EndPoint<ApiEndPoint> {
       user: as.object({
         '@id': as.string().uri().required(),
         key: asRsaKeyConfig
-          .keys({ '@id': as.string().uri().required() })
+          .keys({ keyid: as.string().regex(/\w+/).required() })
           .custom(json => new UserKey({
-            keyid: json['@id'], ...keyPairFromConfig(json)
+            keyid: json.keyid, ...keyPairFromConfig(json)
           })).optional()
       }).optional()
     }));
