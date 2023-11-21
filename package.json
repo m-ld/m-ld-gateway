@@ -1,6 +1,6 @@
 {
   "name": "@m-ld/gateway",
-  "version": "0.1.0-edge.2",
+  "version": "0.1.0-edge.3",
   "description": "m-ld gateway for services",
   "type": "module",
   "main": "ext/index.js",
