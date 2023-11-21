@@ -5,13 +5,16 @@ import { mock } from 'jest-mock-extended';
 describe('Socket.io clone factory', () => {
   test('reusable config with key', async () => {
     const cloneFactory = new IoCloneFactory();
-    await cloneFactory.initialise('localhost:8080');
+    cloneFactory.initialise('localhost:8080');
     await expect(cloneFactory.reusableConfig({
       '@id': 'test1', '@domain': 'ex.org', genesis: false,
       gateway: 'ex.org', auth: { key: 'appid.keyid:secret' }
-    }, [/*'key' is the default*/], {
-      acc: mock<Account>({ name: 'myAccount' }),
-      keyid: 'keyid'
+    }, {
+      who: {
+        acc: mock<Account>({ name: 'myAccount' }),
+        key: { keyid: 'keyid' }
+      },
+      remotesAuth: [/*'key' is the default*/]
     })).resolves.toEqual({
       io: {
         uri: 'https://ex.org/', // Uses public gateway
@@ -20,13 +23,15 @@ describe('Socket.io clone factory', () => {
     });
   });
 
-  test('reusable config with jwt', async () => {
+  test('reusable config with JWT placeholder', async () => {
     const cloneFactory = new IoCloneFactory();
-    await cloneFactory.initialise('localhost:8080');
+    cloneFactory.initialise('localhost:8080');
     await expect(cloneFactory.reusableConfig({
       '@id': 'test1', '@domain': 'ex.org', genesis: false,
       gateway: 'ex.org', auth: { key: 'appid.keyid:secret' }
-    }, ['jwt'])).resolves.toEqual({
+    }, {
+      remotesAuth: ['jwt']
+    })).resolves.toEqual({
       io: {
         uri: 'https://ex.org/', // Uses public gateway
         opts: { auth: { jwt: '≪your-token≫' } }
@@ -34,13 +39,32 @@ describe('Socket.io clone factory', () => {
     });
   });
 
-  test('reusable config with anon', async () => {
+  test('reusable config with minted JWT', async () => {
     const cloneFactory = new IoCloneFactory();
-    await cloneFactory.initialise('localhost:8080');
+    cloneFactory.initialise('localhost:8080');
     await expect(cloneFactory.reusableConfig({
       '@id': 'test1', '@domain': 'ex.org', genesis: false,
       gateway: 'ex.org', auth: { key: 'appid.keyid:secret' }
-    }, ['anon'])).resolves.toEqual({
+    }, {
+      remotesAuth: ['jwt'],
+      async mintJwt() { return 'myJwt' }
+    })).resolves.toEqual({
+      io: {
+        uri: 'https://ex.org/', // Uses public gateway
+        opts: { auth: { jwt: 'myJwt' } }
+      }
+    });
+  });
+
+  test('reusable config with anon', async () => {
+    const cloneFactory = new IoCloneFactory();
+    cloneFactory.initialise('localhost:8080');
+    await expect(cloneFactory.reusableConfig({
+      '@id': 'test1', '@domain': 'ex.org', genesis: false,
+      gateway: 'ex.org', auth: { key: 'appid.keyid:secret' }
+    }, {
+      remotesAuth: ['anon']
+    })).resolves.toEqual({
       io: { uri: 'https://ex.org/' }
     });
   });

@@ -12,7 +12,6 @@ export const gatewayContext = {
 };
 
 /**
- * Obtains absolute IRIs in the Gateway vocabulary
- * @returns {string}
+ * @returns absolute IRIs in the Gateway vocabulary
  */
 export const gatewayVocab = (iri: Iri) => `${$vocab}${iri}`;

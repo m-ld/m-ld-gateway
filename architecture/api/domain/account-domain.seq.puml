@@ -5,16 +5,20 @@ hide footbox
 title App with Gateway account
 
 participant "App\nClient" as client
+participant "Identity Provider" as idp
 participant "App Service\nor lambda" as service
 
-service -> Gateway: PUT /domain/<<account>>/<<name>> ""{authKey}""
+client <--> idp: Authenticate user (or anon)
+client -> service ++ : get config for subdomain {userId}
+service -> Gateway ++: PUT /domain/<<account>>/<<name>>\n{authKey, userId}
+Gateway -> Gateway: Create user JWT,\nsign with authKey
 return config for new clones
 note left
 <code>
 {
   @domain:"<<name>>.<<account>>.<<hostname>>",
   genesis:true,
-  io
+  io: { auth: { jwt } }
 }
 </code>
 end note
@@ -23,9 +27,7 @@ if backup clone
 or domain exists,
 genesis is false
 end note
-client <--> service: Authenticate user (or anon)
-service -> service: Create client JWT,\nsign with authKey
-service -> client: ""{config, jwt}""
+return config
 client -> client ++: Create clone
 client <--> Gateway: socket.io remotes ""{jwt}""
 

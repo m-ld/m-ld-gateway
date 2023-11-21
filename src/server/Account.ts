@@ -142,6 +142,15 @@ export class Account {
   }
 
   /**
+   * Checks that the given keyid belongs to this account and returns the
+   * corresponding user key
+   * @throws UnauthorizedError if the key does not belong to this account
+   */
+  async getUserKey(keyid: string): Promise<UserKey> {
+    return this.gateway.domain.read(state => this.key(state, keyid));
+  }
+
+  /**
    * TODO: Refactor awkward return type
    * @returns the user key, if the gateway is using user keys
    * @throws UnauthorizedError if the key does not belong to this account or is

@@ -4,7 +4,7 @@ hide footbox
 
 title App with anonymous users using Gateway public messaging
 
-anon -> Gateway: POST /domain/public ☆
+anon -> Gateway: POST /domain/public
 return config for new clones
 note left
 <code>
@@ -15,7 +15,7 @@ note left
 }
 </code>
 end note
-note right: no backup clone created ☆
+note right: no backup clone created
 anon -> anon ++: Create genesis clone
 <-- anon: Tell other app instances
 anon <--> Gateway: socket.io remotes (rate limited)

@@ -8,9 +8,11 @@ import { pipeline } from 'stream/promises';
 import { Consumable } from 'rx-flowable';
 import 'reflect-metadata';
 
-export const formatter = (format: StringFormat): Formatter => {
+export const stringFormatter = (format?: StringFormat): Formatter => {
   return (_req, res, body) => {
-    const data = `${format.opening || ''}${format.stringify(body)}${format.closing || ''}`;
+    const data = (format?.opening ?? '') +
+      (format?.stringify(body) ?? `${body}`) +
+      (format?.closing ?? '');
     res.setHeader('Content-Length', Buffer.byteLength(data));
     return data;
   };
@@ -23,6 +25,10 @@ export const JSON_LD_FORMAT: StringFormat = {
 export const HTML_FORMAT: StringFormat = {
   stringify: s => JSON.stringify(s, null, ' '),
   opening: '<pre>', closing: '</pre>', separator: '\n'
+};
+export const PEM_FORMAT: StringFormat = {
+  stringify: s => typeof s == 'string' ? s :
+    s.export({ format: 'pem', type: 'spki' })
 };
 
 export async function sendChunked(res: Response, results: Consumable<any>, status = 200) {

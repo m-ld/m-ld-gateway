@@ -7,6 +7,7 @@ import { consume } from 'rx-flowable/consume';
 import { Readable } from 'stream';
 import { SubdomainClone } from '../server/SubdomainClone.js';
 import { Request, Response } from 'restify';
+import { asRsaKeyConfig, keyPairFromConfig, UserKey } from '../data/UserKey.js';
 
 export type SubdomainRequest = Request &
   HasContext<'id', AccountOwnedId> &
@@ -41,13 +42,22 @@ export class SubdomainEndPoint extends EndPoint<ApiEndPoint> {
 
   @put
   async putSubdomain(req: SubdomainRequest, res: Response) {
-    const { useSignatures } = validate(req.body ?? {}, as.object({
-      useSignatures: as.boolean().optional()
+    const { useSignatures, user } = validate(req.body ?? {}, as.object({
+      useSignatures: as.boolean().optional(),
+      user: as.object({
+        '@id': as.string().uri().required(),
+        key: asRsaKeyConfig
+          .keys({ keyid: as.string().regex(/\w+/).required() })
+          .custom(json => new UserKey({
+            keyid: json.keyid, ...keyPairFromConfig(json)
+          })).optional()
+      }).optional()
     }));
     const { account, name } = req.get('id');
-    res.json(await this.gateway.ensureNamedSubdomain({
-      useSignatures, account, name
-    }, req.get('who')));
+    res.json(await this.gateway.ensureNamedSubdomain(
+      { useSignatures, account, name },
+      { ...req.get('who'), user }
+    ));
   }
 
   @post('/poll')

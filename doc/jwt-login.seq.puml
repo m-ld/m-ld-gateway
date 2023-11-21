@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma teoz true
+
+autonumber
+hide footbox
+
+participant "App\nClient" as appC
+participant "Identity\nProvider" as idp
+participant "App\nLambda" as appL
+participant "**m-ld**\nGateway" as gw
+
+activate appC
+alt not logged in
+	appC -> idp ++ : login
+	return app token
+end
+
+appC -> appL ++ : get domain config (app token, subdomain)
+appL -> appL : validate app token
+appL -> appL : check access
+appL -> gw ++ : PUT /domain/≪account≫/≪subdomain≫\n{user: {'@id'}}
+return config\n(including JWT)
+return config
+
+appC -> gw : connect to domain (config)
+deactivate appC
+
+@enduml

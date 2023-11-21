@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="443px" preserveAspectRatio="none" style="width:679px;height:443px;background:#FFFFFF;" version="1.1" viewBox="0 0 679 443" width="679px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="85.9316" style="stroke:#000000;stroke-width:1.5;" width="177.5" x="16" y="64.9766"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="32" x2="32" y1="52.9766" y2="436.7031"/><rect fill="#FFFFFF" height="357.7266" style="stroke:#181818;stroke-width:1.0;" width="10" x="27" y="60.9766"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="142" x2="142" y1="52.9766" y2="436.7031"/><rect fill="#FFFFFF" height="29.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="137" y="113.5977"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="342" x2="342" y1="52.9766" y2="436.7031"/><rect fill="#FFFFFF" height="203.1738" style="stroke:#181818;stroke-width:1.0;" width="10" x="337" y="186.2188"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="638" x2="638" y1="52.9766" y2="436.7031"/><rect fill="#FFFFFF" height="44.6211" style="stroke:#181818;stroke-width:1.0;" width="10" x="633" y="315.4609"/><rect fill="#E2E2F0" height="46.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="54" x="5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="18" y="25.5352">App</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="40" x="12" y="42.0234">Client</text><rect fill="#E2E2F0" height="46.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="71" x="106.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="51" x="116.5" y="25.5352">Identity</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="113.5" y="42.0234">Provider</text><rect fill="#E2E2F0" height="46.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="68" x="308" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="328" y="25.5352">App</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54" x="315" y="42.0234">Lambda</text><rect fill="#E2E2F0" height="46.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="71" x="602.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="37" x="619.5" y="25.5352">m-ld</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="609.5" y="42.0234">Gateway</text><path d="M16,64.9766 L78,64.9766 L78,72.2871 L68,82.2871 L16,82.2871 L16,64.9766 " fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="85.9316" style="stroke:#000000;stroke-width:1.5;" width="177.5" x="16" y="64.9766"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="17" x="31" y="78.5449">alt</text><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacing" textLength="83" x="93" y="77.6113">[not logged in]</text><polygon fill="#181818" points="125,109.5977,135,113.5977,125,117.5977,129,113.5977" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="37" x2="131" y1="113.5977" y2="113.5977"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="44" y="108.8555">1</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="32" x="57" y="108.8555">login</text><polygon fill="#181818" points="48,138.9082,38,142.9082,48,146.9082,44,142.9082" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="42" x2="136" y1="142.9082" y2="142.9082"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="54" y="138.166">2</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="63" x="67" y="138.166">app token</text><polygon fill="#181818" points="325,182.2188,335,186.2188,325,190.2188,329,186.2188" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="37" x2="331" y1="186.2188" y2="186.2188"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="44" y="181.4766">3</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="268" x="57" y="181.4766">get domain config (app token, subdomain)</text><line style="stroke:#181818;stroke-width:1.0;" x1="347" x2="389" y1="215.5293" y2="215.5293"/><line style="stroke:#181818;stroke-width:1.0;" x1="389" x2="389" y1="215.5293" y2="228.5293"/><line style="stroke:#181818;stroke-width:1.0;" x1="348" x2="389" y1="228.5293" y2="228.5293"/><polygon fill="#181818" points="358,224.5293,348,228.5293,358,232.5293,354,228.5293" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="354" y="210.7871">4</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="116" x="367" y="210.7871">validate app token</text><line style="stroke:#181818;stroke-width:1.0;" x1="347" x2="389" y1="257.8398" y2="257.8398"/><line style="stroke:#181818;stroke-width:1.0;" x1="389" x2="389" y1="257.8398" y2="270.8398"/><line style="stroke:#181818;stroke-width:1.0;" x1="348" x2="389" y1="270.8398" y2="270.8398"/><polygon fill="#181818" points="358,266.8398,348,270.8398,358,274.8398,354,270.8398" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="354" y="253.0977">5</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="83" x="367" y="253.0977">check access</text><polygon fill="#181818" points="621,311.4609,631,315.4609,621,319.4609,625,315.4609" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="347" x2="627" y1="315.4609" y2="315.4609"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="354" y="303.0635">6</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="254" x="367" y="295.4082">PUT /domain/≪account≫/≪subdomain≫</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="80" x="367" y="310.7188">{user: {'@id'}}</text><polygon fill="#181818" points="358,356.082,348,360.082,358,364.082,354,360.082" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="352" x2="632" y1="360.082" y2="360.082"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="364" y="347.6846">7</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="40" x="377" y="340.0293">config</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="94" x="377" y="355.3398">(including JWT)</text><polygon fill="#181818" points="48,385.3926,38,389.3926,48,393.3926,44,389.3926" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="42" x2="336" y1="389.3926" y2="389.3926"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="54" y="384.6504">8</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="40" x="67" y="384.6504">config</text><polygon fill="#181818" points="626,414.7031,636,418.7031,626,422.7031,630,418.7031" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="37" x2="632" y1="418.7031" y2="418.7031"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="44" y="413.9609">9</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="170" x="57" y="413.9609">connect to domain (config)</text><!--MD5=[a99f307c3955ee71acac4a6bd347be87]
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma teoz true
+
+autonumber
+hide footbox
+
+participant "App\nClient" as appC
+participant "Identity\nProvider" as idp
+participant "App\nLambda" as appL
+participant "**m-ld**\nGateway" as gw
+
+activate appC
+alt not logged in
+	appC -> idp ++ : login
+	return app token
+end
+
+appC -> appL ++ : get domain config (app token, subdomain)
+appL -> appL : validate app token
+appL -> appL : check access
+appL -> gw ++ : PUT /domain/≪account≫/≪subdomain≫\n{user: {'@id'}}
+return config\n(including JWT)
+return config
+
+appC -> gw : connect to domain (config)
+deactivate appC
+
+@enduml
+
+@startuml
+!pragma teoz true
+
+autonumber
+hide footbox
+
+participant "App\nClient" as appC
+participant "Identity\nProvider" as idp
+participant "App\nLambda" as appL
+participant "**m-ld**\nGateway" as gw
+
+activate appC
+alt not logged in
+	appC -> idp ++ : login
+	return app token
+end
+
+appC -> appL ++ : get domain config (app token, subdomain)
+appL -> appL : validate app token
+appL -> appL : check access
+appL -> gw ++ : PUT /domain/≪account≫/≪subdomain≫\n{user: {'@id'}}
+return config\n(including JWT)
+return config
+
+appC -> gw : connect to domain (config)
+deactivate appC
+
+@enduml
+
+PlantUML version 1.2022.8(Sun Sep 25 10:00:33 BST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

@@ -6,10 +6,11 @@ import { parseNdJson, TestCloneFactory, testCloneFactory, TestEnv } from './fixt
 import { Account, Gateway, Notifier, SubdomainCache } from '../src/server/index.js';
 import { setupGatewayHttp } from '../src/http/index.js';
 import request from 'supertest';
-import { mock, MockProxy } from 'jest-mock-extended';
+import { anyString, mock, MockProxy } from 'jest-mock-extended';
 import { Server } from 'restify';
 import { Readable } from 'stream';
 import type { Liquid } from 'liquidjs';
+import { decode } from 'jsonwebtoken';
 
 describe('Gateway HTTP API', () => {
   let env: TestEnv;
@@ -40,7 +41,7 @@ describe('Gateway HTTP API', () => {
     );
     await gateway.initialise();
     notifier = mock<Notifier>();
-    liquid = mock<Liquid>();
+    liquid = mock<Liquid>({ options: { root: ['fakeRoot'] } });
     app = setupGatewayHttp({ gateway, notifier, liquid });
   });
 
@@ -89,6 +90,13 @@ describe('Gateway HTTP API', () => {
       '@base': 'http://ex.org/',
       ...gatewayContext
     });
+  });
+
+  test('gets root public key', async () => {
+    const res = await request(app)
+      .get('/api/v1/publicKey');
+    expect(res.status).toBe(200);
+    expect(res.text).toMatch(/-+BEGIN PUBLIC KEY-+\s[-A-Za-z0-9+\n=/]*/);
   });
 
   test('root create new account with a key', async () => {
@@ -152,6 +160,14 @@ describe('Gateway HTTP API', () => {
         auth: { key: expect.stringMatching(/app\..{6}:.{20,}/) },
         key: { private: expect.any(String), public: expect.any(String) }
       });
+    });
+
+    test('gets user public key', async () => {
+      const res = await request(app)
+        .get('/api/v1/user/test/publicKey/keyid')
+        .auth('test', 'app.keyid:secret');
+      expect(res.status).toBe(200);
+      expect(res.text).toMatch(/-+BEGIN PUBLIC KEY-+\s[-A-Za-z0-9+\n=/]*/);
     });
 
     test('cannot post new uuid subdomain without config', async () => {
@@ -235,7 +251,63 @@ describe('Gateway HTTP API', () => {
       });
     });
 
-    test.todo('Put subdomain with context');
+    describe('puts new subdomain with JWT', () => {
+      beforeEach(async () => {
+        await acc.update({ '@insert': { remotesAuth: 'jwt' } });
+        cloneFactory.reusableConfig.mockImplementation(async (_config, context) => ({
+          jwt: await context?.mintJwt?.()
+        }));
+      });
+
+      test('without user key', async () => {
+        const res = await request(app)
+          .put('/api/v1/domain/test/sd1')
+          .auth('test', 'app.keyid:secret')
+          .accept('application/json')
+          .send({ user: { '@id': 'http://ex.org/fred' } });
+        expect(res.status).toBe(200);
+        expect(res.body).toMatchObject({
+          '@domain': 'sd1.test.ex.org', genesis: false, jwt: anyString()
+        });
+        expect(decode(res.body.jwt, { json: true })).toMatchObject({
+          iss: 'http://ex.org/test', sub: 'http://ex.org/fred'
+        });
+      });
+
+      test('with user key', async () => {
+        const userKey = UserKey.generate('app.keyid:secret');
+        const rsaKeyConfig = userKey.getRsaKeyConfig();
+        const res = await request(app)
+          .put('/api/v1/domain/test/sd1')
+          .auth('test', 'app.keyid:secret')
+          .accept('application/json')
+          .send({
+            useSignatures: true,
+            user: {
+              '@id': 'http://ex.org/fred',
+              key: { keyid: 'keyid', public: rsaKeyConfig.public }
+            }
+          });
+        expect(res.status).toBe(200);
+        expect(res.body).toMatchObject({
+          '@domain': 'sd1.test.ex.org', genesis: false, jwt: anyString()
+        });
+        const sdc = await gateway.getSubdomain(gateway.ownedId({
+          account: 'test', name: 'sd1'
+        }));
+        expect(sdc?.useSignatures).toBe(true);
+        // Note that users inserted into subdomains use the Gateway vocabulary
+        await expect(sdc?.state.get('http://ex.org/fred')).resolves.toMatchObject({
+          '@id': 'http://ex.org/fred',
+          'http://gw.m-ld.org/#key': { '@id': '.keyid' }
+        });
+        await expect(sdc?.state.get('.keyid')).resolves.toMatchObject({
+          'http://gw.m-ld.org/#public': expect.any(Buffer)
+        });
+      });
+    });
+
+    test.todo('puts subdomain with context');
 
     describe('with subdomain', () => {
       let sdId: AccountOwnedId;
@@ -243,7 +315,7 @@ describe('Gateway HTTP API', () => {
 
       beforeEach(async () => {
         sdId = gateway.ownedId({ account: 'test', name: 'sd1' });
-        await gateway.ensureNamedSubdomain(sdId, { acc, keyid: 'keyid' });
+        await gateway.ensureNamedSubdomain(sdId, { acc, key: { keyid: 'keyid' } });
         clone = cloneFactory.clones[sdId.toDomain()];
       });
 

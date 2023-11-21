@@ -7,22 +7,32 @@ left to right direction
 user <|-- root : is a
 
 package "User End-Point" {
-  user --> (change details) : self
-  note right: PATCH /user/:user {emails, keyids}
-  note bottom of "change details": including revoke key
-  (get activation) #lightgreen
-  user --> (get activation)
-  note right of "get activation": sends code by email
-  note right of "get activation": POST /user/:user/activation {email}
-  (get user key) #lightgreen
-  user --> (get user key) : self; can use\nactivation
-  note top of "get user key": must use activation\nfor self-service create
-  note right of "get user key": create user account\nif not exists
-  note right of "get user key": POST /user/:user/key
-  root --> (get user key) : any user
-  user --> (delete user) : self
-  root --> (delete user) : any user
-  note right: DEL /user/:user
+  usecase changeDetails as "=== change details
+  PATCH /user/:user {emails, keyids}"
+  user --> (changeDetails) : self
+  note right: including revoke key
+
+  usecase getActivation #lightgreen as "=== get activation
+  POST /user/:user/activation {email}"
+  user --> (getActivation)
+  note right: sends code by email
+
+  usecase mintUserKey #lightgreen as "=== mint user key
+  POST /user/:user/key"
+  user --> mintUserKey : self; can use\nactivation
+  note right of mintUserKey: must use activation\nfor self-service create
+  note right of mintUserKey: create user account\nif not exists
+  root --> mintUserKey : any user
+
+  usecase deleteUser as "=== delete user
+  DEL /user/:user"
+  user --> deleteUser : self
+  root --> deleteUser : any user
+
+  usecase getPublicKey as "=== get public key
+  GET /user/:user/publicKey/:keyid"
+  user --> getPublicKey : self
+  root --> getPublicKey : any user
 }
 
 @enduml

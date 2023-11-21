@@ -15,8 +15,9 @@ export interface GatewayConfig extends BaseGatewayConfig, UserKeyConfig {
   subdomainCacheSize?: number;
 }
 
-export { Gateway, Who } from './Gateway.js';
+export { Gateway } from './Gateway.js';
 export { Authorization } from './Authorization.js';
 export { Account } from './Account.js';
 export { Notifier } from './Notifier.js';
 export { SubdomainCache } from './SubdomainCache.js';
+export { Who } from './Authorization';

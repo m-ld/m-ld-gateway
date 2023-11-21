@@ -1,4 +1,4 @@
-import { EndPoint, HasContext, patch, post, use } from './EndPoint.js';
+import { EndPoint, get, HasContext, patch, post, use } from './EndPoint.js';
 import { ApiEndPoint } from './ApiEndPoint.js';
 import { ForbiddenError, NotFoundError, UnauthorizedError } from './errors.js';
 import { Authorization, Notifier } from '../server/index.js';
@@ -60,6 +60,15 @@ export class UserEndPoint extends EndPoint<ApiEndPoint> {
     const { jwe, code } = await this.gateway.activation(req.get('user'), email);
     await this.notifier.sendActivationCode(email, code);
     res.json(200, { jwe });
+  }
+
+  @get('/publicKey/:keyid')
+  async getPublicKey(req: UserRequest, res: Response) {
+    const { keyid } = req.params;
+    const acc = await this.getAuthorisedAccount(req, false);
+    const userKey = await acc.getUserKey(keyid);
+    res.contentType = 'application/x-pem-file';
+    res.send(userKey.getCryptoPublicKey());
   }
 
   @patch

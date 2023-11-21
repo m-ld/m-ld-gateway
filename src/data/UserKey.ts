@@ -4,15 +4,32 @@ import {
   PublicKeyInput, RSAKeyPairOptions, sign, verify
 } from 'crypto';
 import { AuthKey, AuthKeyConfig, domainRelativeIri, Key } from '../lib/index.js';
-import { JwtHeader, Secret, SignOptions } from 'jsonwebtoken';
+import { JwtHeader, JwtPayload, Secret, SignOptions } from 'jsonwebtoken';
 import { signJwt, verifyJwt } from '@m-ld/io-web-runtime/dist/server/jwt';
+import { as } from '../lib/validate.js';
+
+export interface RsaKeyConfig {
+  type: 'rsa';
+  public: string;
+  private?: string;
+}
+
+export const asRsaKeyConfig = as.object({
+  type: as.equal('rsa').default('rsa'),
+  public: as.string().base64().required(),
+  private: as.string().base64().optional()
+});
+
+export function keyPairFromConfig(config: RsaKeyConfig) {
+  return {
+    publicKey: Buffer.from(config.public, 'base64'),
+    privateKey: config.private ?
+      Buffer.from(config.private, 'base64') : undefined
+  };
+}
 
 export interface UserKeyConfig extends AuthKeyConfig {
-  key: {
-    type: 'rsa',
-    public: string,
-    private?: string
-  };
+  key: RsaKeyConfig;
 }
 
 /**
@@ -42,9 +59,7 @@ export class UserKey implements Key {
   static fromConfig(config: UserKeyConfig) {
     return new UserKey({
       keyid: AuthKey.fromString(config.auth.key).keyid,
-      publicKey: Buffer.from(config.key.public, 'base64'),
-      privateKey: config.key.private ?
-        Buffer.from(config.key.private, 'base64') : undefined
+      ...keyPairFromConfig(config.key)
     });
   }
 
@@ -81,7 +96,7 @@ export class UserKey implements Key {
     return new UserKey({
       keyid: authKey.keyid,
       ...generateKeyPairSync('rsa', <RSAKeyPairOptions<'der', 'der'>>{
-        modulusLength: 1024,
+        modulusLength: 2048,
         publicKeyEncoding: this.encoding.public,
         privateKeyEncoding: this.encoding.private(authKey)
       })
@@ -119,7 +134,7 @@ export class UserKey implements Key {
   }
 
   /**
-   * @returns {boolean} `false` if the auth key does not correspond to this user key
+   * @returns `false` if the auth key does not correspond to this user key
    */
   matches(authKey: AuthKey) {
     if (authKey.keyid !== this.keyid)
@@ -146,10 +161,8 @@ export class UserKey implements Key {
     return verify('RSA-SHA256', data, this.getCryptoPublicKey(), cryptoSig);
   }
 
-  /**
-   * @returns {Promise<string>} JWT
-   */
-  signJwt(payload: string | Buffer | object, authKey: AuthKey, options?: SignOptions) {
+  /** @returns JWT */
+  signJwt(payload: string | Buffer | JwtPayload, authKey: AuthKey, options?: SignOptions) {
     // noinspection JSCheckFunctionSignatures
     return signJwt(payload, this.getCryptoPrivateKey(authKey) as unknown as Secret, {
       ...options, algorithm: 'RS256', keyid: this.keyid
@@ -171,12 +184,16 @@ export class UserKey implements Key {
     return ['rsa-v1_5-sha256', this.getCryptoPrivateKey(authKey)];
   }
 
-  private getCryptoPrivateKey(authKey: AuthKey): KeyObject {
+  private get surePrivateKey() {
     if (this.privateKey == null)
       throw new RangeError('Private key unavailable');
+    return this.privateKey;
+  }
+
+  private getCryptoPrivateKey(authKey: AuthKey): KeyObject {
     // noinspection JSCheckFunctionSignatures
     return createPrivateKey(<PrivateKeyInput>{
-      key: this.privateKey,
+      key: this.surePrivateKey,
       ...UserKey.encoding.private(authKey)
     });
   }
@@ -189,10 +206,9 @@ export class UserKey implements Key {
   }
 
   /**
-   * @param {boolean} excludePrivate `true` to exclude the private key
-   * @returns {GraphSubject}
+   * @param excludePrivate `true` to exclude the private key
    */
-  toJSON(excludePrivate = false): any {
+  toJSON(excludePrivate = false): GraphSubject {
     // noinspection JSValidateTypes
     return {
       ...UserKey.refFromKeyid(this.keyid),
@@ -210,12 +226,16 @@ export class UserKey implements Key {
    */
   toConfig(authKey: AuthKey): UserKeyConfig {
     return Object.assign(authKey.toConfig(), {
-      key: {
-        type: 'rsa' as 'rsa', // Typescript weirdness
-        public: this.publicKey.toString('base64'),
-        private: this.privateKey?.toString('base64')
-        // revoked assumed false
-      }
+      key: this.getRsaKeyConfig()
     });
+  }
+
+  getRsaKeyConfig() {
+    return {
+      type: 'rsa' as 'rsa', // Typescript weirdness
+      public: this.publicKey.toString('base64'),
+      private: this.privateKey?.toString('base64')
+      // revoked assumed false
+    };
   }
 }

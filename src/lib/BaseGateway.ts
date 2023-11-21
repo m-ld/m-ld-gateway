@@ -29,7 +29,7 @@ export class BaseGateway {
   ) {}
 
   ownedRefAsId(tsRef: Reference) {
-    // A timesheet reference may be relative to the domain base
+    // A subdomain reference may be relative to the domain base
     return AccountOwnedId.fromReference(tsRef, this.domainName);
   }
 

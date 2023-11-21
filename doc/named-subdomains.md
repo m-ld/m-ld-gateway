@@ -16,7 +16,7 @@ A new domain can be created with:
 {% include 'http/named-subdomains/create.http' %}
 ```
 
-This creates the domain `≪subdomain≫` in the account. Domain names must be composed only of **lowercase** letters, numbers, hyphens `-` and underscores `_`.
+This creates the domain `≪subdomain≫` in the account, if it does not already exist. Domain names must be composed only of **lowercase** letters, numbers, hyphens `-` and underscores `_`.
 
 The body of the response will contain the configuration to be used in a new **m-ld** clone to connect to the domain, with placeholders for required secrets.
 

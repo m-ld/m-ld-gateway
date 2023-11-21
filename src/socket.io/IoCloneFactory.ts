@@ -1,10 +1,8 @@
 import {
-  BaseGatewayConfig, CloneFactory, Env, GatewayPrincipal, resolveGateway
+  BaseGatewayConfig, CloneFactory, ConfigContext, Env, GatewayPrincipal, resolveGateway
 } from '../index.js';
 import { IoRemotes, MeldIoConfig } from '@m-ld/m-ld/ext/socket.io';
 import LOG from 'loglevel';
-import { Who } from '../server/index.js';
-import { RemotesAuthType } from '../server/Account.js';
 
 export class IoCloneFactory extends CloneFactory {
   /**
@@ -31,32 +29,30 @@ export class IoCloneFactory extends CloneFactory {
     return IoRemotes;
   }
 
-  async reusableConfig(
-    config: BaseGatewayConfig,
-    remotesAuth: RemotesAuthType[],
-    who?: Who
-  ): Promise<Partial<BaseGatewayConfig>> {
-    return Env.mergeConfig(super.reusableConfig(config, remotesAuth, who),
-      await this.ioConfig(config, { remotesAuth, who }));
+  async reusableConfig(config: BaseGatewayConfig, context: ConfigContext) {
+    return Env.mergeConfig(
+      super.reusableConfig(config, context),
+      await this.ioConfig(config, context)
+    );
   }
 
-  private async ioConfig(
-    config: BaseGatewayConfig,
-    reusable?: { remotesAuth: RemotesAuthType[], who?: Who }
-  ) {
+  private async ioConfig(config: BaseGatewayConfig, context?: ConfigContext) {
     // Reusable config always doles out public gateway address
-    const uri = !reusable && this.address ? this.address :
+    const uri = !context && this.address ? this.address :
       (await resolveGateway(config.gateway)).toString();
     const io: MeldIoConfig['io'] = { uri };
     // When using Socket.io, the authorisation key is sent to the server
     // See https://socket.io/docs/v4/middlewares/#sending-credentials
-    if (!reusable || !reusable.remotesAuth.length || reusable.remotesAuth.includes('key')) {
-      const key = reusable ? '≪your-auth-key≫' : config.auth.key;
+    // Try and resolve the most useful authorisation key possible
+    if (context?.remotesAuth.includes('jwt')) {
+      const jwt = await context.mintJwt?.() ?? '≪your-token≫';
+      io.opts = { auth: { jwt } }
+    } else if (!context?.remotesAuth.length || context.remotesAuth.includes('key')) {
+      // Do not reveal the config key unless this is local
+      const key = context ? '≪your-auth-key≫' : config.auth.key;
       // The user may be undefined, if this is a Gateway
-      const user = reusable ? reusable.who?.acc.name ?? '≪your-account-name≫' : config.user;
+      const user = context ? context.who?.acc.name ?? '≪your-account-name≫' : config.user;
       io.opts = { auth: { key, user } };
-    } else if (reusable.remotesAuth.includes('jwt')) {
-      io.opts = { auth: { jwt: '≪your-token≫' } }
     }
     return { io };
   }

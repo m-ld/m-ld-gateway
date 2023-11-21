@@ -28,6 +28,8 @@ export class GatewayWebsite extends EndPoint<Server> {
       root: gateway.rootAccountName,
       version
     }));
+    const [directory] = liquid.options.root;
+    this.get('/img/*', plugins.serveStatic({ directory }));
   }
 
   @get('/*')

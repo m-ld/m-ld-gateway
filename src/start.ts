@@ -6,6 +6,7 @@ import {
   as, asLogLevel, AuthKey, CloneFactory, DomainKeyStore, Env, KeyStore, resolveDomain, validate
 } from './lib/index.js';
 import { logNotifier, SmtpNotifier } from './server/Notifier.js';
+import { asRsaKeyConfig } from './data/UserKey.js';
 import { uuid } from '@m-ld/m-ld';
 import { Liquid } from 'liquidjs';
 import { fileURLToPath } from 'url';
@@ -32,11 +33,7 @@ import { fileURLToPath } from 'url';
     auth: as.object({ // auth key specified for Gateway
       key: as.string().required()
     }).required(),
-    key: as.object({ // key pair specified for Gateway
-      type: as.equal('rsa').default('rsa'),
-      public: as.string().base64().required(),
-      private: as.string().base64().required()
-    }).required(),
+    key: asRsaKeyConfig.keys({ private: as.required() }).required(),
     address: as.object({
       port: as.number().default(3000),
       host: as.string().optional()
