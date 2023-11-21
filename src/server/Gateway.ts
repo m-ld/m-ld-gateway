@@ -79,7 +79,9 @@ export class Gateway extends BaseGateway implements AccountContext {
     update: MeldUpdate,
     _state: MeldReadState
   ): Promise<void> {
-    LOG.info(id.toRelativeIri(), JSON.stringify(update));
+    const attr = update.trace().trigger.attribution;
+    if (attr != null)
+      LOG.info(id.toRelativeIri(), 'USER', attr.pid, JSON.stringify(update));
     return Promise.resolve();
   }
 

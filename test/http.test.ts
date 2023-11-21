@@ -41,7 +41,7 @@ describe('Gateway HTTP API', () => {
     );
     await gateway.initialise();
     notifier = mock<Notifier>();
-    liquid = mock<Liquid>();
+    liquid = mock<Liquid>({ options: { root: ['fakeRoot'] } });
     app = setupGatewayHttp({ gateway, notifier, liquid });
   });
 

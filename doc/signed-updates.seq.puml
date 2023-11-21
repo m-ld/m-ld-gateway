@@ -1,0 +1,36 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma teoz true
+
+autonumber
+
+participant "App\nClient" as appC
+participant "App\nLambda" as appL
+participant "**m-ld**\nGateway" as gw
+
+activate appC
+alt not logged in
+	appC -> appC  : login
+	alt new device
+		appC -> appC : generate device key pair
+	end
+end
+
+appC -> appL ++ : get config (public key, subdomain)
+appL -> appL : check access
+appL -> gw ++ : PUT /domain/≪account≫/≪subdomain≫\n{useSignatures: true, user: {'@id', key}}
+note right: adds user & public key\nto domain
+return config
+& return config
+
+appC -> gw : connect to domain (config)
+deactivate appC
+
+loop
+	appC -> appC : sign operation (private key)\nusing Transport Security extension
+	appC --> gw : signed operation
+	gw -> gw : validate operation\nwith user's public key
+	gw -> gw : log operation
+end
+
+@enduml

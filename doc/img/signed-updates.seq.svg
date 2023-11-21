@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="712px" preserveAspectRatio="none" style="width:800px;height:712px;background:#FFFFFF;" version="1.1" viewBox="0 0 800 712" width="800px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="157.2422" style="stroke:#000000;stroke-width:1.5;" width="260" x="8" y="64.9766"/><rect fill="none" height="69.6211" style="stroke:#000000;stroke-width:1.5;" width="216" x="27" y="138.5977"/><rect fill="none" height="214.1738" style="stroke:#000000;stroke-width:1.5;" width="767" x="27" y="421.082"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="43" x2="43" y1="52.9766" y2="659.2559"/><rect fill="#FFFFFF" height="348.1055" style="stroke:#181818;stroke-width:1.0;" width="10" x="38" y="60.9766"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="304" x2="304" y1="52.9766" y2="659.2559"/><rect fill="#FFFFFF" height="135.2422" style="stroke:#181818;stroke-width:1.0;" width="10" x="299" y="257.5293"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="600" x2="600" y1="52.9766" y2="659.2559"/><rect fill="#FFFFFF" height="35.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="595" y="344.4609"/><rect fill="#E2E2F0" height="46.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="54" x="16" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="29" y="25.5352">App</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="40" x="23" y="42.0234">Client</text><rect fill="#E2E2F0" height="46.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="68" x="270" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="290" y="25.5352">App</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54" x="277" y="42.0234">Lambda</text><rect fill="#E2E2F0" height="46.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="71" x="564.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="37" x="581.5" y="25.5352">m-ld</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="571.5" y="42.0234">Gateway</text><rect fill="#E2E2F0" height="46.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="54" x="16" y="659.2559"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="29" y="679.791">App</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="40" x="23" y="696.2793">Client</text><rect fill="#E2E2F0" height="46.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="68" x="270" y="659.2559"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="290" y="679.791">App</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54" x="277" y="696.2793">Lambda</text><rect fill="#E2E2F0" height="46.9766" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="71" x="564.5" y="659.2559"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="37" x="581.5" y="679.791">m-ld</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="571.5" y="696.2793">Gateway</text><path d="M8,64.9766 L70,64.9766 L70,72.2871 L60,82.2871 L8,82.2871 L8,64.9766 " fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="157.2422" style="stroke:#000000;stroke-width:1.5;" width="260" x="8" y="64.9766"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="17" x="23" y="78.5449">alt</text><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacing" textLength="83" x="85" y="77.6113">[not logged in]</text><line style="stroke:#181818;stroke-width:1.0;" x1="48" x2="90" y1="113.5977" y2="113.5977"/><line style="stroke:#181818;stroke-width:1.0;" x1="90" x2="90" y1="113.5977" y2="126.5977"/><line style="stroke:#181818;stroke-width:1.0;" x1="49" x2="90" y1="126.5977" y2="126.5977"/><polygon fill="#181818" points="59,122.5977,49,126.5977,59,130.5977,55,126.5977" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="55" y="108.8555">1</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="32" x="68" y="108.8555">login</text><path d="M27,138.5977 L89,138.5977 L89,145.9082 L79,155.9082 L27,155.9082 L27,138.5977 " fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="69.6211" style="stroke:#000000;stroke-width:1.5;" width="216" x="27" y="138.5977"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="17" x="42" y="152.166">alt</text><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacing" textLength="70" x="104" y="151.2324">[new device]</text><line style="stroke:#181818;stroke-width:1.0;" x1="48" x2="90" y1="187.2188" y2="187.2188"/><line style="stroke:#181818;stroke-width:1.0;" x1="90" x2="90" y1="187.2188" y2="200.2188"/><line style="stroke:#181818;stroke-width:1.0;" x1="49" x2="90" y1="200.2188" y2="200.2188"/><polygon fill="#181818" points="59,196.2188,49,200.2188,59,204.2188,55,200.2188" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="55" y="182.4766">2</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="152" x="68" y="182.4766">generate device key pair</text><polygon fill="#181818" points="287,253.5293,297,257.5293,287,261.5293,291,257.5293" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="48" x2="293" y1="257.5293" y2="257.5293"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="55" y="252.7871">3</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="219" x="68" y="252.7871">get config (public key, subdomain)</text><line style="stroke:#181818;stroke-width:1.0;" x1="309" x2="351" y1="286.8398" y2="286.8398"/><line style="stroke:#181818;stroke-width:1.0;" x1="351" x2="351" y1="286.8398" y2="299.8398"/><line style="stroke:#181818;stroke-width:1.0;" x1="310" x2="351" y1="299.8398" y2="299.8398"/><polygon fill="#181818" points="320,295.8398,310,299.8398,320,303.8398,316,299.8398" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="316" y="282.0977">4</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="83" x="329" y="282.0977">check access</text><polygon fill="#181818" points="583,340.4609,593,344.4609,583,348.4609,587,344.4609" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="309" x2="589" y1="344.4609" y2="344.4609"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="316" y="332.0635">5</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="254" x="329" y="324.4082">PUT /domain/≪account≫/≪subdomain≫</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="239" x="329" y="339.7188">{useSignatures: true, user: {'@id', key}}</text><path d="M610,312.8398 L610,352.8398 L774,352.8398 L774,322.8398 L764,312.8398 L610,312.8398 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M764,312.8398 L764,322.8398 L774,322.8398 L764,312.8398 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="143" x="616" y="330.4082">adds user &amp; public key</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="64" x="616" y="345.7188">to domain</text><polygon fill="#181818" points="320,375.7715,310,379.7715,320,383.7715,316,379.7715" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="314" x2="594" y1="379.7715" y2="379.7715"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="326" y="375.0293">6</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="40" x="339" y="375.0293">config</text><polygon fill="#181818" points="59,375.7715,49,379.7715,59,383.7715,55,379.7715" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="53" x2="298" y1="379.7715" y2="379.7715"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="65" y="375.0293">7</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="40" x="78" y="375.0293">config</text><polygon fill="#181818" points="588,405.082,598,409.082,588,413.082,592,409.082" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="48" x2="594" y1="409.082" y2="409.082"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="55" y="404.3398">8</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="170" x="68" y="404.3398">connect to domain (config)</text><path d="M27,421.082 L101,421.082 L101,428.3926 L91,438.3926 L27,438.3926 L27,421.082 " fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="214.1738" style="stroke:#000000;stroke-width:1.5;" width="767" x="27" y="421.082"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="29" x="42" y="434.6504">loop</text><line style="stroke:#181818;stroke-width:1.0;" x1="43" x2="85" y1="485.0137" y2="485.0137"/><line style="stroke:#181818;stroke-width:1.0;" x1="85" x2="85" y1="485.0137" y2="498.0137"/><line style="stroke:#181818;stroke-width:1.0;" x1="44" x2="85" y1="498.0137" y2="498.0137"/><polygon fill="#181818" points="54,494.0137,44,498.0137,54,502.0137,50,498.0137" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="50" y="472.6162">9</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="172" x="63" y="464.9609">sign operation (private key)</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="220" x="63" y="480.2715">using Transport Security extension</text><polygon fill="#181818" points="588,523.3242,598,527.3242,588,531.3242,592,527.3242" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="43" x2="594" y1="527.3242" y2="527.3242"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="18" x="50" y="522.582">10</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="106" x="72" y="522.582">signed operation</text><line style="stroke:#181818;stroke-width:1.0;" x1="600" x2="642" y1="571.9453" y2="571.9453"/><line style="stroke:#181818;stroke-width:1.0;" x1="642" x2="642" y1="571.9453" y2="584.9453"/><line style="stroke:#181818;stroke-width:1.0;" x1="601" x2="642" y1="584.9453" y2="584.9453"/><polygon fill="#181818" points="611,580.9453,601,584.9453,611,588.9453,607,584.9453" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="18" x="607" y="559.5479">11</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="113" x="629" y="551.8926">validate operation</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="137" x="629" y="567.2031">with user's public key</text><line style="stroke:#181818;stroke-width:1.0;" x1="600" x2="642" y1="614.2559" y2="614.2559"/><line style="stroke:#181818;stroke-width:1.0;" x1="642" x2="642" y1="614.2559" y2="627.2559"/><line style="stroke:#181818;stroke-width:1.0;" x1="601" x2="642" y1="627.2559" y2="627.2559"/><polygon fill="#181818" points="611,623.2559,601,627.2559,611,631.2559,607,627.2559" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="18" x="607" y="609.5137">12</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="84" x="629" y="609.5137">log operation</text><!--MD5=[44b876b32a4e249e44d2413bff43338c]
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma teoz true
+
+autonumber
+
+participant "App\nClient" as appC
+participant "App\nLambda" as appL
+participant "**m-ld**\nGateway" as gw
+
+activate appC
+alt not logged in
+	appC -> appC  : login
+	alt new device
+		appC -> appC : generate device key pair
+	end
+end
+
+appC -> appL ++ : get config (public key, subdomain)
+appL -> appL : check access
+appL -> gw ++ : PUT /domain/≪account≫/≪subdomain≫\n{useSignatures: true, user: {'@id', key}}
+note right: adds user & public key\nto domain
+return config
+& return config
+
+appC -> gw : connect to domain (config)
+deactivate appC
+
+loop
+	appC -> appC : sign operation (private key)\nusing Transport Security extension
+	appC - -> gw : signed operation
+	gw -> gw : validate operation\nwith user's public key
+	gw -> gw : log operation
+end
+
+@enduml
+
+@startuml
+!pragma teoz true
+
+autonumber
+
+participant "App\nClient" as appC
+participant "App\nLambda" as appL
+participant "**m-ld**\nGateway" as gw
+
+activate appC
+alt not logged in
+	appC -> appC  : login
+	alt new device
+		appC -> appC : generate device key pair
+	end
+end
+
+appC -> appL ++ : get config (public key, subdomain)
+appL -> appL : check access
+appL -> gw ++ : PUT /domain/≪account≫/≪subdomain≫\n{useSignatures: true, user: {'@id', key}}
+note right: adds user & public key\nto domain
+return config
+& return config
+
+appC -> gw : connect to domain (config)
+deactivate appC
+
+loop
+	appC -> appC : sign operation (private key)\nusing Transport Security extension
+	appC - -> gw : signed operation
+	gw -> gw : validate operation\nwith user's public key
+	gw -> gw : log operation
+end
+
+@enduml
+
+PlantUML version 1.2022.8(Sun Sep 25 10:00:33 BST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

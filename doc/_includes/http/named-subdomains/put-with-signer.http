@@ -1,0 +1,12 @@
+PUT {{origin}}/api/v1/domain/{{account}}/{{subdomain}}
+Accept: application/json
+Authorization: Basic {{digest}}
+Content-Type: application/json
+
+{
+  "useSignatures": true,
+  "user": {
+    "@id": "≪user URI≫",
+    "key": { "keyid": "≪keyid≫", "public": "≪base64(DER encoded RSA public key)≫" }
+  }
+}
